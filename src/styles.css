@@ -1,0 +1,450 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/bignoodle-titling');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* Réinitialisation */
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Josefin Sans', sans-serif;
+    background-color: #222222;
+}
+
+h1 {
+    color: #f2e291;
+    text-shadow: #b37d47 0px 3px;
+}
+
+h2 {
+    color: #ccc;
+}
+
+.container {
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    min-width: 20%;
+    background-color: #32050f;
+    color: #069420;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px 0;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+    flex: 1;
+    font-family: 'BigNoodleTitling', sans-serif;
+    letter-spacing: 0.5em;
+}
+
+.menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu ul li {
+    margin: 15px 0;
+    text-align: right;
+    font-style: oblique;
+}
+
+.menu ul li a {
+    color: #f2e291;
+    text-decoration: none;
+    font-size: 28px;
+    padding-right: 50px;
+    opacity: 0.5;
+    transition: opacity 0.7s ease;
+}
+.menu ul li a:hover,
+.menu ul li a:focus {
+    opacity: 1;
+    font-style: normal;
+}
+.menu ul li a:hover {
+    color: #91f2c2;
+}
+
+/* Icônes réseaux sociaux */
+.social-links {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 20px 0;
+}
+
+.social-links a {
+    color: #f2e291;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.social-links a:hover {
+    color: #b37d47;
+}
+
+/* Barre de séparation */
+.sidebar-separator {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 2px;
+    height: 100%;
+}
+
+.separator-top {
+    background-color: #f2e291;
+    height: 75%;
+}
+
+.separator-bottom {
+    background-color: #b37d47;
+    height: 25%;
+}
+
+/* Contenu principal */
+.content {
+    margin-left: 20%;
+    width: 80%;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+/* Section: organisation et centrage */
+.section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+    text-align: left;
+    min-height: 75vh;
+    border-bottom: 1px solid #b37d47;
+}
+
+/* Titre de la section */
+.section h1 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    margin-left: 30px;
+}
+
+/* Contenu du paragraphe */
+.section p {
+    font-size: 1.1rem;
+    line-height: 1.3;
+    max-width: 1150px;
+    margin-left: 80px;
+    margin-right: 80px;
+    color: #ccc;
+}
+
+/* Mots importants */
+.section p b {
+    color: #f2e291;
+    font-weight: bold;
+}
+
+/* Texte en italique */
+.section p i {
+    color: #b37d47;
+}
+
+.section p a {
+    color: #f2e291;
+    text-decoration: none;
+    opacity: 0.8;
+    transition: opacity 0.7s ease;
+}
+.section p a:hover,
+.section p a:focus {
+    opacity: 1;
+    color: #91f2c2;
+}
+
+#section1 {
+    background-color: #19050a;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#section2 {
+    background-color: #32050f;
+    align-items: normal;
+}
+
+#section3 {
+    background-color: #19050a;
+    align-items: normal;
+}
+
+#section4 {
+    background-color: #32050f;
+}
+
+/* Footer */
+.footer {
+    min-height: 15vh;
+    background-color: #19050a;
+    color: #f2e291;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    padding: 15px 100px;
+}
+
+/* Colonnes du footer */
+.footer-column {
+    flex: 1;
+    padding: 0 15px;
+    align-self: flex-end;
+}
+
+/* Alignement spécifique */
+.footer-column.left {
+    text-align: left;
+}
+
+.footer-column.center,
+.footer-column.right {
+    text-align: center;
+}
+
+/* Titres dans le footer */
+.footer-column h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: #f2e291;
+    /* text-shadow: #b37d47 0px 3px; */
+}
+
+/* Paragraphes dans le footer */
+.footer-column p {
+    margin: 0;
+    line-height: 1.6;
+    color: #ccc;
+    justify-items: end;
+}
+
+/* Liens interactifs */
+.footer a {
+    color: #b37d47;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s ease;
+}
+.footer a:hover {
+    color: #91f2c2;
+}
+
+.footer-mobile{
+    display: none;
+}
+
+/* Icône de copie */
+.copy-email {
+    cursor: pointer;
+    margin-left: 10px;
+    position: relative;
+    color: #f2e291;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.copy-email:hover {
+    color: #91f2c2;
+}
+
+/* Infobulle */
+.copy-email::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333333;
+    color: #ccc;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.copy-email:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Changement de couleur au clic */
+.copy-email.copied {
+    color: #1f9970;
+}
+
+.contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+    padding: 20px;
+}
+
+.contact-buttons .btn {
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 5px;
+    background-color: #91f2c2;
+    color: #32050f;
+    font-size: 24px;
+    text-align: center;
+    text-decoration: none;
+    transition: transform 0.2s, background-color 0.3s;
+    font-weight: bold;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    min-width: 300px;
+}
+
+.contact-buttons .btn:hover {
+    transform: translateY(-2px);
+    background-color: #1f9970;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Bouton troll */
+.contact-buttons .btn.troll {
+    background-color: #ff7357;
+    color: #fff;
+}
+
+.contact-buttons .btn.troll:hover {
+    background-color: #b31b27;
+}
+
+#mobile-twitch-embed {
+    display: none;
+}
+
+@media (max-width: 1102px) {
+    .menu ul li a {
+        padding: 0px 20px;
+    }
+
+    .footer {
+        padding: 15px 10%;
+    }
+
+    #twitch-embed {
+        display: none;
+    }
+
+    #mobile-twitch-embed {
+        display: flex;
+        flex-direction:column;
+    }
+
+    .footer-mobile{
+        display: flex;
+        max-height: 80px;
+        color: #ccc;
+        background-color: #333333;
+        padding-left: 30px;
+    }
+
+    .footer-column.left {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
+
+    #section1 iframe {
+        width: 100%;
+        height: auto;
+    }
+    .section p {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+    .footer {
+        flex-direction: column;
+    }
+    .footer-column {
+        align-self: center;
+    }
+}
+
+#popup-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #19050ab3;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup {
+    background-image: url('img/popup.png');
+    /* padding: 20px; */
+    text-align: center;
+    width: 333px;
+    height: 134px;
+}
+.popup h2 {
+    margin-top: 50px;
+}
+
+.popup button {
+    display: inline-block;
+    border-radius: 5px;
+    border-width: 0px;
+    margin: 3px;
+    padding: 6px 5px;
+    color: #32050f;
+    background-color: #91f2c2;
+    transition: transform 0.2s, background-color 0.3s;
+    font-weight: 700;
+    font-family: 'Josefin Sans', sans-serif;
+    font-size: 16px;
+}  
+
+.popup button:hover {
+    transform: translateY(-2px);
+    background-color: #1f9970;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.popup button.cancel {
+    background-color: #ff7357;
+    color: #fff;
+}
+
+.popup button.cancel:hover {
+    transform: translateY(-2px);
+    background-color: #b31b27;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+}
