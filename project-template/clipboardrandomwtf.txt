@@ -1,3 +1,48 @@
+
+.blockquote {
+  padding-left: 2rem;
+  position: relative;
+  overflow: hidden;
+
+  &::before,
+  &::after{
+    position: absolute;
+    color: #777;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  p + p {
+    margin-top: 1rem;
+  }
+
+  &--slashes {
+    &::before {
+      content: "//";
+      transform: rotate(90deg);
+      left: 0;
+    }   
+
+    &::after {
+      content: "";
+      left: 5px;
+      top: 25px;
+      width: 1px;
+      height: 100%;
+      background-color: currentColor;
+    }    
+  }
+} 
+
+code {
+  border: 1px solid rgb(65, 65, 65);
+  background-color: rgb(34, 33, 33);
+  padding: 0.3rem 0.4rem 0.15rem;
+  line-height: 100%;
+  border-radius: 0.3rem;
+}
 <!DOCTYPE html>
 <html lang="en">
 <head>
