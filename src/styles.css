@@ -1,134 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300&family=Raleway:wght@800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
 /* Style global */
 body {
-  font-family: 'Josefin Sans', sans-serif;
-  margin: 0;
-  display: flex;
-  height: 100vh;
-  background-color: #2b2b2b; /* Fond sombre */
-  color: #fff;
-  overflow: hidden; /* Empêche le défilement du corps */
+    font-family: 'Josefin Sans', sans-serif;
+    margin: 0;
+    display: flex;
+    height: 100vh;
+    background-color: #222222;
+    color: #ffffff;
+    overflow: hidden;
 }
 
 /* Menu principal */
 .menu-main {
-  width: 15%;
-  background-color: #333;
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100%;
-  padding-top: 20px;
-  box-sizing: border-box;
+    width: 10%;
+    background-color: #333;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: fixed;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 20px 0;
 }
 
-/* Logo dans le menu principal */
-.logo {
-  width: 100px;
-  margin-bottom: 2rem;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+.menu-main .logo {
+    margin-bottom: auto;
 }
 
-/* Liens du menu principal */
-.menu-main a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 1rem;
-  text-align: center;
-  font-size: 1.2rem;
+.menu-main .logo img {
+    width: 80px;
+    margin-bottom: 2rem;
 }
 
-.menu-main a:hover {
-  background-color: #444;
+.menu-main ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Menu interne (colonne de navigation des sections) */
+.menu-main ul li {
+    margin: 15px 0;
+}
+
+.menu-main ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-main ul li a.active{
+    font-weight: 800;
+    background-color: #555;
+}
+
+.menu-main ul li a:hover {
+    background-color: #555;
+    color: #f2e291;
+}
+
+/* Menu interne */
 .menu-internal {
-  width: 15%;
-  background-color: #444;
-  position: fixed;
-  top: 0;
-  left: 15%;
-  height: 100%;
-  padding-top: 20px;
-  box-sizing: border-box;
+    width: 15%;
+    background-color: #444;
+    color: white;
+    position: fixed;
+    left: 10%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Liens du menu interne */
-.menu-internal a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  padding: 1rem;
-  text-align: center;
-  font-size: 1rem;
+.menu-internal ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.menu-internal a:hover {
-  background-color: #555;
+.menu-internal ul li {
+    margin: 15px 0;
+}
+
+.menu-internal ul li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 10px;
+    display: block;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.menu-internal ul li a:active {
+    background-color: #666;
+}
+
+.menu-internal ul li a:hover {
+    background-color: #666;
+    color: #f2e291;
 }
 
 /* Contenu principal */
 .content {
-  margin-left: 30%;
-  width: 50%;
-  max-width: 960px;
-  padding: 2rem;
-  box-sizing: border-box;
-  overflow-y: auto;
+    margin-left: 25%;
+    width: 75%;
+    padding: 10%;
+    box-sizing: border-box;
+    overflow-y:auto;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
 }
 
-/* Section titre et sections */
-.content h1, .content h2 {
-  font-family: 'Raleway', sans-serif;
-  font-weight: 800;
-  margin-bottom: 1rem;
+.content h1 {
+    font-family: 'Raleway', sans-serif;
+    font-weight: 800;
+    margin-bottom: 1rem;
 }
 
-/* Section de chaque contenu */
-section {
-  margin-bottom: 3rem;
+.content h2{
+    font-family: 'Raleway', sans-serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 15px;
 }
 
-/* Responsive Design : petit écran (moins de 768px) */
+.content p {
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.section {
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #444;
+}
+
+#section1 {
+    margin-top: 15%;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-  /* Pour les menus */
-  .menu-main {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 10px 0;
-  }
+    .menu-main {
+        width: 30%;
+        height: auto;
+        position: relative;
+    }
 
-  .menu-internal {
-    width: 100%;
-    height: auto;
-    position: relative;
-    top: 0;
-    display: none; /* Masquer le menu interne sur mobile */
-  }
+    .menu-main .logo img {
+        margin: 0 auto 1rem;
+    }
 
-  /* Hamburger menu sur mobile */
-  .hamburger {
-    display: block;
-    cursor: pointer;
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    text-align: center;
-    margin: 1rem;
-    font-size: 1.5rem;
-  }
+    .menu-internal {
+        display: none;
+    }
 
-  .hamburger.active + .menu-main ul {
-    display: block;
-  }
-
-  /* Contenu principal */
-  .content {
-    width: 95%; /* Passe à 95% pour utiliser toute la largeur disponible */
-    margin-left: 0;
-  }
+    .content {
+        margin-left: 0;
+        width: 100%;
+    }
 }
