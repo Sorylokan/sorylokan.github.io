@@ -5,12 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sorylokan's Extensions for StreamerBot</title>
     <link rel="stylesheet" href="src/styles.css">
+    <script>
+        const logos = [
+            'src/img/logo1.png',
+            'src/img/logo2.png',
+            'src/img/logo3.png',
+            'src/img/logo4.png',
+            'src/img/logo5.png'
+        ];
+
+        const randomLogo = logos[Math.floor(Math.random() * logos.length)];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const logoImage = document.querySelector('.menu-main .logo img');
+            if (logoImage) {
+                logoImage.src = randomLogo;
+            }
+        });
+    </script>
 </head>
 <body>
     <!-- Menu principal -->
     <nav class="menu-main">
         <div class="logo">
-            <img src="src/img/logo.png" alt="Logo">
+            <img src="src/img/logo1.png" alt="Logo">
         </div>
         <ul>
             <li><a href="#" class="active" >Home</a></li>
