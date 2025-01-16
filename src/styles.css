@@ -13,6 +13,7 @@ body {
     color: #ffffff;
     overflow: hidden;
     line-height: 1.4rem;
+    font-size: 18px;
 }
 
 /* code block style */
