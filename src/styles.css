@@ -70,13 +70,22 @@ code {
 }
 
 /* Bouton troll */
-.contact-buttons .btn.troll {
+.contact-buttons .btn.red {
     background-color: #ff7357;
     color: #fff;
 }
 
-.contact-buttons .btn.troll:hover {
+.contact-buttons .btn.red:hover {
     background-color: #b31b27;
+}
+
+.contact-buttons .btn.gold {
+    background-color: #f2e291;
+    color: #32050f;
+}
+
+.contact-buttons .btn.gold:hover {
+    background-color: #b37d47;
 }
 
 /* Menu principal */
