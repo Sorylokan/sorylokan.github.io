@@ -11,7 +11,17 @@ body {
     background-color: #222222;
     color: #ffffff;
     overflow: hidden;
+    line-height: 1.2rem;
 }
+
+pre {
+    background-color: #333;
+    border: 2px solid;
+    border-color: #666;
+    border-radius: 10px;
+    padding: 8px;
+}
+
 /* Menu principal */
 .menu-main {
     width: 10%;
@@ -147,7 +157,7 @@ body {
   }
   
   .blockquote--slashes::before {
-    content: "//";
+    content: "/\\";
     transform: rotate(90deg);
     left: 0;
     top: 0;
@@ -181,6 +191,16 @@ body {
   
 
 /* Contenu principal */
+a {
+    color: #f2e291;
+    font-weight: 400;
+    text-decoration: none;
+}
+a:hover {
+    border-bottom: 1px solid;
+    background: #b37d47;
+}
+
 .content {
     margin-left: 25%;
     width: 75%;
@@ -212,7 +232,7 @@ body {
 }
 
 .content p {
-    line-height: 1.45;
+    /* line-height: 1.45; */
     margin-bottom: 1rem;
 }
 
