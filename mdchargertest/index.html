@@ -2,10 +2,44 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Mon site GitHub Pages</title>
+  <title>Mon Site Minimaliste</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
-    body { font-family: sans-serif; margin: 40px; }
+    body {
+      margin: 0;
+      padding: 5% 15%;
+      font-family: 'Inter', sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      background: #f9f9f9;
+      color: #333;
+    }
+    h1, h2, h3 {
+      margin-top: 2em;
+      font-weight: 700;
+      color: #111;
+    }
+    a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 8px;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+    blockquote {
+      margin: 1em 0;
+      padding: 0.5em 1em;
+      background: #eee;
+      border-left: 4px solid #ccc;
+    }
   </style>
 </head>
 <body>
@@ -19,7 +53,7 @@
       document.getElementById('content').innerHTML = marked.parse(text);
     })
     .catch(error => {
-      document.getElementById('content').innerText = "Erreur de chargement du fichier Markdown.";
+      document.getElementById('content').innerText = "Erreur de chargement.";
       console.error(error);
     });
 </script>

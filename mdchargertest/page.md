@@ -1,10 +1,20 @@
-# Bienvenue sur mon site
+# Salut, moi c'est [Ton Nom]
 
-Voici du **texte** en Markdown.
+Bienvenue sur mon site minimaliste.
 
-- Liste 1
-- Liste 2
+## À propos de moi
 
-![Une image](https://via.placeholder.com/150)
+Quelques lignes pour te présenter.  
+Avec du texte clair, aéré.
 
-[Un lien vers Google](https://google.com)
+## Mes projets
+
+- [Projet 1](#)
+- [Projet 2](#)
+- [Projet 3](#)
+
+---
+
+> "Une citation inspirante ici."
+
+![Une belle image](https://via.placeholder.com/600x300)
