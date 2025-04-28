@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Mon site GitHub Pages</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <style>
+    body { font-family: sans-serif; margin: 40px; }
+  </style>
+</head>
+<body>
+
+<div id="content">Chargement...</div>
+
+<script>
+  fetch('page.md')
+    .then(response => response.text())
+    .then(text => {
+      document.getElementById('content').innerHTML = marked.parse(text);
+    })
+    .catch(error => {
+      document.getElementById('content').innerText = "Erreur de chargement du fichier Markdown.";
+      console.error(error);
+    });
+</script>
+
+</body>
+</html>
