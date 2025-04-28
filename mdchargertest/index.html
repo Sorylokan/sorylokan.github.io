@@ -2,55 +2,75 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Mon Site Minimaliste</title>
+  <title>Chargement...</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     body {
       margin: 0;
-      padding: 5% 15%;
+      display: flex;
       font-family: 'Inter', sans-serif;
-      font-size: 18px;
-      line-height: 1.6;
       background: #f9f9f9;
-      color: #333;
     }
-    h1, h2, h3 {
-      margin-top: 2em;
-      font-weight: 700;
-      color: #111;
+    nav {
+      width: 20%;
+      padding: 20px;
+      background: #eee;
+      height: 100vh;
+      overflow-y: auto;
+      position: sticky;
+      top: 0;
+    }
+    main {
+      width: 80%;
+      padding: 40px;
     }
     a {
-      color: #0077cc;
+      display: block;
+      margin-bottom: 10px;
       text-decoration: none;
+      color: #333;
     }
     a:hover {
       text-decoration: underline;
-    }
-    img {
-      max-width: 100%;
-      border-radius: 8px;
-    }
-    ul {
-      padding-left: 1.2em;
-    }
-    blockquote {
-      margin: 1em 0;
-      padding: 0.5em 1em;
-      background: #eee;
-      border-left: 4px solid #ccc;
     }
   </style>
 </head>
 <body>
 
-<div id="content">Chargement...</div>
+<nav id="menu-secondaire">
+  <strong>Menu</strong>
+</nav>
+
+<main id="content">
+  Chargement...
+</main>
 
 <script>
   fetch('page.md')
     .then(response => response.text())
     .then(text => {
-      document.getElementById('content').innerHTML = marked.parse(text);
+      const html = marked.parse(text);
+      document.getElementById('content').innerHTML = html;
+
+      // Après chargement du Markdown
+      // 1. Trouver H1 (titre principal)
+      const h1 = document.querySelector('h1');
+      if (h1) {
+        document.title = h1.innerText; // Met à jour <title>
+      }
+
+      // 2. Trouver tous les H2 pour construire le menu secondaire
+      const menu = document.getElementById('menu-secondaire');
+      const sections = document.querySelectorAll('h2');
+      sections.forEach((section, index) => {
+        const id = section.innerText.toLowerCase().replace(/\s+/g, '-');
+        section.id = id; // Ajoute un ID aux sections
+        const link = document.createElement('a');
+        link.href = `#${id}`;
+        link.textContent = section.innerText;
+        menu.appendChild(link);
+      });
     })
     .catch(error => {
       document.getElementById('content').innerText = "Erreur de chargement.";
