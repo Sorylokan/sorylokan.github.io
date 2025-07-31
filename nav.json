@@ -1,0 +1,36 @@
+[
+  {
+    "label": "Streamer.bot",
+    "href": "?p=projects",
+    "dropdown": [
+      { "label": "DscrdWWE:Resurgence", "href": "?p=dev/sb/dscrdwwe-resurgence" },
+      { "label": "OBS Timer", "href": "?p=dev/sb/obs-timer" },
+      { "label": "Essential Starter Kit", "href": "?p=dev/sb/essential-starter-kit" },
+      { "label": "MPVar", "href": "?p=dev/sb/mpvar" },
+      { "label": "Youtube Video Alert", "href": "?p=dev/sb/youtube-video-alert" }
+    ]
+  },
+  {
+    "label": "Overlays",
+    "href": "?p=projects",
+    "dropdown": [
+      { "label": "Starlight Reimagined", "href": "?p=creations/overlays/starlight-reimagined" },
+      { "label": "Grand wizardery", "href": "?p=creations/overlays/grand-wizardery" }
+    ]
+  },
+  {
+    "label": "Divers projets",
+    "href": "?p=projects",
+    "dropdown": [
+      { "label": "Minecraft", "dropdown": [
+          { "label": "Mon pack", "href": "?p=creations/mc/mon-pack" },
+          { "label": "Build : Tower of Astralis", "href": "?p=creations/mc/build/tower-of-astralis" }
+        ] },
+      { "label": "Montage", "href": "?p=creations/montage" }
+    ]
+  },
+  {
+    "label": "À propos",
+    "href": "?p=about"
+  }
+]

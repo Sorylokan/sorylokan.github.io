@@ -1,0 +1,245 @@
+/* Light Theme */
+:root {
+  --primary: #FF7755; /* accent fort, corail */
+  --primary-hover: #E45D3D;
+
+  --secondary: #4D6D9A; /* bleu-gris froid */
+  --secondary-hover: #3D5980;
+
+  --bg-main: #F5F3F1;
+  --bg-header: #EDEAE6;
+  --bg-content: #FFFFFFE6;
+
+  --text-main: #2B2B2B;
+  --text-muted: #6F6F6F;
+  --text-bright: #111111;
+  --text-heading: #FF7755;
+
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  
+  /* Scrollbar custom pour thème clair */
+  --scrollbar-track: rgba(0,0,0,0.05);
+  --scrollbar-thumb: rgba(0,0,0,0.2);
+  --scrollbar-thumb-hover: rgba(0,0,0,0.35);
+  
+  /* Variables pour les boutons de langue */
+  --nav-hover: rgba(0,0,0,0.05);
+  --dropdown-hover: rgba(0,0,0,0.05);
+  --primary-bg: rgba(255, 119, 85, 0.1);
+  --border: rgba(0,0,0,0.1);
+  
+  /* Variables pour les tableaux - thème clair */
+  --table-header-bg: rgba(255, 119, 85, 0.1);
+  --table-header-text: var(--text-bright);
+  --table-border: rgba(0, 0, 0, 0.1);
+  --table-row-hover: rgba(0, 0, 0, 0.03);
+  --table-row-alt: rgba(0, 0, 0, 0.015);
+  --code-bg: rgba(0, 0, 0, 0.05);
+}
+
+/* Styles de base */
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+.logo {
+    color: var(--primary);
+}
+
+nav {
+    background-color: var(--bg-header);
+    box-shadow: var(--shadow);
+}
+
+.nav-link {
+    color: var(--text-muted);
+}
+
+.nav-link:hover {
+    color: var(--text-bright);
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+#content {
+    background-color: var(--bg-content);
+    color: var(--text-main);
+}
+
+#content h1, #content h2, #content h3 {
+    color: var(--text-heading);
+}
+
+#content blockquote {
+    background-color: rgba(0, 0, 0, 0.025);
+    border-left-color: var(--primary);
+}
+
+.btn-normal {
+    background-color: var(--primary);
+    color: white;
+}
+
+.theme-toggle-btn {
+    color: var(--text-muted);
+    fill: var(--text-muted);
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-bright);
+}
+
+/* Styles pour les boutons de copie SVG */
+.copy-btn-icon {
+    color: var(--text-muted);
+}
+
+.copy-btn-icon:hover {
+    color: var(--primary-hover);
+}
+
+.copy-btn-icon.success {
+    color: #28a745;
+}
+
+.copy-btn-icon.error {
+    color: #dc3545;
+}
+
+#content code {
+    background-color: #ddd;
+    color: #495057;
+}
+
+#content pre {
+    background-color: #dddddd;
+    color: #495057;
+    border-color: #CCCCCC;
+}
+
+/* Coloration syntaxique */
+.keyword {
+    color: #4A90E2;
+}
+
+.type {
+    color: #28A745;
+}
+
+.string {
+    color: #DC3545;
+}
+
+.number {
+    color: #FD7E14;
+}
+
+.comment {
+    color: #6C757D;
+}
+
+.yaml-key {
+    color: #28A745;
+}
+
+.md-header {
+    color: #4A90E2;
+}
+
+.md-code {
+    color: #DC3545;
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.md-link {
+    color: #4A90E2;
+}
+
+.md-bold {
+    color: #212529;
+}
+
+.md-italic {
+    color: #6F42C1;
+}
+
+.html-tag {
+    color: #4A90E2;
+}
+
+.html-attr {
+    color: #6F42C1;
+}
+
+.html-doctype {
+    color: #28A745;
+}
+
+.html-entity {
+    color: #DC3545;
+}
+
+/* Containers markdown-it */
+#content .warning {
+    background-color: #ffc10731;
+    border-left-color: #ffc107;
+}
+
+#content .info {
+    background-color: #94e2f031;
+    border-left-color: #17a2b8;
+}
+
+#content .success {
+    background-color: #28a7451a;
+    border-left-color: #28a745;
+}
+
+#content .danger {
+    background-color: #dc35451a;
+    border-left-color: #dc3545;
+}
+
+/* Modal de confirmation des liens externes - Couleurs thème clair */
+#popup-container {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.popup {
+    background: var(--bg-content);
+    color: var(--text-main);
+    border-color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.popup h2 {
+    color: var(--text-heading);
+}
+
+.popup button:not(.cancel) {
+    background-color: var(--primary);
+    color: white;
+}
+
+.popup button:not(.cancel):hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.popup button.cancel {
+    background-color: #dc3545;
+    color: white;
+}
+
+.popup button.cancel:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Navigation Dropdown - Thème clair */
+:root {
+    --border: rgba(0, 0, 0, 0.1);
+    --dropdown-hover: rgba(0, 0, 0, 0.05);
+    --dropdown-mobile-bg: rgba(0, 0, 0, 0.03);
+}

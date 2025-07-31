@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Dark Theme CSS</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts.js"></script>
+</head>
+<body>
+    <!-- Démo du CSS -->
+    <nav class="menu-main">
+        <div class="logo">
+            <img src="https://via.placeholder.com/60x60/7dd3fc/ffffff?text=S" alt="Logo">
+        </div>
+        <ul>
+            <li><a href="#" class="active">Accueil</a></li>
+            <li><a href="#">Projets</a></li>
+            <li><a href="#">Créations</a></li>
+            <li><a href="#">Idées</a></li>
+        </ul>
+    </nav>
+    
+    <nav class="menu-internal">
+        <ul>
+            <li><a href="#intro" class="active">Introduction</a></li>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#demo">Démonstration</a></li>
+            <li><a href="#install">Installation</a></li>
+        </ul>
+    </nav>
+    
+    <main class="content">
+        <section id="intro" class="fade-in">
+            <h1>Markdown Static Site Generator</h1>
+            <p>Un système moderne pour convertir vos fichiers Markdown en un site web élégant avec navigation hiérarchique.</p>
+            
+            <div class="showcase-grid">
+                <div class="card">
+                    <h3>StreamerBot Extensions</h3>
+                    <p>Collection d'extensions pour améliorer votre expérience streaming avec StreamerBot.</p>
+                    <div>
+                        <span class="badge badge-primary">JavaScript</span>
+                        <span class="badge badge-secondary">StreamerBot</span>
+                    </div>
+                    <div class="mt-2">
+                        <a href="#" class="btn btn-primary">Voir le projet</a>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>OBS Emoji Wall</h3>
+                    <p>Widget interactif pour afficher les émojis de votre chat en temps réel sur votre stream.</p>
+                    <div>
+                        <span class="badge badge-primary">CSS</span>
+                        <span class="badge badge-secondary">OBS</span>
+                    </div>
+                    <div class="mt-2">
+                        <a href="#" class="btn btn-primary">Voir le projet</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <hr>
+        
+        <section id="features">
+            <h2>Fonctionnalités</h2>
+            
+            <h3>Navigation hiérarchique</h3>
+            <p>Le système gère automatiquement une navigation à trois niveaux :</p>
+            
+            <ul>
+                <li><strong>Menu principal</strong> : Sections principales (Projets, Créations, Idées)</li>
+                <li><strong>Pages showcase</strong> : Galeries de vos projets par catégorie</li>
+                <li><strong>Pages détaillées</strong> : Contenu complet avec table des matières</li>
+            </ul>
+            
+            <blockquote>
+                <p>Ce système vous permet de vous concentrer sur votre contenu plutôt que sur le code HTML.</p>
+            </blockquote>
+            
+            <h3>Styles Markdown avancés</h3>
+            <p>Support complet de la syntaxe Markdown avec des styles modernes :</p>
+            
+            <pre><code>// Exemple de code JavaScript
+function parseMarkdown(content) {
+    return marked.parse(content, {
+        highlight: function(code, lang) {
+            return hljs.highlight(code, {language: lang}).value;
+        }
+    });
+}</code></pre>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Élément</th>
+                        <th>Support</th>
+                        <th>Style</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Titres (H1-H6)</td>
+                        <td>✅ Complet</td>
+                        <td>Dégradés et effets</td>
+                    </tr>
+                    <tr>
+                        <td>Code blocks</td>
+                        <td>✅ Complet</td>
+                        <td>Coloration syntaxique</td>
+                    </tr>
+                    <tr>
+                        <td>Tables</td>
+                        <td>✅ Complet</td>
+                        <td>Hover effects</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <hr>
+        
+        <section id="demo">
+            <h2>Démonstration</h2>
+            <p>Voici un aperçu des différents éléments de design :</p>
+            
+            <div class="flex gap-2 mt-2">
+                <a href="#" class="btn btn-primary"><i class="fas fa-download"></i> Télécharger</a>
+                <a href="#" class="btn btn-secondary"><i class="fas fa-eye"></i> Aperçu</a>
+                <a href="#" class="btn btn-danger"><i class="fas fa-trash"></i> Supprimer</a>
+            </div>
+            
+            <h4 class="mt-3">Code inline et <code>variables</code></h4>
+            <p>Le CSS utilise des <code>variables CSS</code> pour une gestion cohérente des couleurs et espacements.</p>
+        </section>
+    </main>
+</body>
+</html>
