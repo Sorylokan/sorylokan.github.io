@@ -1,6 +1,4 @@
-// ===================
 // MARKDOWN & SYNTAX HIGHLIGHTING
-// ===================
 
 const md = new window.markdownit({
     html: true,
@@ -69,7 +67,7 @@ function setupCopyButtons() {
     });
 }
 
-// Fonction pour charger et afficher le contenu Markdown
+// CHARGEMENT ET AFFICHAGE DU CONTENU MARKDOWN
 async function loadContent(path) {
     try {
         const response = await fetch(`/p/${path}.md`);
@@ -96,19 +94,15 @@ async function loadContent(path) {
         
         document.getElementById('content').innerHTML = html;
         
-        // Appliquer notre coloration syntaxique personnalisée
+        // Appliquer la coloration syntaxique
         applySyntaxHighlighting();
         
         // Améliorer les tableaux
         enhanceTables();
         
-        // Initialiser les boutons de copie après le chargement du contenu
+        // Initialiser les fonctionnalités
         setupCopyButtons();
-        
-        // Réinitialiser la modal pour les liens externes du nouveau contenu
         initExternalLinkModal();
-        
-        // Initialiser le player Twitch si présent
         initTwitchPlayer();
     } catch (error) {
         console.error('Error loading content:', error);
@@ -116,17 +110,16 @@ async function loadContent(path) {
     }
 }
 
-// Gestion de la navigation
+// NAVIGATION
 function handleNavigation() {
     const params = new URLSearchParams(window.location.search);
-    const path = params.get('p') || 'home'; // Page d'accueil par défaut
+    const path = params.get('p') || 'home';
     loadContent(path);
 }
 
-// Écouteur d'événements pour la navigation
 window.addEventListener('popstate', handleNavigation);
 
-// Gestion des clics sur les liens de navigation
+// GESTION DES CLICS SUR LES LIENS DE NAVIGATION
 document.addEventListener('click', (e) => {
     if (e.target.matches('a[href^="?"]')) {
         e.preventDefault();
@@ -136,20 +129,17 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Gestion du thème
+// GESTION DU THÈME
 function handleTheme() {
     const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
     const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
     const themeToggleBtn = document.getElementById('theme-toggle');
     const themeStyle = document.getElementById('theme-style');
 
-    // Fonction pour changer le thème
     function setTheme(theme) {
-        // Change le fichier CSS
         themeStyle.href = `src/style-${theme}.css`;
         localStorage.setItem('theme', theme);
         
-        // Met à jour les icônes
         if (theme === 'dark') {
             themeToggleLightIcon.classList.remove('hidden');
             themeToggleDarkIcon.classList.add('hidden');
@@ -159,11 +149,9 @@ function handleTheme() {
         }
     }
 
-    // Initialisation du thème
     const savedTheme = localStorage.getItem('theme') || 'dark';
     setTheme(savedTheme);
 
-    // Écouteur d'événement pour le bouton de thème
     themeToggleBtn.addEventListener('click', function() {
         const currentTheme = localStorage.getItem('theme') || 'dark';
         const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
@@ -171,25 +159,19 @@ function handleTheme() {
     });
 }
 
-// Fonction pour améliorer les tableaux
+// AMÉLIORATION DES TABLEAUX
 function enhanceTables() {
     const tables = document.querySelectorAll('#content table');
     
     tables.forEach(table => {
-        // Ne pas encapsuler si déjà dans un wrapper
         if (table.closest('.table-wrapper')) return;
         
-        // Créer un wrapper responsive
         const wrapper = document.createElement('div');
         wrapper.className = 'table-wrapper';
         
-        // Insérer le wrapper avant le tableau
         table.parentNode.insertBefore(wrapper, table);
-        
-        // Déplacer le tableau dans le wrapper
         wrapper.appendChild(table);
         
-        // Ajouter des classes basées sur la taille du tableau
         const rows = table.querySelectorAll('tr');
         const cols = rows.length > 0 ? rows[0].querySelectorAll('th, td').length : 0;
         
@@ -197,7 +179,7 @@ function enhanceTables() {
             table.classList.add('compact');
         }
         
-        // Ajouter un indicateur de défilement sur mobile si nécessaire
+        // Indicateur de scroll pour mobile
         if (cols > 3) {
             const indicator = document.createElement('div');
             indicator.className = 'scroll-indicator';
@@ -211,11 +193,15 @@ function enhanceTables() {
                 background: var(--table-header-bg);
                 border-radius: 0 0 0.5rem 0.5rem;
                 margin-top: -0.5rem;
+                position: sticky;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 10;
             `;
             
             wrapper.appendChild(indicator);
             
-            // Afficher l'indicateur seulement sur mobile
             const mediaQuery = window.matchMedia('(max-width: 768px)');
             const updateIndicator = () => {
                 indicator.style.display = mediaQuery.matches ? 'block' : 'none';
@@ -227,7 +213,7 @@ function enhanceTables() {
     });
 }
 
-// Fonction de coloration syntaxique personnalisée
+// COLORATION SYNTAXIQUE
 function applySyntaxHighlighting() {
     const codeBlocks = document.querySelectorAll('pre code');
     
@@ -235,7 +221,6 @@ function applySyntaxHighlighting() {
         const className = block.className;
         let language = '';
         
-        // Déterminer le langage
         if (className.includes('language-')) {
             language = className.match(/language-(\w+)/)[1];
         } else if (className.includes('csharp') || className.includes('cs')) {
@@ -261,17 +246,12 @@ function applySyntaxHighlighting() {
     });
 }
 
-// Fonction de coloration par langage
 function highlightCode(block, language) {
     let code = block.textContent;
-    
-    // Utilisation de la fonction sécurisée
     code = safeHighlight(code, language);
-    
     block.innerHTML = code;
 }
 
-// Fonction de coloration sécurisée qui évite les conflits de regex
 function safeHighlight(code, language) {
     switch (language) {
         case 'csharp':
@@ -293,23 +273,14 @@ function safeHighlight(code, language) {
     }
 }
 
-// Coloration C#
+// COLORATION C#
 function highlightCSharp(code) {
-    // Mots-clés C#
     const keywords = /\b(public|private|protected|internal|static|readonly|const|class|interface|namespace|using|var|int|string|bool|double|float|decimal|void|return|if|else|for|foreach|while|do|switch|case|default|break|continue|try|catch|finally|throw|new|this|base|override|virtual|abstract|sealed|partial|async|await|delegate|event|get|set|where|select|from|in|join|on|equals|group|by|into|orderby|ascending|descending|let|linq)\b/g;
-    
-    // Types .NET courants
     const types = /\b(Console|String|Int32|Boolean|DateTime|List|Dictionary|IEnumerable|Task|Action|Func|HttpClient|JsonSerializer)\b/g;
-    
-    // Commentaires
     const singleLineComment = /\/\/.*$/gm;
     const multiLineComment = /\/\*[\s\S]*?\*\//g;
-    
-    // Chaînes de caractères
     const strings = /"(?:[^"\\]|\\.)*"/g;
     const chars = /'(?:[^'\\]|\\.)*'/g;
-    
-    // Nombres
     const numbers = /\b\d+(?:\.\d+)?[fFdDmM]?\b/g;
     
     return code
@@ -322,14 +293,14 @@ function highlightCSharp(code) {
         .replace(types, '<span class="type">$&</span>');
 }
 
-// Coloration JavaScript
+// COLORATION JAVASCRIPT
 function highlightJavaScript(code) {
-    // Utiliser une approche avec des marqueurs temporaires pour éviter les conflits
+    // Utilise des marqueurs temporaires pour éviter les conflits
     const tempMarkers = [];
     let tempCode = code;
     let markerCount = 0;
     
-    // 1. D'abord protéger les commentaires
+    // Protéger les commentaires
     tempCode = tempCode.replace(/\/\*[\s\S]*?\*\//g, function(match) {
         const marker = `__TEMP_COMMENT_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="comment">${match}</span>`});
@@ -342,21 +313,21 @@ function highlightJavaScript(code) {
         return marker;
     });
     
-    // 2. Protéger les chaînes de caractères
+    // Protéger les chaînes
     tempCode = tempCode.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'|`(?:[^`\\]|\\.)*`/g, function(match) {
         const marker = `__TEMP_STRING_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="string">${match}</span>`});
         return marker;
     });
     
-    // 3. Nombres
+    // Nombres
     tempCode = tempCode.replace(/\b\d+(?:\.\d+)?\b/g, function(match) {
         const marker = `__TEMP_NUMBER_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="number">${match}</span>`});
         return marker;
     });
     
-    // 4. Mots-clés
+    // Mots-clés
     const keywords = /\b(const|let|var|function|return|if|else|for|while|do|switch|case|default|break|continue|try|catch|finally|throw|new|this|class|extends|import|export|from|async|await|yield|typeof|instanceof|in|of|delete|void|null|undefined|true|false)\b/g;
     tempCode = tempCode.replace(keywords, function(match) {
         const marker = `__TEMP_KEYWORD_${markerCount++}__`;
@@ -364,7 +335,7 @@ function highlightJavaScript(code) {
         return marker;
     });
     
-    // 5. Types/objets
+    // Types/objets
     const types = /\b(Array|Object|String|Number|Boolean|Date|Math|JSON|Promise|console|window|document|localStorage|fetch|setTimeout|setInterval)\b/g;
     tempCode = tempCode.replace(types, function(match) {
         const marker = `__TEMP_TYPE_${markerCount++}__`;
@@ -372,7 +343,7 @@ function highlightJavaScript(code) {
         return marker;
     });
     
-    // 6. Restaurer tous les marqueurs
+    // Restaurer tous les marqueurs
     tempMarkers.forEach(item => {
         tempCode = tempCode.replace(item.marker, item.replacement);
     });
@@ -380,13 +351,13 @@ function highlightJavaScript(code) {
     return tempCode;
 }
 
-// Coloration Python
+// COLORATION PYTHON
 function highlightPython(code) {
     const tempMarkers = [];
     let tempCode = code;
     let markerCount = 0;
     
-    // 1. Protéger les chaînes de caractères (triple quotes en premier)
+    // Chaînes de caractères (triple quotes en premier)
     tempCode = tempCode.replace(/"""[\s\S]*?"""|'''[\s\S]*?'''/g, function(match) {
         const marker = `__TEMP_PYTHON_TRIPLESTRING_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="string">${match}</span>`});
@@ -399,21 +370,21 @@ function highlightPython(code) {
         return marker;
     });
     
-    // 2. Protéger les commentaires
+    // Commentaires
     tempCode = tempCode.replace(/#.*$/gm, function(match) {
         const marker = `__TEMP_PYTHON_COMMENT_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="comment">${match}</span>`});
         return marker;
     });
     
-    // 3. Nombres
+    // Nombres
     tempCode = tempCode.replace(/\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b/g, function(match) {
         const marker = `__TEMP_PYTHON_NUMBER_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="number">${match}</span>`});
         return marker;
     });
     
-    // 4. Mots-clés Python
+    // Mots-clés Python
     const keywords = /\b(def|class|if|elif|else|for|while|break|continue|return|import|from|as|try|except|finally|raise|with|pass|yield|lambda|global|nonlocal|True|False|None|and|or|not|in|is)\b/g;
     tempCode = tempCode.replace(keywords, function(match) {
         const marker = `__TEMP_PYTHON_KEYWORD_${markerCount++}__`;
@@ -421,7 +392,7 @@ function highlightPython(code) {
         return marker;
     });
     
-    // 5. Types et fonctions built-in
+    // Fonctions built-in
     const types = /\b(int|str|float|bool|list|dict|set|tuple|len|range|enumerate|zip|map|filter|print|input|open|type|isinstance|hasattr|getattr|setattr)\b/g;
     tempCode = tempCode.replace(types, function(match) {
         const marker = `__TEMP_PYTHON_TYPE_${markerCount++}__`;
@@ -429,7 +400,7 @@ function highlightPython(code) {
         return marker;
     });
     
-    // 6. Restaurer tous les marqueurs
+    // Restaurer tous les marqueurs
     tempMarkers.forEach(item => {
         tempCode = tempCode.replace(item.marker, item.replacement);
     });
@@ -437,34 +408,34 @@ function highlightPython(code) {
     return tempCode;
 }
 
-// Coloration Bash
+// COLORATION BASH
 function highlightBash(code) {
     const tempMarkers = [];
     let tempCode = code;
     let markerCount = 0;
     
-    // 1. Protéger les commentaires
+    // Protéger les commentaires
     tempCode = tempCode.replace(/#.*$/gm, function(match) {
         const marker = `__TEMP_BASH_COMMENT_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="comment">${match}</span>`});
         return marker;
     });
     
-    // 2. Protéger les chaînes de caractères
+    // Protéger les chaînes de caractères
     tempCode = tempCode.replace(/"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*'/g, function(match) {
         const marker = `__TEMP_BASH_STRING_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="string">${match}</span>`});
         return marker;
     });
     
-    // 3. Variables
+    // Variables
     tempCode = tempCode.replace(/\$\{?[a-zA-Z_][a-zA-Z0-9_]*\}?|\$[0-9]+|\$[@*#?$!]/g, function(match) {
         const marker = `__TEMP_BASH_VAR_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="type">${match}</span>`});
         return marker;
     });
     
-    // 4. Mots-clés Bash
+    // Mots-clés Bash
     const keywords = /\b(if|then|else|elif|fi|for|while|do|done|case|esac|function|return|exit|break|continue|local|export|readonly|declare|echo|printf|read|test|true|false)\b/g;
     tempCode = tempCode.replace(keywords, function(match) {
         const marker = `__TEMP_BASH_KEYWORD_${markerCount++}__`;
@@ -472,7 +443,7 @@ function highlightBash(code) {
         return marker;
     });
     
-    // 5. Commandes courantes
+    // Commandes courantes
     const commands = /\b(ls|cd|pwd|mkdir|rmdir|rm|cp|mv|chmod|chown|grep|sed|awk|sort|uniq|wc|head|tail|cat|less|more|find|which|whereis|man|ps|kill|jobs|bg|fg|nohup|screen|tmux|ssh|scp|rsync|tar|gzip|gunzip|zip|unzip|curl|wget|git|npm|pip|docker)\b/g;
     tempCode = tempCode.replace(commands, function(match) {
         const marker = `__TEMP_BASH_COMMAND_${markerCount++}__`;
@@ -480,7 +451,7 @@ function highlightBash(code) {
         return marker;
     });
     
-    // 6. Restaurer tous les marqueurs
+    // Restaurer tous les marqueurs
     tempMarkers.forEach(item => {
         tempCode = tempCode.replace(item.marker, item.replacement);
     });
@@ -488,18 +459,11 @@ function highlightBash(code) {
     return tempCode;
 }
 
-// Coloration Markdown (simple, juste pour les éléments de base)
+// COLORATION MARKDOWN
 function highlightMarkdown(code) {
-    // Headers
     const headers = /^#{1,6}\s+.*$/gm;
-    
-    // Code inline
     const inlineCode = /`[^`]+`/g;
-    
-    // Liens
     const links = /\[([^\]]+)\]\(([^)]+)\)/g;
-    
-    // Gras et italique
     const bold = /\*\*([^*]+)\*\*/g;
     const italic = /\*([^*]+)\*/g;
     
@@ -511,21 +475,12 @@ function highlightMarkdown(code) {
         .replace(italic, '<span class="md-italic">$&</span>');
 }
 
-// Coloration YAML
+// COLORATION YAML
 function highlightYaml(code) {
-    // Clés YAML
     const keys = /^(\s*)([a-zA-Z_][a-zA-Z0-9_-]*)\s*:/gm;
-    
-    // Valeurs entre guillemets
     const strings = /(?:"(?:[^"\\]|\\.)*"|'(?:[^'\\]|\\.)*')/g;
-    
-    // Commentaires
     const comments = /#.*$/gm;
-    
-    // Valeurs spéciales
     const special = /\b(true|false|null|~)\b/g;
-    
-    // Nombres
     const numbers = /\b\d+(?:\.\d+)?\b/g;
     
     return code
@@ -536,48 +491,48 @@ function highlightYaml(code) {
         .replace(keys, '$1<span class="yaml-key">$2</span>:');
 }
 
-// Coloration HTML
+// COLORATION HTML
 function highlightHtml(code) {
     const tempMarkers = [];
     let tempCode = code;
     let markerCount = 0;
     
-    // 1. Protéger les commentaires HTML
+    // Protéger les commentaires HTML
     tempCode = tempCode.replace(/<!--[\s\S]*?-->/g, function(match) {
         const marker = `__TEMP_HTML_COMMENT_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="comment">${match}</span>`});
         return marker;
     });
     
-    // 2. Protéger DOCTYPE
+    // Protéger DOCTYPE
     tempCode = tempCode.replace(/<!DOCTYPE[^>]*>/gi, function(match) {
         const marker = `__TEMP_DOCTYPE_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="html-doctype">${match}</span>`});
         return marker;
     });
     
-    // 3. Protéger les entités HTML
+    // Protéger les entités HTML
     tempCode = tempCode.replace(/&[a-zA-Z][a-zA-Z0-9]*;|&#[0-9]+;|&#x[0-9a-fA-F]+;/g, function(match) {
         const marker = `__TEMP_ENTITY_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="html-entity">${match}</span>`});
         return marker;
     });
     
-    // 4. Protéger les valeurs d'attributs (chaînes entre guillemets)
+    // Protéger les valeurs d'attributs (chaînes entre guillemets)
     tempCode = tempCode.replace(/"[^"]*"|'[^']*'/g, function(match) {
         const marker = `__TEMP_ATTR_VALUE_${markerCount++}__`;
         tempMarkers.push({marker, replacement: `<span class="string">${match}</span>`});
         return marker;
     });
     
-    // 5. Protéger les noms d'attributs
+    // Protéger les noms d'attributs
     tempCode = tempCode.replace(/\s([a-zA-Z-]+)=/g, function(match, attrName) {
         const marker = `__TEMP_ATTR_NAME_${markerCount++}__`;
         tempMarkers.push({marker, replacement: ` <span class="html-attr">${attrName}</span>=`});
         return marker;
     });
     
-    // 6. Protéger les noms de balises
+    // Protéger les noms de balises
     tempCode = tempCode.replace(/<\/?([a-zA-Z][a-zA-Z0-9]*)/g, function(match, tagName) {
         const marker = `__TEMP_TAG_${markerCount++}__`;
         const prefix = match.startsWith('</') ? '&lt;/' : '&lt;';
@@ -585,7 +540,7 @@ function highlightHtml(code) {
         return marker;
     });
     
-    // 7. Restaurer tous les marqueurs
+    // Restaurer tous les marqueurs
     tempMarkers.forEach(item => {
         tempCode = tempCode.replace(item.marker, item.replacement);
     });
@@ -593,8 +548,7 @@ function highlightHtml(code) {
     return tempCode;
 }
 
-// Initialiser la navigation et le thème au chargement
-// Initialisation de la modal de confirmation pour les liens externes
+// MODAL LIENS EXTERNES
 function initExternalLinkModal() {
     let popup = document.getElementById('popup-container');
     if (!popup) {
@@ -622,7 +576,6 @@ function initExternalLinkModal() {
     // Détection et gestion des liens externes
     document.querySelectorAll('a[href]').forEach(link => {
         const href = link.getAttribute('href');
-        // Vérifie si c'est un lien externe (commence par http/https et n'est pas le domaine actuel)
         if (href && (href.startsWith('http://') || href.startsWith('https://')) && !href.includes(window.location.hostname)) {
             link.classList.add('external-link');
             link.addEventListener('click', (e) => {
@@ -654,7 +607,7 @@ function initExternalLinkModal() {
         if (lastActive) lastActive.focus();
     });
     
-    // Accessibilité : touche Échap pour fermer
+    // Accessibilité
     popup.querySelector('.popup').addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             popup.style.display = 'none';
@@ -671,17 +624,17 @@ function initExternalLinkModal() {
     });
 }
 
+// INITIALISATION GLOBALE
 window.addEventListener('load', () => {
     handleNavigation();
     handleTheme();
     setupCopyButtons();
     initExternalLinkModal();
-    initNavigation(); // Initialiser la navigation dynamique
+    initNavigation();
 });
 
-// ===== SYSTÈME DE NAVIGATION DYNAMIQUE =====
+// SYSTÈME DE NAVIGATION DYNAMIQUE
 
-// Charger et initialiser la navigation depuis nav.json
 async function initNavigation() {
     try {
         const response = await fetch('/nav.json');
@@ -694,23 +647,21 @@ async function initNavigation() {
         const navMenu = document.getElementById('nav-menu');
         navMenu.innerHTML = generateNavHTML(navData);
         
-        // Initialiser les événements
         setupNavigationEvents();
         
     } catch (error) {
         console.error('Erreur lors du chargement de la navigation:', error);
-        // Fallback vers navigation statique
+        // Fallback navigation statique
         document.getElementById('nav-menu').innerHTML = `
             <div class="nav-item"><a href="?p=about" class="nav-link">À propos</a></div>
         `;
     }
 }
 
-// Générer le HTML de navigation récursivement
+// GÉNÉRATION HTML DE NAVIGATION
 function generateNavHTML(navItems) {
     return navItems.map(item => {
         if (item.dropdown) {
-            // Item avec dropdown
             return `
                 <div class="nav-item has-dropdown">
                     <a href="${item.href || '#'}" class="nav-link">${item.label}</a>
@@ -720,7 +671,6 @@ function generateNavHTML(navItems) {
                 </div>
             `;
         } else {
-            // Item simple
             return `
                 <div class="nav-item">
                     <a href="${item.href}" class="nav-link">${item.label}</a>
@@ -730,11 +680,10 @@ function generateNavHTML(navItems) {
     }).join('');
 }
 
-// Générer le HTML des dropdowns (avec support des sous-dropdowns)
+// GÉNÉRATION HTML DES DROPDOWNS
 function generateDropdownHTML(dropdownItems) {
     return dropdownItems.map(item => {
         if (item.dropdown) {
-            // Sous-dropdown
             return `
                 <div class="dropdown-item has-dropdown">
                     <a href="${item.href || '#'}">${item.label}</a>
@@ -744,7 +693,6 @@ function generateDropdownHTML(dropdownItems) {
                 </div>
             `;
         } else {
-            // Item simple
             return `
                 <div class="dropdown-item">
                     <a href="${item.href}">${item.label}</a>
@@ -754,9 +702,8 @@ function generateDropdownHTML(dropdownItems) {
     }).join('');
 }
 
-// Configurer les événements de navigation
+// ÉVÉNEMENTS DE NAVIGATION
 function setupNavigationEvents() {
-    // Menu hamburger mobile
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     const navMenu = document.getElementById('nav-menu');
     
@@ -767,17 +714,14 @@ function setupNavigationEvents() {
         });
     }
     
-    // Gestion des clics sur mobile pour les dropdowns
     if (window.innerWidth <= 768) {
         setupMobileDropdowns();
     }
     
-    // Re-setup sur resize
     window.addEventListener('resize', () => {
         if (window.innerWidth <= 768) {
             setupMobileDropdowns();
         } else {
-            // Nettoyer les event listeners mobile
             cleanupMobileDropdowns();
         }
     });
@@ -793,26 +737,20 @@ function setupNavigationEvents() {
     });
 }
 
-// Configuration des dropdowns pour mobile
 function setupMobileDropdowns() {
     const hasDropdownItems = document.querySelectorAll('.nav-item.has-dropdown, .dropdown-item.has-dropdown');
     
     hasDropdownItems.forEach(item => {
         const link = item.querySelector(':scope > a');
         
-        // Remplacer l'événement de clic
         link.replaceWith(link.cloneNode(true));
         const newLink = item.querySelector(':scope > a');
         
         newLink.addEventListener('click', (e) => {
             e.preventDefault();
-            
-            // Toggle expanded class
             item.classList.toggle('expanded');
             
-            // Si l'item a un href et n'est pas juste un container, permettre la navigation
             if (newLink.getAttribute('href') !== '#' && !item.classList.contains('expanded')) {
-                // Aller à la page après un court délai pour voir l'animation
                 setTimeout(() => {
                     window.location.href = newLink.getAttribute('href');
                 }, 100);
@@ -821,7 +759,6 @@ function setupMobileDropdowns() {
     });
 }
 
-// Nettoyer les event listeners mobile
 function cleanupMobileDropdowns() {
     const expandedItems = document.querySelectorAll('.nav-item.expanded, .dropdown-item.expanded');
     expandedItems.forEach(item => {
@@ -829,15 +766,13 @@ function cleanupMobileDropdowns() {
     });
 }
 
-// ===== TWITCH PLAYER INTEGRATION =====
+// TWITCH PLAYER INTEGRATION
 
 function createResponsiveTwitchEmbed() {
     const container = document.getElementById("twitch-embed");
     if (!container) return;
     
     const containerWidth = container.offsetWidth;
-    
-    // Configuration du player
     const chatWidth = 340;
     const minVideoWidth = 320;
     
@@ -845,32 +780,27 @@ function createResponsiveTwitchEmbed() {
     let height = Math.round(videoWidth * 9 / 16);
     let totalWidth = videoWidth + chatWidth;
     
-    // Si le container est trop petit, adapte les dimensions
     if (containerWidth < chatWidth + minVideoWidth) {
         videoWidth = minVideoWidth;
         totalWidth = chatWidth + minVideoWidth;
         height = Math.round(videoWidth * 9 / 16);
     }
     
-    // Applique les dimensions au container
     container.style.width = totalWidth + 'px';
     container.style.height = height + 'px';
     
-    // Crée l'embed Twitch
     new Twitch.Embed("twitch-embed", {
         width: totalWidth,
         height: height,
         channel: "sorylokan",
-        parent: [window.location.hostname, "localhost"] // Domaines autorisés
+        parent: [window.location.hostname, "localhost"]
     });
 }
 
 function initTwitchPlayer() {
-    // Créer l'embed au chargement si on est sur la bonne page
     if (document.getElementById("twitch-embed")) {
         createResponsiveTwitchEmbed();
         
-        // Recréer l'embed lors du redimensionnement
         let resizeTimeout;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimeout);
@@ -884,7 +814,3 @@ function initTwitchPlayer() {
         });
     }
 }
-
-// ===================
-// INITIALISATION PRINCIPALE
-// ===================

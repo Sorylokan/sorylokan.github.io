@@ -20,7 +20,7 @@
 Passionné de développement et de streaming, je crée des outils pour la communauté **Streamer.bot** et développe des overlays personnalisés.
 
 ### Mes projets récents
-- **DscrdWWE:Resurgence** - Bot Discord pour événements WWE
+- **DscrdWWE:Resurgence** - automatisation d'alerte Discord via webhooks avec embeds
 - **Essential Starter Kit** - Pack d'actions Streamer.bot pour débutants
 - **Overlays Starlight** - Designs modernes pour streamers
 

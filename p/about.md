@@ -12,8 +12,8 @@ Bienvenue sur mon portfolio ! Je suis un créateur polyvalent spécialisé dans 
 
 ## Mes services
 
-{"Voir mes créations"-n}(?p=creations/Overlay/Starlight_reimagined)
-{"Découvrir mes projets"-s}(?p=project/SB/OBS_Timer)
+{"Voir mes créations"-n}(?p=creations/overlays/Starlight_reimagined)
+{"Découvrir mes projets"-s}(?p=dev/sb/OBS_Timer)
 
 ## Contact
 
