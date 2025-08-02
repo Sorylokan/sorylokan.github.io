@@ -6,13 +6,13 @@
   --secondary: #4D6D9A; /* bleu-gris froid */
   --secondary-hover: #3D5980;
 
-  --bg-main: #F5F3F1;
-  --bg-header: #EDEAE6;
-  --bg-content: #f7f7f7;
+  --bg-main: #d8dddf;
+  --bg-header: #e8ebeb;
+  --bg-content: #e8ebeb;
 
-  --text-main: #2B2B2B;
-  --text-muted: #6F6F6F;
-  --text-bright: #111111;
+  --text-main: #242423;
+  --text-muted: #333533;
+  --text-bright: #242423;
   --text-heading: #FF7755;
 
   --shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -53,7 +53,7 @@
   /* Variables pour les boutons */
   --btn-normal-bg: #1683f0bb;
   --btn-normal-text: var(--bg-content);
-  --btn-success-bg: #13bd5abb;
+  --btn-success-bg: #13a04ebb;
   --btn-success-text: var(--btn-normal-text);
   --btn-primary-bg: #cc8007bb;
   --btn-primary-text: var(--btn-normal-text);

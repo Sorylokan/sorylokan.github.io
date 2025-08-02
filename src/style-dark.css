@@ -44,16 +44,16 @@
   /* Variables pour les changelogs */
   --changelog-date: #BB86FC;
   --changelog-version: var(--primary);
-  --changelog-new: #4FC3F7;        /* Bleu clair pour * */
-  --changelog-add: #66BB6A;        /* Vert clair pour + */
-  --changelog-remove: #FFA726;     /* Jaune-orange clair pour - */
-  --changelog-fix: #FFA726;        /* Orange clair pour corrections */
+  --changelog-new: #4FC3F7;
+  --changelog-add: #66BB6A;
+  --changelog-remove: #FFA726;
+  --changelog-fix: #FFA726;
   --changelog-meta: #90A4AE;
   
   /* Variables pour les boutons */
   --btn-normal-bg: #1683f0bb;
   --btn-normal-text: var(--text-main);
-  --btn-success-bg: #13bd5abb;
+  --btn-success-bg: #13a04ebb;
   --btn-success-text: var(--btn-normal-text);
   --btn-primary-bg: #cc8007bb;
   --btn-primary-text: var(--btn-normal-text);
