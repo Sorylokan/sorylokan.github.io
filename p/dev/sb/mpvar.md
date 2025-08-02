@@ -25,9 +25,9 @@ Originally a continuation of the ***VLC-TV*** project (which only worked with VL
 > - The password isn't required.
 
 ### \# Whats new ? *(changelog)*
-```yaml
+```changelog
 [19.10.24] # MPVar rework | (v1.3)
-* New: Renamed VLC-TV > MPVar
+* Changed: Renamed VLC-TV > MPVar
 + Added: Parameter arguments
 + Added: Foobar2000 compatibility
 + Added: Simplified future media player integrations
@@ -36,15 +36,15 @@ Originally a continuation of the ***VLC-TV*** project (which only worked with VL
 - removed: Herobrine
 
 [12.02.24] # VLC-TV (v3) - PREVIOUS VERSION
-* New: Slight rework of the code
-+ New: Standardization of variable names (Prefix "VLC-TV_")
+* Changed: Slight rework of the code
+* Changed: Standardization of variable names (Prefix "VLC-TV_")
 + Added: Everything was condensed into one action instead of (3)
 - removed: Herobrine
 ```
 
 Demonstration Video: https://youtu.be/uNSTX2XXsms (old version but still valid)
 
-> # \# <:MPVarIco:1296638162785013760>﻿﻿ - VLC set up :
+> # \# VLC set up :
 * Open VLC, do CTRL+P *(or menu > tools > preferences)*
 * In the bottom left corner, select "all" in the "show settings" square.
 * Go to the interface section and select "Main interfaces > Lua"
@@ -52,7 +52,7 @@ Demonstration Video: https://youtu.be/uNSTX2XXsms (old version but still valid)
 > > Save and restart VLC.
 *More here : https://github.com/azrafe7/vlc4youtube/blob/master/instructions/how-to-enable-vlc-web-interface.md *
 
-> # \# <:MPVarIco:1296638162785013760>﻿﻿﻿ - Foobar2000 set up :
+> # \# Foobar2000 set up :
 * Download and install the foo_httpcontrol plugin on https://bitbucket.org/oblikoamorale/foo_httpcontrol/downloads/
 > *`foo_httpcontrol_0_97_28.fb2k-component` to install it
 > You can found very useful tip in the readme file on the bitbucket website

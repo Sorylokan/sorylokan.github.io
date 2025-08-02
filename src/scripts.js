@@ -85,6 +85,14 @@ async function loadContent(path) {
             return `<copybutton data-text="${textToCopy.replace(/"/g, '&quot;')}"></copybutton>`;
         });
         
+        // Traitement des séparateurs pour différencier les styles
+        content = content.replace(/^---+$/gm, '<hr class="hr-line">');
+        content = content.replace(/^\*\*\*+$/gm, '<hr class="hr-stars">');
+        content = content.replace(/^___+$/gm, '<hr class="hr-dots">');
+        
+        // Traitement des spoilers ||texte||
+        content = content.replace(/\|\|([^|]+)\|\|/g, '<span class="spoiler" onclick="this.classList.add(\'revealed\')">$1</span>');
+        
         let html = md.render(content);
         
         html = html.replace(/<copybutton data-text="([^"]*)"[^>]*><\/copybutton>/g, (match, textToCopy) => {
@@ -104,6 +112,7 @@ async function loadContent(path) {
         setupCopyButtons();
         initExternalLinkModal();
         initTwitchPlayer();
+        initImageModal();
     } catch (error) {
         console.error('Error loading content:', error);
         document.getElementById('content').innerHTML = '<p>Erreur lors du chargement du contenu.</p>';
@@ -237,6 +246,8 @@ function applySyntaxHighlighting() {
             language = 'html';
         } else if (className.includes('bash') || className.includes('sh') || className.includes('shell')) {
             language = 'bash';
+        } else if (className.includes('changelog') || className.includes('changes')) {
+            language = 'changelog';
         }
         
         if (language) {
@@ -268,6 +279,8 @@ function safeHighlight(code, language) {
             return highlightHtml(code);
         case 'bash':
             return highlightBash(code);
+        case 'changelog':
+            return highlightChangelog(code);
         default:
             return code;
     }
@@ -548,6 +561,60 @@ function highlightHtml(code) {
     return tempCode;
 }
 
+// COLORATION CHANGELOG
+function highlightChangelog(code) {
+    const tempMarkers = [];
+    let tempCode = code;
+    let markerCount = 0;
+    
+    // Dates entre crochets [DD.MM.YY] ou [-----]
+    tempCode = tempCode.replace(/^\[([^\]]+)\]/gm, function(match) {
+        const marker = `__TEMP_CHANGELOG_DATE_${markerCount++}__`;
+        tempMarkers.push({marker, replacement: `<span class="changelog-date">${match}</span>`});
+        return marker;
+    });
+    
+    // Versions avec # (titre de version)
+    tempCode = tempCode.replace(/^# (.+)$/gm, function(match, version) {
+        const marker = `__TEMP_CHANGELOG_VERSION_${markerCount++}__`;
+        tempMarkers.push({marker, replacement: `<span class="changelog-version"># ${version}</span>`});
+        return marker;
+    });
+    
+    // Types de changements avec leurs préfixes - format Minecraft standard
+    tempCode = tempCode.replace(/^(\*) (Changed:|Fixed:)/gm, function(match, symbol, text) {
+        const marker = `__TEMP_CHANGELOG_NEW_${markerCount++}__`;
+        tempMarkers.push({marker, replacement: `<span class="changelog-new">${symbol}</span> <strong>${text}</strong>`});
+        return marker;
+    });
+    
+    tempCode = tempCode.replace(/^(\+) (Added:)/gm, function(match, symbol, text) {
+        const marker = `__TEMP_CHANGELOG_ADD_${markerCount++}__`;
+        tempMarkers.push({marker, replacement: `<span class="changelog-add">${symbol}</span> <strong>${text}</strong>`});
+        return marker;
+    });
+    
+    tempCode = tempCode.replace(/^(-) (Removed:)/gm, function(match, symbol, text) {
+        const marker = `__TEMP_CHANGELOG_REMOVE_${markerCount++}__`;
+        tempMarkers.push({marker, replacement: `<span class="changelog-remove">${symbol}</span> <strong>${text}</strong>`});
+        return marker;
+    });
+    
+    // Versions entre parenthèses (BETA-1.8) (public release)
+    tempCode = tempCode.replace(/\(([^)]+)\)/g, function(match) {
+        const marker = `__TEMP_CHANGELOG_META_${markerCount++}__`;
+        tempMarkers.push({marker, replacement: `<span class="changelog-meta">${match}</span>`});
+        return marker;
+    });
+    
+    // Restaurer tous les marqueurs
+    tempMarkers.forEach(item => {
+        tempCode = tempCode.replace(item.marker, item.replacement);
+    });
+    
+    return tempCode;
+}
+
 // MODAL LIENS EXTERNES
 function initExternalLinkModal() {
     let popup = document.getElementById('popup-container');
@@ -813,4 +880,61 @@ function initTwitchPlayer() {
             }, 250);
         });
     }
+}
+
+// MODAL D'IMAGE
+function initImageModal() {
+    // Créer la modal si elle n'existe pas
+    if (!document.getElementById('image-modal')) {
+        const modal = document.createElement('div');
+        modal.id = 'image-modal';
+        modal.innerHTML = `
+            <button class="close-modal" aria-label="Fermer">&times;</button>
+            <img src="" alt="">
+        `;
+        document.body.appendChild(modal);
+    }
+
+    const modal = document.getElementById('image-modal');
+    const modalImg = modal.querySelector('img');
+    const closeBtn = modal.querySelector('.close-modal');
+
+    // Ajouter les événements de clic sur toutes les images du contenu
+    document.querySelectorAll('#content img').forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+            e.preventDefault();
+            modalImg.src = img.src;
+            modalImg.alt = img.alt || 'Image agrandie';
+            modal.style.display = 'flex';
+            
+            // Animation d'ouverture
+            setTimeout(() => {
+                modal.classList.add('show');
+            }, 10);
+        });
+    });
+
+    // Fermer la modal
+    function closeModal() {
+        modal.classList.remove('show');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 300);
+    }
+
+    // Événements de fermeture
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModal();
+        }
+    });
+
+    // Fermer avec Échap
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modal.style.display === 'flex') {
+            closeModal();
+        }
+    });
 }

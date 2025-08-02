@@ -17,6 +17,8 @@ Texte avec _italique souligné_ et __gras souligné__ et ___gras italique soulig
 
 ~~Texte barré~~ et texte normal.
 
+||test texte caché||
+
 ## Listes
 
 ### Liste à puces
@@ -164,7 +166,7 @@ Texte en rouge avec HTML
 
 <details>
 <summary>Cliquez pour développer</summary>
-Contenu masqué qui apparaît au clic.
+<p>Contenu masqué qui apparaît au clic.</p>
 </details>
 
 <mark>Texte surligné</mark> avec HTML.

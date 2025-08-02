@@ -8,14 +8,14 @@
 
   --bg-main: #F5F3F1;
   --bg-header: #EDEAE6;
-  --bg-content: #FFFFFFE6;
+  --bg-content: #f7f7f7;
 
   --text-main: #2B2B2B;
   --text-muted: #6F6F6F;
   --text-bright: #111111;
   --text-heading: #FF7755;
 
-  --shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  --shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   
   /* Scrollbar custom pour thème clair */
   --scrollbar-track: rgba(0,0,0,0.05);
@@ -35,6 +35,30 @@
   --table-row-hover: rgba(0, 0, 0, 0.03);
   --table-row-alt: rgba(0, 0, 0, 0.015);
   --code-bg: rgba(0, 0, 0, 0.05);
+  
+  /* Variables pour les séparateurs */
+  --accent-color: var(--primary);
+  --text-color: var(--text-main);
+  --bg-color: var(--bg-content);
+  
+  /* Variables pour les changelogs */
+  --changelog-date: #6F42C1;
+  --changelog-version: var(--primary);
+  --changelog-new: #4A90E2;
+  --changelog-add: #28A745;
+  --changelog-remove: #FD7E14;
+  --changelog-fix: #FD7E14;
+  --changelog-meta: #6C757D;
+  
+  /* Variables pour les boutons */
+  --btn-normal-bg: #1683f0bb;
+  --btn-normal-text: var(--bg-content);
+  --btn-success-bg: #13bd5abb;
+  --btn-success-text: var(--btn-normal-text);
+  --btn-primary-bg: #cc8007bb;
+  --btn-primary-text: var(--btn-normal-text);
+  --btn-gray-bg: #c03222bb;
+  --btn-gray-text: var(--btn-normal-text);
 }
 
 /* Styles de base */
@@ -75,11 +99,6 @@ nav {
     border-left-color: var(--primary);
 }
 
-.btn-normal {
-    background-color: var(--primary);
-    color: white;
-}
-
 .theme-toggle-btn {
     color: var(--text-muted);
     fill: var(--text-muted);
@@ -113,7 +132,7 @@ nav {
 }
 
 #content pre {
-    background-color: #dddddd;
+    background-color: #dddddd55;
     color: #495057;
     border-color: #CCCCCC;
 }
@@ -178,6 +197,35 @@ nav {
 
 .html-entity {
     color: #DC3545;
+}
+
+/* Coloration changelog */
+.changelog-date {
+    color: var(--changelog-date);
+}
+
+.changelog-version {
+    color: var(--changelog-version);
+}
+
+.changelog-new {
+    color: var(--changelog-new);
+}
+
+.changelog-add {
+    color: var(--changelog-add);
+}
+
+.changelog-remove {
+    color: var(--changelog-remove);
+}
+
+.changelog-fix {
+    color: var(--changelog-fix);
+}
+
+.changelog-meta {
+    color: var(--changelog-meta);
 }
 
 /* Containers markdown-it */

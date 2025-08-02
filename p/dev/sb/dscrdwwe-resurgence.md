@@ -1,5 +1,16 @@
-#  DscrdWWE: Resurgence - Designed for Streamers, Built for Everyone, Perfected for Dynamic Customization
-**DscrdWWE: Resurgence** is a powerful tool for automating the sending of **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **StreamerBot**. It allows you to create dynamic **embeds** and modify every detail on the fly!
+<div class="center icon"><img src="http://www.image-heberg.fr/files/1754047229125919825.png" alt="logo" title="logo"></div>
+<div class="center">
+
+# DscrdWWE: Resurgence - Designed for Streamers,
+## Built for Everyone, Perfected for Dynamic Customization.
+</div>
+
+***
+
+*Discord **W**ebhook **W**ith **E**mbed*, or, **DscrdWWE: Resurgence** is a powerful tool for automating the sending of **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **StreamerBot**. It allows you to create dynamic **embeds** and modify every detail on the fly!
+
+---
+
 ## \# What makes DscrdWWE unique?
 **DscrdWWE: Resurgence** goes beyond simple Discord messages. With **DscrdWWE: Resurgence**, you get access to **advanced customization** of embeds via **StreamerBot**. You can update information in real-time, making announcements and interactions smoother.
 
@@ -15,44 +26,56 @@
 * Import the plugin into StreamerBot.
 * Set the arguments to customize your messages and actions.
 > Example: Modify the title, description, or image in real-time with arguments.
+- Import DscrdWWE
 
-![Image](https://media.discordapp.net/attachments/1278366365035659367/1299556140446781460/1_-_import.png?ex=687f9c38&is=687e4ab8&hm=7f3466eb9079821960f79cd515ed724e435a9d6f63866e1591829f196fee3164&=&format=webp&quality=lossless "step 1")
-![Image](https://media.discordapp.net/attachments/1278366365035659367/1299556140803166239/2_-_duplicate.png?ex=687f9c38&is=687e4ab8&hm=b1fc9b513b5d74fca4ed9e5668ad0fb88d5f8a06a1bb66781ea136c3fe1d3494&=&format=webp&quality=lossless "step 2")
-![Image](https://media.discordapp.net/attachments/1278366365035659367/1299556141168066590/3_-_add_trigger.png?ex=687f9c38&is=687e4ab8&hm=76374ea30c6e59c5493d0ad2ed2233ad92b0c2420f2554619888c92da841921a&=&format=webp&quality=lossless "step 3")
-![Image](https://media.discordapp.net/attachments/1278366365035659367/1299556141415661609/4_-_alternative_action_for_timer-2.png?ex=687f9c38&is=687e4ab8&hm=997c8d0a2c7925da4d8ca001de88322f9381622196dc9f5294cc6277953c8d96&=&format=webp&quality=lossless "step 4")
+![Image](http://www.image-heberg.fr/files/17540526602619368555.png "step 1")
+- Duplicate the template !
+
+![Image](http://www.image-heberg.fr/files/17540463273985177299.png "step 2")
+- Add the trigger you want (-or- exectute the action from an other with the "run action" sub-action)
+
+![Image](http://www.image-heberg.fr/files/17540463583707487297.png "step 3")
+- Alternative for enabling the timer
+
+![Image](http://www.image-heberg.fr/files/17540463862816611924.png "step 4")
 
 ### \# What's New? *(changelog)*
-```yaml
+<details> <summary>Developp</summary>
+
+```changelog
 [24.10.24] # DscrdWWE: Resurgence (BETA-1.8) (public release)
-* New: Improved code
-* New: Enhanced Logs
-+ Add: Real-time embed updates
-+ Add: Call-to-action button! (Fake)
-+ Add: Script to delete the webhook
-- removed: Herobrine
+* Changed: Improved code
+* Changed: Enhanced Logs
++ Added: Real-time embed updates
++ Added: Call-to-action button! (Fake)
++ Added: Script to delete the webhook
+- Removed: Herobrine
 
 [10.10.24] # DscrdWWE: Resurgence (BETA-1.3) (Only on demand)
-* New: Complete code overhaul and full integration with StreamerBot
-+ Add: Advanced embed customization
-+ Add: Message ID retrieval (no use)
-+ Add: Custom logs for better troubleshooting
-- removed: External .json file used by streamer.bot on the computer
-- removed: Annoying logs
-- removed: Herobrine
+* Changed: Complete code overhaul and full integration with StreamerBot
++ Added: Advanced embed customization
++ Added: Message ID retrieval (no use)
++ Added: Custom logs for better troubleshooting
+- Removed: External .json file used by streamer.bot on the computer
+- Removed: Annoying logs
+- Removed: Herobrine
 
 [-----]
 
 [25.08.24] # DiscordWWE (v2.5)
-* New: Code refinement
-- removed: Herobrine
+* Changed: Code refinement
+- Removed: Herobrine
 
 [31.08.24] # DiscordWWE (v2.3)
-+ Add: Support for some StreamerBot Variables
-- removed: Herobrine
++ Added: Support for some StreamerBot Variables
+- Removed: Herobrine
 
 [25.08.24] # DiscordWebhookWithEmbed (v1) - Initial release!
 ```
 
-*Discover more of my work!* :arrow_heading_down:
-> **YoutubeVideoAlert** - https://discord.com/channels/834650675224248362/1288609855719870536/1288609855719870536
-> **MediaPlayerVariables** - https://discord.com/channels/834650675224248362/1283489841836720128/1283489841836720128
+</details>
+
+▼ *Discover more of my work!* ▼
+> {"**Youtube Video Alert**"-s}(?p=dev/sb/youtube-video-alert) https://discord.com/channels/834650675224248362/1288609855719870536/1288609855719870536
+>
+> {"**Media Player Variables**"-g}(?p=dev/sb/mpvar) - https://discord.com/channels/834650675224248362/1283489841836720128/1283489841836720128
