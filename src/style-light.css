@@ -1,7 +1,7 @@
 /* Light Theme */
 :root {
-  --primary: #FF7755; /* accent fort, corail */
-  --primary-hover: #E45D3D;
+  --primary: #E45D3D; /* accent fort, corail */
+  --primary-hover: #FF7755;
 
   --secondary: #4D6D9A; /* bleu-gris froid */
   --secondary-hover: #3D5980;
@@ -13,7 +13,7 @@
   --text-main: #242423;
   --text-muted: #333533;
   --text-bright: #242423;
-  --text-heading: #FF7755;
+  --text-heading: #E45D3D;
 
   --shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   
