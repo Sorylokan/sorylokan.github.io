@@ -273,8 +273,8 @@ body {
 }
 
 .divider {
-    height: 1px;
-    background-color: var(--color-border);
+    height: 2px;
+    background-color: var(--bg-main);
     margin: 0.5rem 0;
 }
 
@@ -443,7 +443,7 @@ label {
 
 .btn-primary {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--text-main);
 }
 
 .btn-primary:hover {
@@ -481,7 +481,7 @@ label {
 
 .btn-danger {
     background-color: var(--color-danger);
-    color: white;
+    color: var(--text-main);
 }
 
 .btn-danger:hover {
@@ -490,7 +490,7 @@ label {
 
 .btn-remove {
     background-color: var(--color-danger);
-    color: white;
+    color: var(--text-main);
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
 }
@@ -501,7 +501,7 @@ label {
 
 .embed-add-field-btn {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--text-main);
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
     width: 100%;
@@ -559,6 +559,9 @@ label {
     background-color: var(--color-panel-bg);
     border-top: 1px solid var(--color-border);
     flex-shrink: 0;
+}
+.save-text {
+    text-shadow: var(--bg-main) 1px 1px 10px;
 }
 
 /* ============================================================
@@ -1348,7 +1351,6 @@ label {
 .logo img {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
     object-fit: cover;
 }
 
@@ -1430,7 +1432,7 @@ label {
 
 .btn-cancel {
     background-color: var(--color-danger);
-    color: white;
+    color: var(--text-main);
 }
 
 .btn-cancel:hover {
@@ -1450,7 +1452,7 @@ label {
 
 .btn-new-tab {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--text-main);
 }
 
 .btn-new-tab:hover {
