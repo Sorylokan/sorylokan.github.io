@@ -1,4 +1,4 @@
-<div class="center icon"><img src="p/dev/web-ui/WEBWUI_Icon.svg" alt="WEB UI Logo" title="Webhook Embed Builder"></div>
+<div class="center icon"><img src="web-ui/WEBWUI_Icon.svg" alt="WEB UI Logo" title="Webhook Embed Builder"></div>
 <div class="center">
 
 # **Webhook Embed Builder with User Interface • [WEB•UI]**
@@ -142,7 +142,7 @@ Import string: [copy:PLACEHOLDER]
 PLACEHOLDER
 ```
 
-{"Access WEB•UI Interface"-s}(https://sorylokan.github.io/p/dev/web-ui/index.html)
+{"Access WEB•UI Interface"-s}(https://sorylokan.github.io/web-ui/index.html)
 
 ---
 

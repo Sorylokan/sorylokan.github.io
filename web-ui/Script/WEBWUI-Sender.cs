@@ -12,7 +12,7 @@ public class CPHInline
         try
         {
             // 1. Récupération et validation des variables
-            CPH.LogInfo("=== WEBWUI Webhook Sender - Début ===");
+            CPH.LogInfo("=== WEB•UI Webhook Sender - Début ===");
             
             // Essayer d'abord l'argument, puis fallback sur la variable globale
             string payloadJson = "";
