@@ -413,10 +413,10 @@ class DiscordWebhookUI {
         
         // Webhook header with avatar and username
         const webhookUsername = this.webhookUsername ? this.webhookUsername.value || 'DWWE Resurgence - Announcement' : 'DWWE Resurgence - Announcement';
-        const webhookAvatarUrl = this.webhookAvatarUrl ? this.webhookAvatarUrl.value || 'https://www.image-heberg.fr/files/1754047229125919825.png' : 'https://www.image-heberg.fr/files/1754047229125919825.png';
+        const webhookAvatarUrl = this.webhookAvatarUrl ? this.webhookAvatarUrl.value || 'DWWE_Icon.svg' : 'DWWE_Icon.svg';
         
         let previewHTML = `<div class="webhook-header">
-            <img src="${webhookAvatarUrl}" class="webhook-avatar" onerror="this.src='https://www.image-heberg.fr/files/1754047229125919825.png'">
+            <img src="${webhookAvatarUrl}" class="webhook-avatar" onerror="this.src='DWWE_Icon.svg'">
             <span class="webhook-name">${this.escapeHtml(webhookUsername)}</span>
         </div>`;
         
