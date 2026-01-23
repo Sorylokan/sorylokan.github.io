@@ -188,3 +188,30 @@ Palette Sombre Alternative :
 --text-heading:
 --shadow:
 
+<details>
+<summary>
+Liste episode OPM
+</summary>
+
+ordre supposé avec OAV :
+
+|1|2|
+|-|-|
+| > OAV 0.5 | > S-1 ep-11 |
+| > S-1 ep-1 | > S-1 ep-12 |
+| > S-1 ep-2 | > OAV 6 |
+| > OAV 1 | > S-2 ep-1 |
+| > S-1 ep-3 | > S-2 ep-2 |
+| > OAV 2 | > S-2 ep-3 |
+| > S-1 ep-4 | > S-2 ep-4 |
+| > OAV 3 | > S-2 ep-5 |
+| > S-1 ep-5 | > S-2 ep-6 |
+| > S-1 ep-6 | > S-2 ep-7 |
+| > S-1 ep-7 | > S-2 ep-8 |
+| > OAV 4 | > S-2 ep-9 |
+| > S-1 ep-8 | > S-2 ep-10 |
+| > S-1 ep-9 | > S-2 ep-11 |
+| > OAV 5 | > S-2 ep-12 |
+| > S-1 ep-10||
+
+</details>
