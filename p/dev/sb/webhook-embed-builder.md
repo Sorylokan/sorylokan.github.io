@@ -1,194 +1,184 @@
-<div class="center icon"><img src="https://via.placeholder.com/100x100/FF7755/ffffff?text=WEBUI" alt="WEBWUI Logo" title="Webhook Embed Builder"></div>
+<div class="center icon"><img src="p/dev/web-ui/WEBWUI_Icon.svg" alt="WEB UI Logo" title="Webhook Embed Builder"></div>
 <div class="center">
 
-# **🌐 Webhook Embed Builder with User Interface • [WEB•UI]**
+# **Webhook Embed Builder with User Interface • [WEB•UI]**
 ## Visual Discord Webhook Creator for StreamerBot
-</div>
 
 ***
 
-**Webhook Embed Builder with User Interface • [WEB•UI]** est un outil puissant pour automatiser l'envoi de **messages enrichis** sur **Discord** via des **webhooks** personnalisés, conçu pour s'intégrer facilement avec **StreamerBot**. Il vous permet de créer des **embeds dynamiques** et de modifier chaque détail à la volée !
+**Webhook Embed Builder with User Interface • [WEB•UI]** *(or WEB•UI for short)*<br/>
+A powerful tool to automate sending **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **StreamerBot**.<br/>
+Create **dynamic embeds** and modify every detail on the fly!
+
+</div>
 
 ---
 
-## **✨ What makes WEBWUI unique?**
+## **✨ What makes WEB•UI unique?**
 
-**Webhook Embed Builder** va bien au-delà des simples messages Discord. Avec **WEBWUI**, vous obtenez un accès à une **personnalisation avancée** des embeds via **StreamerBot**. Vous pouvez mettre à jour les informations en temps réel, rendant les annonces et interactions plus fluides.
+**Webhook Embed Builder** goes far beyond simple Discord messages. With **WEB•UI**, you get access to **advanced embed customization** via **StreamerBot**. You can update information in real-time, making announcements and interactions smoother.
 
-> WEBWUI simplifie l'automatisation de vos notifications Discord, vous donnant un contrôle complet et une flexibilité totale pour adapter vos communications à votre communauté, sans gestion manuelle fastidieuse.
+> WEB•UI simplifies Discord notification automation, giving you complete control and total flexibility to adapt your communications to your community, without tedious manual management.
 
 ### **🎯 Key Features:**
-* **🎨 Interface Web Intuitive** : Interface visuelle similaire à Discohook avec aperçu en temps réel
-* **⚡ Intégration StreamerBot** : Connexion WebSocket directe avec support des variables dynamiques  
-* **🛠️ Customisation Avancée** : Support des embeds multiples, images, champs personnalisés
-* **📤 Export/Import** : Sauvegarde et partage de vos configurations JSON
-* **🧪 Test en Direct** : Validation immédiate de vos webhooks
+* **🎨 Intuitive Web Interface** : Visual interface similar to Discohook with real-time preview
+* **⚡ StreamerBot Integration** : Direct WebSocket connection with dynamic variable support
+* **🛠️ Advanced Customization** : Multiple embeds support, images, custom fields
+* **📤 Export/Import** : Save and share your JSON configurations
+* **🧪 Live Testing** : Immediate webhook validation
 
 ## **🚀 How it works:**
 
 ### **Setup**:
-> *Configuration en quelques étapes simples*
-* Ouvrez l'interface web `index.html`  
-* Configurez votre **URL webhook Discord**
-* Connectez-vous à **StreamerBot** via WebSocket  
-* ||Créez des embeds magnifiques sans effort||
+> *Configuration in a few simple steps*
+* Open the web interface `index.html`
+* Connect to **StreamerBot** via WebSocket
+* Configure your **Discord webhook URL**
+* ||Create beautiful embeds effortlessly||
 
 :::info
-**📋 Ce dont vous avez besoin :**
-- Une URL webhook Discord
-- StreamerBot en cours d'exécution  
-- Un navigateur web moderne
-- *(Optionnel)* Connaissances en variables StreamerBot
+**📋 What you need :**
+- A modern web browser
+- StreamerBot running
+- A Discord webhook URL
+- *(Optional)* Knowledge of using StreamerBot variables
 :::
 
-### **🎨 Création d'un embed:**
-1. **Ajoutez votre contenu principal** dans l'onglet Content
-2. **Configurez les embeds** (titre, description, couleur, images)
-3. **Ajoutez des champs personnalisés** pour plus d'informations  
-4. **Prévisualisez en temps réel** le résultat final
-5. **Sauvegardez** dans StreamerBot ou exportez en JSON
+### **🎨 Creating an embed:**
+1. **Add your main content** in the Content tab
+2. **Configure embeds** (title, description, color, images)
+3. **Add custom fields** for additional information
+4. **Preview in real-time** the final result
+5. **Save** to StreamerBot or export to JSON
 
-### **⚙️ Intégration StreamerBot:**
-1. **Sauvegardez** la configuration (variable `WEBWUI_WebhookPayload`)
-2. **Importez le script C#** fourni dans vos actions  
-3. **Déclenchez** via vos événements préférés (follows, subs, raids, etc.)
+### **⚙️ StreamerBot Integration:**
+1. **Save** the configuration (default variable `WEBWUI_WebhookPayload`)
+2. **Import the provided C# script** into your actions (Prefer using "Execute C# Method")
+3. **Trigger** via your preferred events (follows, subs, raids, etc.)
 
----
-
-## **📦 What's included:**
-
-:::success
-**✅ Package complet :**
-
-- **🌐 Interface Web** responsive (HTML/CSS/JS)
-- **💻 Script C# StreamerBot** optimisé et documenté
-- **📚 Documentation** complète avec exemples
-- **🔧 Variables** techniques prêtes à l'emploi  
-- **🎯 Support** des variables dynamiques StreamerBot
-:::
+> Note: Find example guides when importing into StreamerBot!
 
 ---
 
 ## **🔧 Variables & Configuration:**
 
-### **Variables principales:**
-| Variable | Description | Type |
-|----------|-------------|------|
-| `WEBWUI_WebhookPayload` | Configuration JSON complète | Global |
-| `WEBWUI_WebhookURL` | URL webhook de fallback | Argument |
+### **Main Variables:**
+| Variable | Description | Type | Copy |
+|----------|-------------|------|------|
+| `WEBWUI_WebhookPayload` | Complete JSON configuration | Global |[copy:WEBWUI_WebhookPayload]|
+| `WEBWUI_WebhookURL` | Fallback webhook URL | Argument |[copy:WEBWUI_WebhookURL]|
 
-### **Variables dynamiques supportées:**
-- `%user%` : Nom de l'utilisateur actuel
-- `%game%` : Jeu actuellement en cours  
-- `%uptime%` : Durée du stream en cours
-- `~GlobalVar~` : Vos variables globales personnalisées
-
-[copy:WEBWUI_WebhookPayload] ← *Variable principale à retenir*
+### **Supported Dynamic Variables:**
+- `%argument%` : Import and use any variable with triggers or sub-actions then use them as you wish!
+- `~GlobalVar~` : Use custom global variables!
 
 ---
 
-## **💡 Cas d'usage & Exemples:**
+## **💡 Use Cases & Examples:**
 
 <details>
-<summary>💜 **Streamers & Créateurs**</summary>
+<summary>💜 **Streamers & Creators**</summary>
 
-- **🎉 Notifications de followers** avec embeds personnalisés et images
-- **📺 Annonces début/fin de stream** automatisées  
-- **💎 Alertes donations/bits** avec informations détaillées
-- **🎮 Changements de jeu** avec mise à jour automatique
-- **🔴 Statut live/offline** pour vos serveurs Discord
+- **🎉 Follower notifications** with custom embeds and images
+- **📺 Stream start/end announcements** automated
+- **💎 Donation/bits alerts** with detailed information
+- **🎮 Game changes** with automatic updates
+- **🔴 Live/offline status** for your Discord servers
 
 </details>
 
 <details>
-<summary>👥 **Communautés & Serveurs**</summary>
+<summary>👥 **Communities & Servers**</summary>
 
-- **📅 Événements communautaires** avec embeds riches
-- **🤖 Intégration bots Discord** existants  
-- **📢 Annonces multi-serveurs** coordonnées
-- **📊 Statistiques** en temps réel avec variables
-- **🏆 Classements** et leaderboards automatisés
+- **📅 Community events** with rich embeds
+- **🤖 Existing Discord bot integration**
+- **📢 Coordinated multi-server announcements**
+- **📊 Real-time statistics** with variables
+- **🏆 Rankings** and automated leaderboards
 
 </details>
 
 ---
 
-## **🎮 Interface Utilisateur:**
+## **🎮 User Interface:**
 
-L'interface WEBWUI est divisée en **deux panneaux principaux** :
+The WEB•UI interface is divided into **two main panels**:
 
-### **📝 Panneau Configuration (Gauche):**
-> - **⚙️ Onglet Informations** : URL webhook, paramètres StreamerBot, connexion WebSocket
-> - **🎨 Onglet Contenu** : Message principal, création et gestion des embeds
+### **📝 Configuration Panel (Left):**
+> - **⚙️ Information Tab** : Webhook URL, StreamerBot settings, WebSocket connection
+> - **🎨 Content Tab** : Main message, embed creation and management
 
-### **👁️ Panneau Prévisualisation (Droite):**  
-> - **🖼️ Aperçu Discord** : Visualisation en temps réel de votre message
-> - **📄 JSON Viewer** : Code généré avec options export/import/copie
+### **👁️ Preview Panel (Right):**
+> - **🖼️ Discord Preview** : Real-time visualization of your message
+> - **📄 JSON Viewer** : Generated code with export/import/copy options
 
 :::warning
-**⚠️ Note importante :**
-Les variables StreamerBot (`%user%`, `~globals~`) ne fonctionnent qu'avec l'envoi via StreamerBot, pas avec le bouton "Test Webhook" de l'interface.
+**⚠️ Important Note:** <br/>
+- StreamerBot variables (`%user%`, `~globals~`) only work when sending via StreamerBot, not with the interface's "Test Webhook" button.
 :::
 
 ---
 
-## **🌟 Avantages & Points Forts:**
+## **🌟 Advantages & Strengths:**
 
 :::danger
-**🔥 Pourquoi choisir WEBWUI ?**
+**🔥 Why choose WEB•UI?**
 
-- **🎯 Interface intuitive** : Aucun code requis, tout visuel
-- **⚡ Intégration native** : Conçu spécifiquement pour StreamerBot  
-- **👀 Préview temps réel** : Voyez le résultat instantanément
-- **🔄 Variables dynamiques** : Contenu adaptatif automatique
-- **💾 Sauvegarde flexible** : Export JSON + variables StreamerBot
-- **🛠️ Script optimisé** : Code C# professionnel fourni
-- **📱 Interface moderne** : Design responsive et accessible
+- **🎯 Intuitive interface** : No code required, all visual
+- **⚡ Native integration** : Specifically designed for StreamerBot
+- **👀 Real-time preview** : See results instantly
+- **🔄 Dynamic variables** : Automatic adaptive content
+- **💾 Flexible saving** : JSON export + StreamerBot variables
+- **🛠️ Optimized script** : Professional C# code provided
+- **📱 Modern interface** : Responsive and accessible design
 :::
 
 ---
 
-## **📥 Installation & Téléchargement:**
+## **📥 Installation & Download:**
 
-{"📦 Télécharger WEBWUI v1.0"-s}(https://github.com/sorylokan/webhook-embed-builder) {"📚 Documentation Complète"-n}(?p=dev/sb/webhook-embed-builder-docs) {"💬 Support Discord"-n}(https://discord.gg/communaute)
+Import string: [copy:PLACEHOLDER]
+```
+PLACEHOLDER
+```
+
+{"Access WEB•UI Interface"-s}(https://sorylokan.github.io/p/dev/web-ui/index.html)
 
 ---
 
 ## **📋 What's New? *(Changelog)*:**
 
 <details>
-<summary>**📅 Changelog détaillé**</summary>
+<summary>**📅 Changelog**</summary>
 
 ```changelog
-[XX.01.26] # WEBWUI v1.0.0 - Initial Release!
-✨ Added: Interface web complète avec prévisualisation temps réel
-✨ Added: Intégration WebSocket StreamerBot native  
-✨ Added: Support embeds multiples avec champs personnalisés
-✨ Added: Variables dynamiques StreamerBot (%user%, ~globals~)
-✨ Added: Export/Import JSON pour sauvegarde/partage
-✨ Added: Script C# optimisé avec gestion d'erreurs avancée
-🎨 Added: Interface responsive moderne
-🛠️ Added: Nomenclature technique WEBWUI_* standardisée
-📚 Added: Documentation complète avec exemples
-🔧 Added: Test webhooks en direct depuis l'interface
-- Removed: Herobrine (il perturbait les embeds)
+[XX.01.26] # WEB•UI v1.0.0 - Initial Release!
++ Added: Complete web interface with real-time preview
++ Added: Live webhook testing from interface
++ Added: Native StreamerBot WebSocket integration
++ Added: JSON import/export for saving/sharing
++ Added: Standardized WEBWUI_* technical nomenclature
++ Added: Multiple embeds support with custom fields
++ Added: StreamerBot dynamic variables (%user%, ~globals~)
++ Added: Optimized C# script
+- Removed: Herobrine (But... He was there!?)
 ```
 
 </details>
 
 ---
 
-▼ ***Découvrez mes autres créations StreamerBot !*** ▼
-> {"**🎬 YouTube Video Alert**"-s}(?p=dev/sb/youtube-video-alert) - Notifications automatiques de nouvelles vidéos
+▼ ***Discover my other StreamerBot creations!*** ▼
+> {"**🎬 YouTube Video Alert**"-s}(?p=dev/sb/youtube-video-alert) - Automatic new video notifications
 >
-> {"**🎵 MPVar - Media Variables**"-g}(?p=dev/sb/mpvar) - Récupération infos lecteurs média
+> {"**🎵 MPVar - Media Variables**"-g}(?p=dev/sb/mpvar) - Media player info retrieval
 >
-> {"**⏱️ OBS Timer**"-p}(?p=dev/sb/obs-timer) - Minuteur flexible pour vos scènes
+> {"**⏱️ OBS Timer**"-p}(?p=dev/sb/obs-timer) - Flexible timer for your scenes
 >
-> {"**🎁 Essential Starter Kit**"-n}(?p=dev/sb/essential-starter-kit) - Pack de démarrage complet
+> {"**🎁 Essential Starter Kit**"-n}(?p=dev/sb/essential-starter-kit) - Complete starter pack
 
 ---
 
-**💖 Développé avec passion par Sorylokan pour la communauté StreamerBot**
+**💖 Developed with passion by Sorylokan for the StreamerBot community**
 
-*Webhook Embed Builder with User Interface • [WEB•UI] - Créez des embeds Discord professionnels sans effort*
+*Webhook Embed Builder with User Interface • [WEB•UI] - Create professional Discord embeds effortlessly*

@@ -7,6 +7,18 @@
 
 ***
 
+:::danger
+✨ **Project evolution**
+
+> **DscrdWWE: Resurgence** is now part of a new and improved project:  
+> * **Webhook Embed Builder with User Interface • [WEB•UI]**
+
+Same idea, cleaner architecture, modern Web UI, and more flexibility.  
+👉 {"See the new project"-n}(?p=dev/sb/webhook-embed-builder)
+:::
+
+***
+
 *Discord **W**ebhook **W**ith **E**mbed*, or, **DscrdWWE: Resurgence** is a powerful tool for automating the sending of **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **StreamerBot**. It allows you to create dynamic **embeds** and modify every detail on the fly!
 
 ---
