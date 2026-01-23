@@ -6,7 +6,7 @@
 
 ***
 
-**Webhook Embed Builder with User Interface • [WEB•UI]** *(or WEB•UI for short)*<br/>
+**Webhook Embed Builder with User Interface • [WEB•UI]** *(or WEBWUI for friends)*<br/>
 A powerful tool to automate sending **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **StreamerBot**.<br/>
 Create **dynamic embeds** and modify every detail on the fly!
 
@@ -171,11 +171,11 @@ PLACEHOLDER
 ▼ ***Discover my other StreamerBot creations!*** ▼
 > {"**🎬 YouTube Video Alert**"-s}(?p=dev/sb/youtube-video-alert) - Automatic new video notifications
 >
-> {"**🎵 MPVar - Media Variables**"-g}(?p=dev/sb/mpvar) - Media player info retrieval
+> {"**🎵 MPVar - Media Variables**"-g}(?p=dev/sb/mpvar) - Media player info retrieval and stored in GlobalVar
 >
-> {"**⏱️ OBS Timer**"-p}(?p=dev/sb/obs-timer) - Flexible timer for your scenes
+> {"**⏱️ OBS Timer**"-p}(?p=dev/sb/obs-timer) - Flexible timer for your OBS scenes
 >
-> {"**🎁 Essential Starter Kit**"-n}(?p=dev/sb/essential-starter-kit) - Complete starter pack
+> {"**🎁 Essential Starter Kit**"-n}(?p=dev/sb/essential-starter-kit) - Complete starter pack for beginners
 
 ---
 
