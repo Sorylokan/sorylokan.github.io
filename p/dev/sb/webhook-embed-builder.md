@@ -2,7 +2,7 @@
 <div class="center">
 
 # **🌐 Webhook Embed Builder with User Interface • [WEB•UI]**
-## **_Visual Discord Webhook Creator for StreamerBot_**
+## Visual Discord Webhook Creator for StreamerBot
 </div>
 
 ***
