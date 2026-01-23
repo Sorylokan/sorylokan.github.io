@@ -412,7 +412,7 @@ class DiscordWebhookUI {
         const payload = json.payload || json;
         
         // Webhook header with avatar and username
-        const webhookUsername = this.webhookUsername ? this.webhookUsername.value || 'WEBWUI - Announcement' : 'WEBWUI - Announcement';
+        const webhookUsername = this.webhookUsername ? this.webhookUsername.value || 'Webhook Embed Builder - Announcement' : 'Webhook Embed Builder - Announcement';
         const webhookAvatarUrl = this.webhookAvatarUrl ? this.webhookAvatarUrl.value || 'WEBWUI_Icon.svg' : 'WEBWUI_Icon.svg';
         
         let previewHTML = `<div class="webhook-header">
@@ -675,3 +675,4 @@ function initExternalLinkModal() {
         }
     });
 }
+
