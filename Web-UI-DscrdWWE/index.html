@@ -19,7 +19,7 @@
                 </a>
                 <div class="header-separator"></div>
                 <div class="logo">
-                    <img src="http://www.image-heberg.fr/files/1754047229125919825.png" alt="Logo">
+                    <img src="DWWE_Icon.svg" alt="Logo">
                     <span>DscrdWWE: Resurgence</span>
                 </div>
             </div>
@@ -62,19 +62,20 @@
                                 <label for="webhookAvatarUrl">Webhook Avatar URL</label>
                                 <input type="text" id="webhookAvatarUrl" placeholder="(Optional) https://...">
                             </div>
-                            <div class="spacer"></div>
-                            <div class="form-group" style="border-top: 1px solid #3a3f47; padding-top: 16px; margin-top: 16px;">
+                            <div class="divider"></div>
+                            <div class="form-group">
                                 <small style="color: var(--color-primary); display: block; margin-bottom: 12px; font-size: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">⚙️ Streamer.bot Parameters</small>
                                 <label for="globalVarName">Global Variable Name</label>
                                 <input type="text" id="globalVarName" placeholder="DWWE_WebhookPayload" >
                             </div>
-                            <div class="spacer"></div>
                             <div class="button-group">
                                 <div class="button-row">
-                                    <button id="testWebhookBtn" class="btn btn-secondary" disabled title="Enter a Discord Webhook URL to test">🧪 Test Webhook</button>
+                                    <small style="padding-left: 20px; color: var(--color-text-muted); font-size: 0.75rem; margin-top: 0.1rem; margin-bottom: 0.5rem;">Note: StreamerBot arguments and variables <i>(%arguments% or ~Global Variable~)</i> do not work with the "TEST WEBHOOK" button. <br/> You must first save the payload in StreamerBot and send it from a send action.</small>
+                                    <button id="testWebhookBtn" class="btn btn-secondary" disabled title="Enter a Discord Webhook URL to test">Test Webhook</button>
                                     <button id="loadVarBtn" class="btn btn-secondary">Load Config</button>
                                 </div>
-                                <button id="clearBtn" class="btn btn-outline btn-danger btn-full">✖️ Clear ✖️</button>
+                                <div class="divider"></div>
+                                <button id="clearBtn" class="btn btn-outline btn-danger save-text btn-full">Clear</button>
                             </div>
                         </div>
                     </div>
@@ -95,8 +96,8 @@
 
                 <!-- Main Action Button -->
                 <div class="save-section">
-                    <button id="saveToStreamerBtn" class="btn btn-primary btn-large btn-full">
-                        🚀 Save to Streamer.bot
+                    <button id="saveToStreamerBtn" class="btn btn-primary btn-large save-text btn-full">
+                        Save to StreamerBot
                     </button>
                 </div>
             </aside>
