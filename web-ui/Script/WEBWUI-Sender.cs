@@ -7,11 +7,11 @@ using Newtonsoft.Json.Linq;
 
 public class CPHInline
 {
-    public bool Execute()
+    public bool SendOnly()
     {
         try
         {
-            CPH.LogInfo("WEBUI Webhook Sender starting");
+            CPH.LogInfo("WEBUI Webhook Sender - Send Only Mode");
             
             // Get payload and webhook URL
             var (payload, webhookUrl) = GetPayloadAndWebhookUrl();
@@ -41,7 +41,7 @@ public class CPHInline
         }
         catch (Exception ex)
         {
-            CPH.LogError($"Critical error in Execute: {ex.Message}");
+            CPH.LogError($"Critical error in SendOnly: {ex.Message}");
             return false;
         }
     }
@@ -287,7 +287,13 @@ public class CPHInline
                 
                 CPH.LogDebug($"Editing message ID: {messageId}");
                 
-                HttpResponseMessage response = await client.PatchAsync(editUrl, content);
+                // Create PATCH request manually since PatchAsync doesn't exist in .NET Framework
+                var request = new HttpRequestMessage(new HttpMethod("PATCH"), editUrl)
+                {
+                    Content = content
+                };
+                
+                HttpResponseMessage response = await client.SendAsync(request);
                 string responseBody = await response.Content.ReadAsStringAsync();
                 
                 CPH.LogDebug($"Discord edit response: {response.StatusCode} ({(int)response.StatusCode})");
