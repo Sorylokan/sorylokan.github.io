@@ -58,8 +58,9 @@ a {
 
 button, input, select, textarea {
     font: inherit;
-    border: none;
-    background: none;
+    border: 1px solid var(--border);
+    background: var(--bg-main);
+    color: var(--text-muted);
 }
 
 button {
