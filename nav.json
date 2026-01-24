@@ -3,8 +3,8 @@
     "label": "Streamer.bot",
     "href": "?p=projects",
     "dropdown": [
-      { "label": "DscrdWWE:Resurgence", "href": "?p=dev/sb/dscrdwwe-resurgence" },
       { "label": "Webhook Embed Builder", "href": "?p=dev/sb/webhook-embed-builder" },
+      { "label": "DscrdWWE:Resurgence", "href": "?p=dev/sb/dscrdwwe-resurgence" },
       { "label": "OBS Timer", "href": "?p=dev/sb/obs-timer" },
       { "label": "Essential Starter Kit", "href": "?p=dev/sb/essential-starter-kit" },
       { "label": "MPVar", "href": "?p=dev/sb/mpvar" },
