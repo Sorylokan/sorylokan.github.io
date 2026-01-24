@@ -164,6 +164,10 @@ ___
 Texte en rouge avec HTML
 </div>
 
+input :
+
+[copy:Hello! 👋] <input type="text" id="webhookAvatarUrl" placeholder="Try to paste 👀">
+
 <details>
 <summary>Cliquez pour développer</summary>
 <p>Contenu masqué qui apparaît au clic.</p>

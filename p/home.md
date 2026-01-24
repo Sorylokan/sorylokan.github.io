@@ -1,7 +1,8 @@
-# This page is incomplete, please ignore the information below
+# This page is incomplete<a href="?p=others/exemple">,</a> please ignore the information below
 
 ---
-# Bienvenue sur mon portfolio ! 🎮
+
+# Bienvenue sur ma page perso ! 🎮
 
 <div class="twitch-container">
     <div id="twitch-embed"></div>
@@ -23,5 +24,3 @@ Passionné de développement et de streaming, je crée des outils pour la commun
 - **DscrdWWE:Resurgence** - automatisation d'alerte Discord via webhooks avec embeds
 - **Essential Starter Kit** - Pack d'actions Streamer.bot pour débutants
 - **Overlays Starlight** - Designs modernes pour streamers
-
-[copy:Hello! 👋] <input type="text" id="webhookAvatarUrl" placeholder="Try to paste 👀">
