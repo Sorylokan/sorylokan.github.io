@@ -9,7 +9,7 @@ export class WebUIRenderer {
         let previewHTML = this._renderWebhookHeader(webhookUsername, webhookAvatarUrl);
         
         if (payload.content) {
-            previewHTML += `<div class="message-content">${this.escapeHtml(payload.content)}</div>`;
+            previewHTML += `<div class="message-content">${this.parseDiscordMarkdown(payload.content)}</div>`;
         }
         
         if (payload.embeds && payload.embeds.length) {
@@ -49,10 +49,10 @@ export class WebUIRenderer {
         
         // Title and description
         if (embed.title) {
-            html += `<div class="embed-title">${this.escapeHtml(embed.title)}</div>`;
+            html += `<div class="embed-title">${this.parseDiscordMarkdown(embed.title)}</div>`;
         }
         if (embed.description) {
-            html += `<div class="embed-description">${this.escapeHtml(embed.description).replace(/\n/g, '<br>')}</div>`;
+            html += `<div class="embed-description">${this.parseDiscordMarkdown(embed.description).replace(/\n/g, '<br>')}</div>`;
         }
         
         // Thumbnail
@@ -92,8 +92,8 @@ export class WebUIRenderer {
                     html += '<div class="embed-fields">';
                     currentInlineGroup.forEach(inlineField => {
                         html += `<div class="embed-field">
-                            <div class="embed-field-name">${this.escapeHtml(inlineField.name)}</div>
-                            <div class="embed-field-value">${this.escapeHtml(inlineField.value).replace(/\n/g, '<br>')}</div>
+                            <div class="embed-field-name">${this.parseDiscordMarkdown(inlineField.name)}</div>
+                            <div class="embed-field-value">${this.parseDiscordMarkdown(inlineField.value).replace(/\n/g, '<br>')}</div>
                         </div>`;
                     });
                     html += '</div>';
@@ -102,8 +102,8 @@ export class WebUIRenderer {
             } else {
                 // Non-inline field, render immediately
                 html += `<div class="embed-field">
-                    <div class="embed-field-name">${this.escapeHtml(field.name)}</div>
-                    <div class="embed-field-value">${this.escapeHtml(field.value).replace(/\n/g, '<br>')}</div>
+                    <div class="embed-field-name">${this.parseDiscordMarkdown(field.name)}</div>
+                    <div class="embed-field-value">${this.parseDiscordMarkdown(field.value).replace(/\n/g, '<br>')}</div>
                 </div>`;
                 currentInlineGroup = []; // Reset inline group
             }
@@ -119,7 +119,7 @@ export class WebUIRenderer {
             if (footer.icon_url) {
                 html += `<img src="${footer.icon_url}" class="embed-footer-icon" onerror="this.style.display='none'">`;
             }
-            html += `<span class="embed-footer-text">${this.escapeHtml(footer.text)}</span>`;
+            html += `<span class="embed-footer-text">${this.parseDiscordMarkdown(footer.text)}</span>`;
         }
         
         if (timestamp) {
@@ -151,6 +151,52 @@ export class WebUIRenderer {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
+    }
+
+    parseDiscordMarkdown(text) {
+        if (typeof text !== 'string') return '';
+        
+        // First escape HTML to prevent XSS
+        let result = this.escapeHtml(text);
+        
+        // Bold: **text** 
+        result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+        
+        // Italic: *text* (but not if it's part of **)
+        result = result.replace(/\*([^*]+?)\*/g, (match, content, offset, string) => {
+            // Check if it's part of ** bold syntax
+            if (offset > 0 && string[offset - 1] === '*') return match;
+            if (offset + match.length < string.length && string[offset + match.length] === '*') return match;
+            return '<em>' + content + '</em>';
+        });
+        
+        // Underline/Bold: __text__
+        result = result.replace(/__(.*?)__/g, '<strong>$1</strong>');
+        
+        // Italic: _text_ (but not if it's part of __)
+        result = result.replace(/_([^_]+?)_/g, (match, content, offset, string) => {
+            // Check if it's part of __ syntax
+            if (offset > 0 && string[offset - 1] === '_') return match;
+            if (offset + match.length < string.length && string[offset + match.length] === '_') return match;
+            return '<em>' + content + '</em>';
+        });
+        
+        // Strikethrough: ~~text~~
+        result = result.replace(/~~(.*?)~~/g, '<del>$1</del>');
+        
+        // Code block: ```text``` or ```language\ntext``` (AVANT le code inline !)
+        result = result.replace(/```(?:(\w+)\s*)?\n?([\s\S]*?)```\n?/g, '<pre class="discord-code-block"><code>$2</code></pre>');
+        
+        // Code inline: `text` (APRÈS les blocs de code)
+        result = result.replace(/`([^`]+)`/g, '<code class="discord-code-inline">$1</code>');
+        
+        // Quote: > text (at start of line)
+        result = result.replace(/^&gt; (.+)$/gm, '<div class="discord-quote">$1</div>');
+        
+        // Spoiler: ||text||
+        result = result.replace(/\|\|(.*?)\|\|/g, '<span class="discord-spoiler" onclick="this.classList.toggle(\'revealed\')">$1</span>');
+        
+        return result;
     }
 
     showNotification(message, type = 'info') {

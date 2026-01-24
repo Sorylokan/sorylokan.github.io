@@ -1118,6 +1118,133 @@ label {
 }
 
 /* ============================================================
+   DISCORD MARKDOWN FORMATTING
+   ============================================================ */
+
+/* Bold text */
+.message-content strong,
+.embed-title strong,
+.embed-description strong,
+.embed-field-name strong,
+.embed-field-value strong,
+.embed-footer-text strong {
+    font-weight: 700;
+    color: var(--color-text-bright);
+}
+
+/* Italic text */
+.message-content em,
+.embed-title em,
+.embed-description em,
+.embed-field-name em,
+.embed-field-value em,
+.embed-footer-text em {
+    font-style: italic;
+    color: var(--color-text);
+}
+
+/* Strikethrough text */
+.message-content del,
+.embed-title del,
+.embed-description del,
+.embed-field-name del,
+.embed-field-value del,
+.embed-footer-text del {
+    text-decoration: line-through;
+    color: var(--color-text-muted);
+    opacity: 0.7;
+}
+
+/* Inline code */
+.discord-code-inline {
+    background-color: rgba(79, 84, 92, 0.4);
+    border-radius: 3px;
+    padding: 0.1em 0.3em;
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.85em;
+    color: #f8f8f2;
+    border: 1px solid rgba(79, 84, 92, 0.6);
+}
+
+/* Code blocks */
+.discord-code-block {
+    background-color: rgba(47, 49, 54, 0.6);
+    border: 1px solid rgba(79, 84, 92, 0.4);
+    border-radius: 4px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.discord-code-block code {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+    font-size: 0.875em;
+    color: #f8f8f2;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+/* Quotes */
+.discord-quote {
+    border-left: 4px solid #4f545c;
+    padding-left: 0.75rem;
+    margin: 0.5rem 0;
+    color: var(--color-text-secondary);
+    font-style: italic;
+    position: relative;
+}
+
+.discord-quote::before {
+    content: '';
+    position: absolute;
+    left: -4px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #4f545c;
+    border-radius: 2px;
+}
+
+/* Spoilers */
+.discord-spoiler {
+    background-color: #202225;
+    color: transparent;
+    border-radius: 3px;
+    padding: 0.1em 0.2em;
+    cursor: pointer;
+    transition: all 0.1s ease;
+    position: relative;
+    user-select: none;
+}
+
+.discord-spoiler::before {
+    content: 'SPOILER';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.6em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: #dcddde;
+    opacity: 0.8;
+}
+
+.discord-spoiler.revealed {
+    background-color: rgba(79, 84, 92, 0.3);
+    color: var(--color-text);
+}
+
+.discord-spoiler.revealed::before {
+    display: none;
+}
+
+.discord-spoiler:hover:not(.revealed) {
+    background-color: rgba(32, 34, 37, 0.8);
+}
+
+/* ============================================================
    JSON VIEWER & SECTION
    ============================================================ */
 
