@@ -62,7 +62,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="webhookUsername">Webhook Username</label>
-                                <input type="text" id="webhookUsername" placeholder="(Optional) Webhook Name">
+                                <input type="text" id="webhookUsername" placeholder="(Optional) Webhook Name" maxlength="80">
                             </div>
                             <div class="form-group">
                                 <label for="webhookAvatarUrl">Webhook Avatar URL</label>
@@ -89,7 +89,7 @@
                         <div class="tab-section">
                             <div class="form-group">
                                 <label for="msgContent">Message Content</label>
-                                <textarea id="msgContent" placeholder="Your message text..." rows="6"></textarea>
+                                <textarea id="msgContent" placeholder="Your message text..." rows="6" maxlength="2000"></textarea>
                             </div>
                             <div class="divider"></div>
                             <button id="addEmbedBtn" class="btn btn-secondary btn-full">+ Add Embed</button>
@@ -162,7 +162,7 @@
                 </div>
                 <div class="modal-footer">
                     <button id="clearConfirmBtn" class="btn btn-danger">Yes, Delete Everything</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('clearModal').classList.add('hidden')">Cancel</button>
+                    <button id="clearCancelBtn" class="btn btn-secondary">Cancel</button>
                 </div>
             </div>
         </div>
@@ -178,7 +178,116 @@
                 <textarea id="jsonImportArea" placeholder="Paste your JSON configuration here..." rows="12"></textarea>
                 <div class="modal-footer">
                     <button id="importConfirmBtn" class="btn btn-primary">Import</button>
-                    <button class="btn btn-secondary" onclick="document.getElementById('importModal').classList.add('hidden')">Cancel</button>
+                    <button id="importCancelBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Load Configuration Confirmation Modal -->
+        <div id="loadConfigModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚠️ Load Configuration</h2>
+                    <button class="modal-close" onclick="document.getElementById('loadConfigModal').classList.add('hidden')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p style="line-height: 1.6; margin: 0;">
+                        Loading a configuration will <strong>replace your current work</strong>:
+                    </p>
+                    <ul style="margin: 12px 0; padding-left: 20px;">
+                        <li>All message content</li>
+                        <li>All webhook settings</li>
+                        <li>All embeds and fields</li>
+                    </ul>
+                    <p style="color: #f04747; font-weight: 600; margin: 12px 0 0 0;">
+                        ⚠️ Any unsaved changes will be <strong>permanently lost</strong>!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="loadConfigConfirmBtn" class="btn btn-danger">Yes, Load Configuration</button>
+                    <button id="loadConfigCancelBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Import Configuration Confirmation Modal -->
+        <div id="importConfigModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚠️ Import Configuration</h2>
+                    <button class="modal-close" onclick="document.getElementById('importConfigModal').classList.add('hidden')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p style="line-height: 1.6; margin: 0;">
+                        Importing a configuration will <strong>replace your current work</strong>:
+                    </p>
+                    <ul style="margin: 12px 0; padding-left: 20px;">
+                        <li>All message content</li>
+                        <li>All webhook settings</li>
+                        <li>All embeds and fields</li>
+                    </ul>
+                    <p style="color: #f04747; font-weight: 600; margin: 12px 0 0 0;">
+                        ⚠️ Any unsaved changes will be <strong>permanently lost</strong>!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="importConfigConfirmBtn" class="btn btn-danger">Yes, Import Configuration</button>
+                    <button id="importConfigCancelBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remove Embed Confirmation Modal -->
+        <div id="removeEmbedModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚠️ Remove Embed</h2>
+                    <button class="modal-close" onclick="document.getElementById('removeEmbedModal').classList.add('hidden')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p style="line-height: 1.6; margin: 0;">
+                        This will <strong>permanently delete</strong> this embed and all its content:
+                    </p>
+                    <ul style="margin: 12px 0; padding-left: 20px;">
+                        <li>Title, description, and URL</li>
+                        <li>Author information</li>
+                        <li>All fields</li>
+                        <li>Images and thumbnails</li>
+                        <li>Footer and timestamp</li>
+                    </ul>
+                    <p style="color: #f04747; font-weight: 600; margin: 12px 0 0 0;">
+                        ⚠️ This action <strong>cannot be undone</strong>!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="removeEmbedConfirmBtn" class="btn btn-danger">Yes, Remove Embed</button>
+                    <button id="removeEmbedCancelBtn" class="btn btn-secondary">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Remove Field Confirmation Modal -->
+        <div id="removeFieldModal" class="modal hidden">
+            <div class="modal-backdrop"></div>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>⚠️ Remove Field</h2>
+                    <button class="modal-close" onclick="document.getElementById('removeFieldModal').classList.add('hidden')">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p style="line-height: 1.6; margin: 0;">
+                        This will <strong>permanently delete</strong> this field and its content.
+                    </p>
+                    <p style="color: #f04747; font-weight: 600; margin: 12px 0 0 0;">
+                        ⚠️ This action <strong>cannot be undone</strong>!
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button id="removeFieldConfirmBtn" class="btn btn-danger">Yes, Remove Field</button>
+                    <button id="removeFieldCancelBtn" class="btn btn-secondary">Cancel</button>
                 </div>
             </div>
         </div>
@@ -208,6 +317,7 @@
         </div>
     </div>
 
-    <script src="app.js"></script>
+    <!-- Load modules and initialize -->
+    <script type="module" src="app-modular.js"></script>
 </body>
 </html>

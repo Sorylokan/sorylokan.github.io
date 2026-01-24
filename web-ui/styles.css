@@ -227,6 +227,7 @@ body {
 .tabs-content {
     flex: 1;
     overflow-y: auto;
+    scrollbar-gutter: stable;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -1126,6 +1127,12 @@ label {
     gap: 0.8rem;
 }
 
+.json-actions {
+    display: flex;
+    gap: 0.5rem;
+    padding-top: 0.5rem;
+}
+
 .json-header {
     display: flex;
     justify-content: space-between;
@@ -1313,8 +1320,8 @@ label {
    ============================================================ */
 
 ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
 }
 
 ::-webkit-scrollbar-track {
