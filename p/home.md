@@ -24,4 +24,4 @@ Passionné de développement et de streaming, je crée des outils pour la commun
 - **Essential Starter Kit** - Pack d'actions Streamer.bot pour débutants
 - **Overlays Starlight** - Designs modernes pour streamers
 
-[copy:Salut ! 👋]
+[copy:Hello! 👋] <input type="text" id="webhookAvatarUrl" placeholder="Try to paste 👀">
