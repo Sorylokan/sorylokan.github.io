@@ -532,7 +532,7 @@ class DiscordWebhookUI {
         const request = { 
             request: 'DoAction', 
             id: '1', 
-            action: { id: '18a2b5ad-fa1d-444b-b2ed-c40a37bd24ce' }, 
+            action: { id: '74e1d5e7-a4c8-4799-871f-f444eb8ace03' }, 
             args: {
                 variableName: varName,
                 JsonPayload: jsonString
