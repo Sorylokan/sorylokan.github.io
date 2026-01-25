@@ -169,8 +169,6 @@ U0JBRR+LCAAAAAAABADtfcly40ia5n3M5h1Qastps6iEAvuSZtNmIiVSpCRGiBTBpZSWicVBIggCLAIU
 ---
 
 ▼ ***Discover my other StreamerBot creations!*** ▼
-> {"**🎬 YouTube Video Alert**"-s}(?p=dev/sb/youtube-video-alert) - Automatic new video notifications
->
 > {"**🎵 MPVar - Media Variables**"-g}(?p=dev/sb/mpvar) - Media player info retrieval and stored in GlobalVar
 >
 > {"**⏱️ OBS Timer**"-p}(?p=dev/sb/obs-timer) - Flexible timer for your OBS scenes
@@ -180,5 +178,4 @@ U0JBRR+LCAAAAAAABADtfcly40ia5n3M5h1Qastps6iEAvuSZtNmIiVSpCRGiBTBpZSWicVBIggCLAIU
 ---
 
 **💖 Developed with passion by Sorylokan for the StreamerBot community**
-
 *Webhook Embed Builder with User Interface • [WEB•UI] - Create professional Discord embeds effortlessly*

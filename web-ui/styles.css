@@ -516,6 +516,7 @@ label {
 .btn-primary {
     background-color: var(--color-primary);
     color: var(--text-main);
+    text-shadow: var(--bg-main) 1px 1px 10px;
 }
 
 .btn-primary:hover {
@@ -572,15 +573,17 @@ label {
 }
 
 .embed-add-field-btn {
-    background-color: var(--color-primary);
+    background-color: var(--color-panel-bg);
     color: var(--text-main);
+    border: 1px solid var(--color-border);
     padding: 0.4rem 0.8rem;
     font-size: 0.75rem;
     width: 100%;
 }
 
 .embed-add-field-btn:hover {
-    background-color: var(--color-primary-hover);
+    background-color: var(--color-border);
+    border-color: var(--color-border-light);
 }
 
 .btn-sm {
@@ -631,9 +634,6 @@ label {
     background-color: var(--color-panel-bg);
     border-top: 1px solid var(--color-border);
     flex-shrink: 0;
-}
-.save-text {
-    text-shadow: var(--bg-main) 1px 1px 10px;
 }
 
 /* ============================================================
@@ -1351,7 +1351,7 @@ label {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(4px);
 }
 
