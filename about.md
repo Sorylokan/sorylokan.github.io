@@ -17,10 +17,6 @@ Ce site est mon terrain de jeu pour apprendre le front-end (aidé par Copilot), 
 	- {"Minecraft"-s}(?p=content/minecraft/index) — packs et builds
 	- {"Projets annexes"-g}(?p=content/projects/index) — idées en cours
 
-:::info
-Tu peux naviguer sans ouvrir de fichiers bruts : toutes les pages passent par le routing `?p=...`.
-:::
-
 ### Mes liens
 > {"Bluesky"-n}(https://bsky.app/profile/sorylokan.bsky.social)
 > {"Twitch"-p}(https://twitch.tv/sorylokan)

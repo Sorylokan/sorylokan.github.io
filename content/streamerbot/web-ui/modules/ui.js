@@ -225,7 +225,6 @@ export class WebUIInterface {
         container.className = 'embed-item';
         container.innerHTML = `
             <div class="embed-item-header">
-                <span>Embed</span>
                 <div class="embed-item-controls">
                     <button class="collapse-toggle" title="Toggle collapse">▼</button>
                     <button class="btn btn-remove" data-remove-embed>Remove</button>
@@ -265,9 +264,14 @@ export class WebUIInterface {
                 <input class="emb-footer-icon" placeholder="Footer icon URL">
             </div>
             <div class="embed-section">
-                <label>
-                    <input type="checkbox" class="emb-timestamp-enabled"> Use timestamp
-                </label>
+                <div style="display: flex; gap: 1rem; align-items: center;">
+                    <label>
+                        <input type="checkbox" class="emb-timestamp-enabled"> Set a timestamp
+                    </label>
+                    <label title="Timestamp will be set to the exact moment the webhook is sent">
+                        <input type="checkbox" class="emb-timestamp-auto"> Use current timestamp
+                    </label>
+                </div>
                 <input type="datetime-local" class="emb-timestamp">
             </div>
         `;
@@ -390,6 +394,36 @@ export class WebUIInterface {
                 this.manager.saveToLocalStorage();
             });
         });
+        
+        // Timestamp auto checkbox - hide datetime-local when auto is checked
+        const timestampAuto = container.querySelector('.emb-timestamp-auto');
+        const timestampEnabled = container.querySelector('.emb-timestamp-enabled');
+        const timestampInput = container.querySelector('.emb-timestamp');
+        
+        if (timestampAuto && timestampEnabled && timestampInput) {
+            const toggleTimestampInput = () => {
+                if (timestampAuto.checked) {
+                    timestampInput.style.display = 'none';
+                } else {
+                    timestampInput.style.display = timestampEnabled.checked ? 'block' : 'none';
+                }
+            };
+            
+            timestampAuto.addEventListener('change', () => {
+                toggleTimestampInput();
+                this.updatePreview();
+                this.manager.saveToLocalStorage();
+            });
+            
+            timestampEnabled.addEventListener('change', () => {
+                toggleTimestampInput();
+                this.updatePreview();
+                this.manager.saveToLocalStorage();
+            });
+            
+            // Initial state
+            toggleTimestampInput();
+        }
     }
 
     addFieldToContainer(fieldsContainer, fieldData = {}) {
@@ -398,7 +432,6 @@ export class WebUIInterface {
         fieldItem.className = 'field-item';
         fieldItem.innerHTML = `
             <div class="field-item-header">
-                <span>Field</span>
                 <div class="embed-item-controls">
                     <button class="collapse-toggle" title="Toggle collapse">▼</button>
                     <button class="btn btn-remove">Remove</button>

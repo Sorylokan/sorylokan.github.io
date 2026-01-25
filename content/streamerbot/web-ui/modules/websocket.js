@@ -176,6 +176,17 @@ export class WebUIWebSocket {
             throw new Error('Webhook URL is required');
         }
         
+        // Replace auto timestamps with current time for testing
+        let testPayload = JSON.parse(JSON.stringify(payload)); // Deep clone
+        if (testPayload.embeds) {
+            testPayload.embeds = testPayload.embeds.map(embed => {
+                if (embed.timestamp === '__AUTO_TIMESTAMP__') {
+                    embed.timestamp = new Date().toISOString();
+                }
+                return embed;
+            });
+        }
+        
         // Add ?wait=true for response
         const testUrl = webhookUrl.includes('?wait=true') ? webhookUrl : 
                        webhookUrl + (webhookUrl.includes('?') ? '&wait=true' : '?wait=true');
@@ -186,7 +197,7 @@ export class WebUIWebSocket {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(testPayload)
             });
             
             let responseData = null;
