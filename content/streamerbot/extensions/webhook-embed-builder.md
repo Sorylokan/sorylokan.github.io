@@ -1,4 +1,4 @@
-<div class="center icon"><img src="../web-ui/WEBWUI_Icon.svg" alt="WEB UI Logo" title="Webhook Embed Builder"></div>
+<div class="center icon"><img src="https://sorylokan.github.io/content/streamerbot/web-ui/WEBWUI_Icon.svg" alt="WEB UI Logo" title="Webhook Embed Builder"></div>
 <div class="center">
 
 # **Webhook Embed Builder with User Interface • [WEB•UI]**
