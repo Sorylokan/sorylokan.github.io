@@ -1,23 +1,27 @@
 # Bienvenue 👋
 
-Portail unique vers mes univers : outils Streamer.bot, overlays streaming, créations Minecraft et projets annexes.
+Portail unique vers mes univers : outils Streamer.bot, overlays streaming, créations Minecraft et projets annexes. Choisis ton hub et explore.
 
 ---
 
 ## Accès rapide
 
-{"Streamer.bot"-p}(?p=content/streamerbot/index) {"Streaming & Overlays"-n}(?p=content/streaming/index) {"Minecraft"-s}(?p=content/minecraft/index)
-
-{"Projets"-n}(?p=content/projects/index) {"À propos"-g}(?p=about)
+{"StreamerBot"-p}(?p=content/streamerbot/index) {"Streaming & Overlays"-n}(?p=content/streaming/index) {"Minecraft"-s}(?p=content/minecraft/index) | {"Projets"-n}(?p=content/projects/index) {"À propos"-g}(?p=about)
 
 ---
 
 ## En ce moment
 
-- Extension : {"Webhook Embed Builder"-n}(?p=content/streamerbot/extensions/webhook-embed-builder) — webhooks Discord
-- Kit : {"Essential Starter Kit"-s}(?p=content/streamerbot/extensions/essential-starter-kit) — starter pack Streamer.bot
+- Extension : {"Webhook Embed Builder"-n}(?p=content/streamerbot/extensions/webhook-embed-builder) — webhooks builder Web UI
 
 ---
+
+## Explorer selon tes besoins
+
+- Streamer.bot : actions, packs et outils classés par usage. {"Voir les extensions"-p}(?p=content/streamerbot/index)
+- Streaming : overlays et montage vidéo prêts à l’emploi. {"Découvrir"-n}(?p=content/streaming/index)
+- Minecraft : builds et resource packs sélectionnés. {"Visiter"-s}(?p=content/minecraft/index)
+- Projets annexes : idées en cours et chantiers transverses. {"En savoir plus"-n}(?p=content/projects/index)
 
 ## Live
 

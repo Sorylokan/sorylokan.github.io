@@ -1,48 +1,65 @@
-# I'm working on it, this page is incomplete.
-
----
-
 # À propos de moi • <img src="https://images.emojiterra.com/twitter/v14.0/1024px/1f1eb-1f1f7.png" width="30px">
 
-Salut, mon nom c'est Valentin mais appelez-moi Sorylokan !
+Salut, moi c’est Valentin — mais ici on me connaît sous le pseudo Sorylokan.
 
-Ce site est un petit projet d'essai et de découverte pour apprendre le frontend aidé par l'IA Copilot... Et ouais j'y connais rien en Dev et j'apprend en complète autonomie, et l'IA m'aide vraiment beaucoup à apprendre mon propre rythme.<br/>
-<br/>
-Bref, bienvenue sur mon petit site perso !
-En somme je suis un petit bidouilleur d'internet, plutôt polyvalent :
+Ce site est mon terrain de jeu pour apprendre le front-end (aidé par Copilot), partager des créations et centraliser mes projets.
 
-* Design graphique (logos, overlays OBS)
-* Streamer à mes heures (quand j'ai pas la flemme)
-* Réalisation de script et extensions pour Streamer.bot
-* Builder Minecraft (Ah, quest-ce que j'aime ce jeu)
+### Ce que je fais
+- Design graphique (logos, overlays OBS)
+- Streaming à mes heures
+- Scripts et extensions pour Streamer.bot
+- Builds et resource packs sur Minecraft
 
-## Où me retrouver
+### Ce que tu trouveras ici
+- Un moteur unique (SPA) et plusieurs hubs thématiques :
+	- {"Streamer.bot"-p}(?p=content/streamerbot/index) — extensions et outils
+	- {"Streaming & Overlays"-n}(?p=content/streaming/index) — overlays et montage
+	- {"Minecraft"-s}(?p=content/minecraft/index) — packs et builds
+	- {"Projets annexes"-g}(?p=content/projects/index) — idées en cours
 
-Vous pouvez retrouver une bonne partie de mes réalisations sur ce site, Au cas où vous ne trouveriez pas votre compte ici, je vous redirige sur mes résaux sociaux; vous pouvez me poser la question directement !
+:::info
+Tu peux naviguer sans ouvrir de fichiers bruts : toutes les pages passent par le routing `?p=...`.
+:::
 
 ### Mes liens
-
 > {"Bluesky"-n}(https://bsky.app/profile/sorylokan.bsky.social)
 > {"Twitch"-p}(https://twitch.tv/sorylokan)
-> {"Youtube"-g}(https://www.youtube.com/@sorylokan)
-> {"Kofi"-n}(https://ko-fi.com/sorylokan)
-> {"Twitter (x)"-s}(https://x.com/Sorylokan_off)
+> {"YouTube"-g}(https://www.youtube.com/@sorylokan)
+> {"Ko-fi"-n}(https://ko-fi.com/sorylokan)
+> {"Twitter (X)"-s}(https://x.com/Sorylokan_off)
+
+:::success
+Envie de discuter ou proposer un projet ? {"Contact"-s}(https://twitch.tv/sorylokan)
+:::
 
 ***
 
 # About Me • <img src="https://images.emojiterra.com/twitter/v14.0/1024px/1f1ec-1f1e7.png" width="30px">
 
-Hi, my name is Valentin, but call me Sorylokan!
+Hi, I’m Valentin — online I go by Sorylokan.
 
-This site is a small trial and discovery project to learn front-end development with the help of Copilot AI... And yeah, I don't know anything about development and I'm learning completely independently, and the AI really helps me learn at my own level and at my own pace.<br/>
-<br/>
-Anyway, welcome to my little personal site! In short, I'm a bit of an internet tinkerer, quite versatile:
+This site is my playground to learn front‑end (with Copilot), share creations, and centralize projects.
 
-* Graphic design (logos, OBS overlays)
-* Streaming in my spare time (when I'm not lazy)
-* Scripting and extensions for Streamer.bot
-* Minecraft builder (Ah, how I love that game)
+### What I do
+- Graphic design (logos, OBS overlays)
+- Occasional streaming
+- Streamer.bot scripts and extensions
+- Minecraft builds and resource packs
 
-## Where to find me
+### What you’ll find
+- A single SPA engine hosting several hubs:
+	- {"Streamer.bot"-p}(?p=content/streamerbot/index) — extensions & tools
+	- {"Streaming & Overlays"-n}(?p=content/streaming/index) — overlays & editing
+	- {"Minecraft"-s}(?p=content/minecraft/index) — packs & builds
+	- {"Side Projects"-g}(?p=content/projects/index) — experiments in progress
 
-You can find a good portion of my work on this site. In case you can't find what you're looking for here, I'll redirect you to my social media; you can ask me directly!
+### Links
+> {"Bluesky"-n}(https://bsky.app/profile/sorylokan.bsky.social)
+> {"Twitch"-p}(https://twitch.tv/sorylokan)
+> {"YouTube"-g}(https://www.youtube.com/@sorylokan)
+> {"Ko-fi"-n}(https://ko-fi.com/sorylokan)
+> {"Twitter (X)"-s}(https://x.com/Sorylokan_off)
+
+:::success
+Ping me if you want to chat or collaborate: {"Contact"-s}(https://twitch.tv/sorylokan)
+:::
