@@ -7,8 +7,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/13.0.1/markdown-it.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/markdown-it-container@3.0.0/dist/markdown-it-container.min.js"></script>
     <script src="https://embed.twitch.tv/embed/v1.js"></script>
-    <link rel="stylesheet" href="src/style-base.css">
-    <link rel="stylesheet" href="src/style-dark.css" id="theme-style">
+    <link rel="stylesheet" href="assets/css/core.css">
+    <link rel="stylesheet" href="assets/css/style-dark.css" id="theme-style">
+    <link rel="stylesheet" href="" id="hub-style">
 </head>
 <body>
     <nav>
@@ -37,6 +38,7 @@
                         </svg>
                     </div>
                 </div>
+                <div id="local-nav" class="local-nav"></div>
             </div>
         </div>
     </nav>
@@ -47,6 +49,15 @@
         </div>
     </main>
 
-    <script src="src/scripts.js"></script>
+    <!-- Modules JavaScript - Ordre important pour les dépendances -->
+    <script src="assets/js/modules/markdown.js"></script>
+    <script src="assets/js/modules/syntax-highlighting.js"></script>
+    <script src="assets/js/modules/ui.js"></script>
+    <script src="assets/js/modules/navigation.js"></script>
+    <script src="assets/js/modules/theme.js"></script>
+    <script src="assets/js/modules/integrations.js"></script>
+    <script src="assets/js/modules/app.js"></script>
+    <!-- Main entry point (peut être vide, modules gèrent tout) -->
+    <script src="assets/js/scripts.js"></script>
 </body>
 </html>

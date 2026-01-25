@@ -1,0 +1,15 @@
+[
+  { "label": "Accueil", "href": "?p=content/minecraft/index" },
+  {
+    "label": "Resource Packs",
+    "dropdown": [
+      { "label": "Mon pack", "href": "?p=content/minecraft/packs/mon-pack" }
+    ]
+  },
+  {
+    "label": "Builds",
+    "dropdown": [
+      { "label": "Tower of Astralis", "href": "?p=content/minecraft/builds/tower-of-astralis" }
+    ]
+  }
+]

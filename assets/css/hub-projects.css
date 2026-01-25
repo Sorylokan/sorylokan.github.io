@@ -1,0 +1,9 @@
+body[data-hub="projects"] {
+  --primary: #9c7bff;
+  --primary-hover: #b49bff;
+  --text-heading: #e1d8ff;
+}
+
+body[data-hub="projects"] .local-nav {
+  border-color: rgba(156, 123, 255, 0.35);
+}

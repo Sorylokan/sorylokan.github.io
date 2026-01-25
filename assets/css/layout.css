@@ -1,0 +1,518 @@
+/* CSS RESET */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* TRANSITIONS GLOBALES */
+*,
+*::before,
+*::after {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Exceptions pour les éléments avec transitions spécifiques */
+.theme-icon,
+.mobile-menu-toggle span,
+.copy-btn-container,
+.btn {
+    transition: all 0.2s ease;
+}
+
+/* BASE HTML */
+html {
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    overflow: hidden;
+}
+
+:root {
+    /* Hauteur cumulée du header fixe (nav + éventuelle nav locale) */
+    --nav-stack-height: 2.5rem;
+}
+
+/* ÉLÉMENTS DE BASE */
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    height: 100vh;
+    overflow: hidden;
+}
+
+body.has-local-nav {
+    --nav-stack-height: 5.4rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: inherit;
+}
+
+p, ul, ol, dl, dd, figure, blockquote {
+    margin: 0;
+}
+
+ul, ol {
+    list-style: none;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+button, input, select, textarea {
+    font: inherit;
+    border: 1px solid var(--border);
+    background: var(--bg-main);
+    color: var(--text-muted);
+}
+
+button {
+    cursor: pointer;
+    outline: none;
+}
+
+img, video {
+    max-width: 300px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 0.25rem;
+}
+
+img:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Classes utilitaires pour le contenu */
+.center {
+    text-align: center;
+}
+
+.icon img {
+    max-width: 50px !important;
+    max-height: 50px !important;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+}
+
+.center.icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+svg {
+    display: block;
+}
+
+/* LAYOUT */
+.container {
+    max-width: 1350px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* NAVIGATION */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    transition: background-color 0.3s ease, backdrop-filter 0.3s ease;
+}
+
+.nav-content {
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo a {
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 1.5rem;
+}
+
+.nav-link {
+    text-decoration: none;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+}
+
+/* CONTRÔLES (LANGUE + THÈME) */
+.controls-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.theme-toggle-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.theme-toggle-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+ 
+.theme-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+    transition: all 0.2s ease;
+}
+
+.theme-icon.hidden {
+    display: none;
+}
+
+/* CONTENU PRINCIPAL */
+main {
+    height: calc(100vh - var(--nav-stack-height));
+    overflow-y: auto;
+    padding: 2rem 0;
+    padding-top: 2rem;
+    margin-top: var(--nav-stack-height);
+    scrollbar-gutter: stable;
+}
+
+/* SCROLLBAR PERSONNALISÉE */
+main::-webkit-scrollbar {
+    width: 8px;
+}
+
+main::-webkit-scrollbar-track {
+    background: var(--scrollbar-track, rgba(0,0,0,0.1));
+    border-radius: 4px;
+}
+
+main::-webkit-scrollbar-thumb {
+    background: var(--scrollbar-thumb, rgba(0,0,0,0.3));
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover, rgba(0,0,0,0.5));
+}
+
+/* Scrollbar Firefox */
+main {
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb, rgba(0,0,0,0.3)) var(--scrollbar-track, rgba(0,0,0,0.1));
+}
+
+#content {
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: var(--shadow);
+}
+
+/* SÉPARATEURS HORIZONTAUX */
+hr {
+    border: none;
+    margin: 2rem 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--text-color), transparent);
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+}
+
+hr:hover {
+    opacity: 0.8;
+}
+
+/* Style 1 : Ligne simple avec dégradé (pour ---) */
+hr.hr-line {
+    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    height: 1px;
+}
+
+/* Style 2 : Étoiles décoratives (pour ***) */
+hr.hr-stars {
+    background: none;
+    height: 20px;
+    position: relative;
+    overflow: visible;
+}
+
+hr.hr-stars::before {
+    content: "✦ ✦ ✦";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--accent-color);
+    font-size: 1.2rem;
+    letter-spacing: 1rem;
+    background: var(--bg-color);
+    padding-left: 1rem;
+}
+
+hr.hr-stars::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--text-color), transparent);
+    opacity: 0.4;
+    z-index: -1;
+}
+
+/* Style 3 : Ligne pointillée épaisse (pour ___) */
+hr.hr-dots {
+    background: none;
+    border-top: 3px dotted var(--text-color);
+    opacity: 0.2;
+    height: 0;
+    border-radius: 0;
+}
+
+/* STYLES MARKDOWN */
+#content h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+#content h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 2rem 0 1rem;
+}
+
+#content h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 1.5rem 0 1rem;
+}
+
+#content ul, #content ol {
+    margin: 0.25rem 0;
+    padding-left: 1.5rem;
+}
+
+#content ul {
+    list-style: disc;
+}
+
+#content ol {
+    list-style: decimal;
+}
+
+#content ul ul {
+    list-style: circle;
+}
+
+#content ul ul ul {
+    list-style: square;
+}
+
+#content li {
+    margin-bottom: 0.5rem;
+}
+
+#content blockquote {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-left: 4px solid;
+    border-radius: 0.25rem;
+}
+
+/* ÉLÉMENTS DETAILS & SUMMARY */
+#content details {
+    margin: 1.5rem 0;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: var(--bg-content);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#content summary {
+    padding: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    background: var(--table-header-bg);
+    border-bottom: 1px solid var(--border);
+    transition: all 0.2s ease;
+    position: relative;
+    user-select: none;
+    list-style: none;
+}
+
+#content summary:hover {
+    background: var(--dropdown-hover);
+}
+
+#content summary::-webkit-details-marker,
+#content summary::marker {
+    display: none;
+}
+
+#content summary::before {
+    content: "▶";
+    position: absolute;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.2s ease;
+    color: var(--accent-color);
+    font-size: 0.9rem;
+}
+
+#content details[open] summary::before {
+    transform: translateY(-50%) rotate(90deg);
+}
+
+#content details p {
+    padding: 0.5rem;
+    margin-left: 1.5rem;
+    background: var(--dropdown-hover);
+    margin-bottom: 0;
+}
+
+/* TABLEAUX */
+#content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    background: var(--bg-content);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#content table th {
+    background: var(--table-header-bg, rgba(59, 130, 246, 0.1));
+    color: var(--table-header-text, var(--text-bright));
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-bottom: 2px solid var(--table-border, rgba(255, 255, 255, 0.1));
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+#content table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--table-border, rgba(255, 255, 255, 0.05));
+    color: var(--text-main);
+    vertical-align: top;
+}
+
+#content table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+#content table tbody tr:hover {
+    background: var(--table-row-hover, rgba(255, 255, 255, 0.03));
+}
+
+#content table tbody tr:nth-child(even) {
+    background: var(--table-row-alt, rgba(255, 255, 255, 0.015));
+}
+
+#content table tbody tr:nth-child(even):hover {
+    background: var(--table-row-hover, rgba(255, 255, 255, 0.03));
+}
+
+#content .table-wrapper {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+#content .table-wrapper table {
+    margin: 0;
+    box-shadow: none;
+    min-width: 600px;
+}
+
+#content table.compact th,
+#content table.compact td {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+}
+
+#content table.bordered {
+    border: 1px solid var(--table-border, rgba(255, 255, 255, 0.1));
+}
+
+#content table.bordered th,
+#content table.bordered td {
+    border-right: 1px solid var(--table-border, rgba(255, 255, 255, 0.05));
+}
+
+#content table.bordered th:last-child,
+#content table.bordered td:last-child {
+    border-right: none;
+}
+
+#content table .text-center { text-align: center; }
+#content table .text-right { text-align: right; }
+#content table .text-left { text-align: left; }
+
+#content table code {
+    background: var(--code-bg, rgba(255, 255, 255, 0.1));
+    padding: 0.125rem 0.25rem;
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
+    #content table { font-size: 0.875rem; }
+    #content table th, #content table td { padding: 0.5rem; }
+    #content .table-wrapper { margin: 1rem -1rem; border-radius: 0; }
+}
+
+.scroll-indicator {
+    display: none;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    padding: 0.5rem;
+    background: var(--table-header-bg);
+    border-radius: 0 0 0.5rem 0.5rem;
+    margin-top: -0.5rem;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .scroll-indicator { display: block; }
+}

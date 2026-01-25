@@ -1,0 +1,10 @@
+body[data-hub="streamerbot"] {
+  /* Align with global salmon theme used in About */
+  --primary: #FF7755;
+  --primary-hover: #FFA08A;
+  --text-heading: #FFA08A;
+}
+
+body[data-hub="streamerbot"] .local-nav {
+  border-color: rgba(255, 140, 55, 0.35);
+}
