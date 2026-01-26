@@ -22,7 +22,7 @@
     white-space: nowrap;
 }
 
-.spoiler:hover { background: var(--accent-color); }
+.spoiler:hover { background: var(--primary); }
 
 .spoiler.revealed {
     background: var(--code-bg, rgba(255, 255, 255, 0.1));
@@ -33,7 +33,7 @@
 
 .spoiler.revealed::before { display: none; }
 
-/* BOUTONS */
+/* BUTTONS */
 .btn {
     display: inline-block;
     padding: 0.25rem 0.5rem;
@@ -51,7 +51,7 @@
 .btn-primary { background: var(--btn-primary-bg); color: var(--btn-primary-text); }
 .btn-gray    { background: var(--btn-gray-bg);    color: var(--btn-gray-text); }
 
-/* ICÔNES DE COPIE */
+/* COPY ICONS */
 .copy-btn-container {
     position: relative;
     display: inline-block;
@@ -104,7 +104,7 @@
     visibility: visible;
 }
 
-/* STYLES DE CODE */
+/* CODE STYLES */
 #content code {
     font-family: 'Fira Code', 'Cascadia Code', 'Monaco', 'Menlo', 'Consolas', monospace;
     font-size: 0.875rem;
@@ -134,7 +134,7 @@
     overflow-x: auto;
 }
 
-/* COLORATION SYNTAXIQUE */
+/* SYNTAX HIGHLIGHTING */
 .keyword, .type, .string, .number, .comment,
 .yaml-key, .md-header, .md-code, .md-link,
 .md-bold, .md-italic, .html-tag, .html-attr,
@@ -177,7 +177,7 @@
     border-left: 4px solid;
 }
 
-/* MODAL LIENS EXTERNES */
+/* EXTERNAL LINKS MODAL */
 #popup-container {
     position: fixed;
     top: 0;
@@ -283,7 +283,7 @@
     }
 }
 
-/* SYSTÈME DE NAVIGATION DROPDOWN */
+/* DROPDOWN NAVIGATION SYSTEM */
 .nav-menu {
     display: flex;
     gap: 1.5rem;
@@ -360,7 +360,7 @@
 
 .dropdown-item:hover > .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
 
-/* NAVIGATION LOCALE PAR HUB */
+/* LOCAL NAVIGATION PER HUB */
 .local-nav { 
     display: none; 
     height: var(--local-nav-height); 
@@ -410,10 +410,10 @@
     .controls-wrapper { gap: 0.25rem; }
     .mobile-menu-toggle { display: flex; }
 
-    /* Cache la nav locale desktop sur mobile */
+    /* Hide desktop local nav on mobile */
     .local-nav { display: none !important; }
 
-    /* Tabs pour basculer entre nav globale et locale */
+    /* Tabs to switch between global and local nav */
     .mobile-nav-tabs {
         display: flex;
         gap: 0.5rem;
@@ -534,7 +534,7 @@
     }
 }
 
-/* INTÉGRATION TWITCH PLAYER */
+/* TWITCH PLAYER INTEGRATION */
 .twitch-container {
     width: 100%;
     max-width: 1540px;

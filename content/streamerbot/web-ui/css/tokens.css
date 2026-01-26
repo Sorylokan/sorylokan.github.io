@@ -1,5 +1,4 @@
 :root {
-    /* Palette copiée depuis sorylokan.github.io */
     --bg-main: #161B22;
     --bg-header: #1F262E;
     --bg-content: #2A313B;
@@ -13,18 +12,9 @@
     --secondary-hover: #C3D1E0;
     --shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 
-    /* Mapping vers les variables existantes de la feuille UI */
-    --color-dark-bg: var(--bg-main);
-    --color-panel-bg: var(--bg-header);
-    --color-sidebar-bg: var(--bg-content);
-    --color-primary: var(--primary);
-    --color-primary-hover: var(--primary-hover);
     --color-success: #57f287;
     --color-danger: #ed4245;
     --color-warning: #faa81a;
-    --color-text: var(--text-main);
-    --color-text-secondary: var(--secondary);
-    --color-text-muted: var(--text-muted);
     --color-border: rgba(255,255,255,0.03);
     --color-border-light: rgba(255,255,255,0.06);
     --radius: 6px;

@@ -1,9 +1,9 @@
 /* Light Theme */
 :root {
-  --primary: #E45D3D; /* accent fort, corail */
+  --primary: #E45D3D;
   --primary-hover: #FF7755;
 
-  --secondary: #4D6D9A; /* bleu-gris froid */
+  --secondary: #4D6D9A;
   --secondary-hover: #3D5980;
 
   --bg-main: #d8dddf;
@@ -17,18 +17,17 @@
 
   --shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   
-  /* Scrollbar custom pour thème clair */
   --scrollbar-track: rgba(0,0,0,0.05);
   --scrollbar-thumb: rgba(0,0,0,0.2);
   --scrollbar-thumb-hover: rgba(0,0,0,0.35);
   
-  /* Variables pour les boutons de langue */
+  /* Navigation & UI */
   --nav-hover: rgba(0,0,0,0.05);
   --dropdown-hover: rgba(0,0,0,0.05);
   --primary-bg: rgba(255, 119, 85, 0.1);
   --border: rgba(0,0,0,0.1);
   
-  /* Variables pour les tableaux - thème clair */
+  /* Tables */
   --table-header-bg: rgba(255, 119, 85, 0.1);
   --table-header-text: var(--text-bright);
   --table-border: rgba(0, 0, 0, 0.1);
@@ -36,12 +35,7 @@
   --table-row-alt: rgba(0, 0, 0, 0.015);
   --code-bg: rgba(0, 0, 0, 0.05);
   
-  /* Variables pour les séparateurs */
-  --accent-color: var(--primary);
-  --text-color: var(--text-main);
-  --bg-color: var(--bg-content);
-  
-  /* Variables pour les changelogs */
+  /* Changelog */
   --changelog-date: #6F42C1;
   --changelog-version: var(--primary);
   --changelog-new: #4A90E2;
@@ -50,7 +44,7 @@
   --changelog-fix: #FD7E14;
   --changelog-meta: #6C757D;
   
-  /* Variables pour les boutons */
+  /* Buttons */
   --btn-normal-bg: #1683f0bb;
   --btn-normal-text: var(--bg-content);
   --btn-success-bg: #13a04ebb;
@@ -61,7 +55,7 @@
   --btn-gray-text: var(--btn-normal-text);
 }
 
-/* Styles de base */
+/* BASE STYLES */
 body {
     background-color: var(--bg-main);
     color: var(--text-main);
@@ -109,7 +103,7 @@ nav {
     color: var(--text-bright);
 }
 
-/* Styles pour les boutons de copie SVG */
+/* COPY BUTTONS */
 .copy-btn-icon {
     color: var(--text-muted);
 }
@@ -137,7 +131,7 @@ nav {
     border-color: #CCCCCC;
 }
 
-/* Coloration syntaxique */
+/* SYNTAX HIGHLIGHTING */
 .keyword {
     color: #4A90E2;
 }

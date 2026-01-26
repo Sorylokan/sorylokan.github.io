@@ -145,7 +145,7 @@ export class WebUIWebSocket {
                 JsonPayload: jsonString
             }
         };
-        
+
         this.ws.send(JSON.stringify(request));
         return { varName, jsonString };
     }
@@ -154,10 +154,9 @@ export class WebUIWebSocket {
         if (!this.wsConnected || !this.ws) {
             throw new Error('Not connected to Streamer.bot');
         }
-        
+
         const varName = this.globalVarName?.value || 'WEBWUI_WebhookPayload';
-        
-        // StreamerBot GetGlobal request format (correct syntax)
+
         const request = {
             request: 'GetGlobal',
             id: '2',
@@ -177,7 +176,7 @@ export class WebUIWebSocket {
         }
         
         // Replace auto timestamps with current time for testing
-        let testPayload = JSON.parse(JSON.stringify(payload)); // Deep clone
+        let testPayload = JSON.parse(JSON.stringify(payload));
         if (testPayload.embeds) {
             testPayload.embeds = testPayload.embeds.map(embed => {
                 if (embed.timestamp === '__AUTO_TIMESTAMP__') {
@@ -202,9 +201,12 @@ export class WebUIWebSocket {
             
             let responseData = null;
             try {
-                responseData = await response.json();
+                const text = await response.text();
+                if (text) {
+                    responseData = JSON.parse(text);
+                }
             } catch (e) {
-                // Response might not be JSON, that's ok
+                console.warn('Failed to parse webhook response as JSON:', e.message);
             }
             
             return {

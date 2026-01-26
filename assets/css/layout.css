@@ -5,14 +5,14 @@
     padding: 0;
 }
 
-/* TRANSITIONS GLOBALES */
+/* GLOBAL TRANSITIONS */
 *,
 *::before,
 *::after {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Exceptions pour les éléments avec transitions spécifiques */
+/* Exceptions for elements with specific transitions */
 .theme-icon,
 .mobile-menu-toggle span,
 .copy-btn-container,
@@ -27,14 +27,14 @@ html {
     overflow: hidden;
 }
 
-/* Hauteurs nav globales (nav seule + nav locale) */
+/* Global nav heights (main nav + local nav) */
 :root {
     --nav-height: 3.5rem;
     --local-nav-height: 0rem;
     --nav-stack-height: calc(var(--nav-height) + var(--local-nav-height));
 }
 
-/* ÉLÉMENTS DE BASE */
+/* BASE ELEMENTS */
 body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -46,13 +46,6 @@ body {
 
 body.has-local-nav {
     --local-nav-height: 3rem;
-}
-
-@media (max-width: 768px) {
-    /* Sur mobile, ne pas réserver de place pour la nav locale afin qu'elle ne masque pas le contenu */
-    body.has-local-nav {
-        --local-nav-height: 0rem;
-    }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -98,7 +91,7 @@ img:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-/* Classes utilitaires pour le contenu */
+/* Utility classes for content */
 .center {
     text-align: center;
 }
@@ -164,7 +157,7 @@ nav {
     transition: all 0.2s;
 }
 
-/* CONTRÔLES (LANGUE + THÈME) */
+/* CONTROLS (LANGUAGE + THEME) */
 .controls-wrapper {
     display: flex;
     align-items: center;
@@ -200,7 +193,7 @@ nav {
     display: none;
 }
 
-/* CONTENU PRINCIPAL */
+/* MAIN CONTENT */
 main {
     height: calc(100vh - var(--nav-stack-height));
     overflow-y: auto;
@@ -210,7 +203,7 @@ main {
     scrollbar-gutter: stable;
 }
 
-/* SCROLLBAR PERSONNALISÉE */
+/* CUSTOM SCROLLBAR */
 main::-webkit-scrollbar {
     width: 8px;
 }
@@ -242,12 +235,12 @@ main {
     box-shadow: var(--shadow);
 }
 
-/* SÉPARATEURS HORIZONTAUX */
+/* HORIZONTAL SEPARATORS */
 hr {
     border: none;
     margin: 2rem 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, var(--text-color), transparent);
+    background: linear-gradient(90deg, transparent, var(--text-main), transparent);
     opacity: 0.6;
     transition: opacity 0.3s ease;
 }
@@ -256,13 +249,11 @@ hr:hover {
     opacity: 0.8;
 }
 
-/* Style 1 : Ligne simple avec dégradé (pour ---) */
 hr.hr-line {
-    background: linear-gradient(90deg, transparent, var(--accent-color), transparent);
+    background: linear-gradient(90deg, transparent, var(--primary), transparent);
     height: 1px;
 }
 
-/* Style 2 : Étoiles décoratives (pour ***) */
 hr.hr-stars {
     background: none;
     height: 20px;
@@ -276,10 +267,10 @@ hr.hr-stars::before {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    color: var(--accent-color);
+    color: var(--primary);
     font-size: 1.2rem;
     letter-spacing: 1rem;
-    background: var(--bg-color);
+    background: var(--bg-content);
     padding-left: 1rem;
 }
 
@@ -290,15 +281,14 @@ hr.hr-stars::after {
     left: 0;
     right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, var(--text-color), transparent);
+    background: linear-gradient(90deg, transparent, var(--text-main), transparent);
     opacity: 0.4;
     z-index: -1;
 }
 
-/* Style 3 : Ligne pointillée épaisse (pour ___) */
 hr.hr-dots {
     background: none;
-    border-top: 3px dotted var(--text-color);
+    border-top: 3px dotted var(--text-main);
     opacity: 0.2;
     height: 0;
     border-radius: 0;
@@ -356,7 +346,7 @@ hr.hr-dots {
     border-radius: 0.25rem;
 }
 
-/* ÉLÉMENTS DETAILS & SUMMARY */
+/* DETAILS & SUMMARY ELEMENTS */
 #content details {
     margin: 1.5rem 0;
     border: 1px solid var(--border);
@@ -394,7 +384,7 @@ hr.hr-dots {
     top: 50%;
     transform: translateY(-50%);
     transition: transform 0.2s ease;
-    color: var(--accent-color);
+    color: var(--primary);
     font-size: 0.9rem;
 }
 
@@ -409,7 +399,7 @@ hr.hr-dots {
     margin-bottom: 0;
 }
 
-/* TABLEAUX */
+/* TABLES */
 #content table {
     width: 100%;
     border-collapse: collapse;
@@ -500,12 +490,6 @@ hr.hr-dots {
     font-size: 0.8rem;
 }
 
-@media (max-width: 768px) {
-    #content table { font-size: 0.875rem; }
-    #content table th, #content table td { padding: 0.5rem; }
-    #content .table-wrapper { margin: 1rem -1rem; border-radius: 0; }
-}
-
 .scroll-indicator {
     display: none;
     text-align: center;
@@ -522,6 +506,55 @@ hr.hr-dots {
     z-index: 10;
 }
 
+/* RESPONSIVE MOBILE */
 @media (max-width: 768px) {
-    .scroll-indicator { display: block; }
+    /* Navigation */
+    body.has-local-nav {
+        --local-nav-height: 0rem;
+    }
+    
+    /* Layout & Content */
+    .container {
+        padding: 0 0.75rem;
+    }
+    
+    #content {
+        padding: 1rem 1rem;
+    }
+    
+    /* Headings */
+    #content h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    #content h2 {
+        font-size: 1.375rem;
+        margin: 1.5rem 0 0.75rem;
+    }
+    
+    #content h3 {
+        font-size: 1.125rem;
+        margin: 1.25rem 0 0.75rem;
+    }
+    
+    /* Tables */
+    #content table {
+        font-size: 0.875rem;
+    }
+    
+    #content table th,
+    #content table td {
+        padding: 0.5rem;
+    }
+    
+    #content .table-wrapper {
+        margin: 1rem -1rem;
+        border-radius: 0;
+    }
+    
+    /* Scroll Indicator */
+    .scroll-indicator {
+        display: block;
+    }
 }
