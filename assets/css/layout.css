@@ -27,9 +27,11 @@ html {
     overflow: hidden;
 }
 
+/* Hauteurs nav globales (nav seule + nav locale) */
 :root {
-    /* Hauteur cumulée du header fixe (nav + éventuelle nav locale) */
-    --nav-stack-height: 2.5rem;
+    --nav-height: 3.5rem;
+    --local-nav-height: 0rem;
+    --nav-stack-height: calc(var(--nav-height) + var(--local-nav-height));
 }
 
 /* ÉLÉMENTS DE BASE */
@@ -43,7 +45,14 @@ body {
 }
 
 body.has-local-nav {
-    --nav-stack-height: 5.4rem;
+    --local-nav-height: 3rem;
+}
+
+@media (max-width: 768px) {
+    /* Sur mobile, ne pas réserver de place pour la nav locale afin qu'elle ne masque pas le contenu */
+    body.has-local-nav {
+        --local-nav-height: 0rem;
+    }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -130,7 +139,7 @@ nav {
 }
 
 .nav-content {
-    height: 4rem;
+    height: var(--nav-height);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -195,8 +204,8 @@ nav {
 main {
     height: calc(100vh - var(--nav-stack-height));
     overflow-y: auto;
-    padding: 2rem 0;
-    padding-top: 2rem;
+    padding: 0.5rem 0;
+    padding-top: calc(var(--local-nav-height) + 0.5rem);
     margin-top: var(--nav-stack-height);
     scrollbar-gutter: stable;
 }

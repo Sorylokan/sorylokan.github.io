@@ -45,17 +45,31 @@ async function initNavigation() {
         const navData = await response.json();
         
         // Générer le HTML de navigation
-        const navMenu = document.getElementById('nav-menu');
-        navMenu.innerHTML = generateNavHTML(navData);
+        if (window.innerWidth <= 768) {
+            // Sur mobile, injecter dans le panel global
+            const mobileGlobalNav = document.getElementById('mobile-global-nav');
+            if (mobileGlobalNav) {
+                mobileGlobalNav.innerHTML = generateNavHTML(navData);
+            }
+        } else {
+            // Sur desktop, injecter directement dans nav-menu
+            const navMenu = document.getElementById('nav-menu');
+            navMenu.innerHTML = generateNavHTML(navData);
+        }
         
         setupNavigationEvents();
         
     } catch (error) {
         console.error('Erreur lors du chargement de la navigation:', error);
         // Fallback navigation statique
-        document.getElementById('nav-menu').innerHTML = `
-            <div class="nav-item"><a href="?p=about" class="nav-link">À propos</a></div>
-        `;
+        const target = window.innerWidth <= 768 ? 
+            document.getElementById('mobile-global-nav') : 
+            document.getElementById('nav-menu');
+        if (target) {
+            target.innerHTML = `
+                <div class="nav-item"><a href="?p=about" class="nav-link">À propos</a></div>
+            `;
+        }
     }
 }
 
@@ -104,16 +118,26 @@ function generateDropdownHTML(dropdownItems) {
 }
 
 // ÉVÉNEMENTS DE NAVIGATION
+let navigationEventsSetup = false;
+
 function setupNavigationEvents() {
+    // Éviter les event listeners dupliqués
+    if (navigationEventsSetup) return;
+    navigationEventsSetup = true;
+    
     const mobileToggle = document.getElementById('mobile-menu-toggle');
     const navMenu = document.getElementById('nav-menu');
     
-    if (mobileToggle) {
+    if (mobileToggle && !mobileToggle._clickHandlerAttached) {
+        mobileToggle._clickHandlerAttached = true;
         mobileToggle.addEventListener('click', () => {
             mobileToggle.classList.toggle('active');
             navMenu.classList.toggle('active');
         });
     }
+    
+    // Setup mobile tabs switching
+    setupMobileTabs();
     
     if (window.innerWidth <= 768) {
         setupMobileDropdowns();
@@ -138,15 +162,44 @@ function setupNavigationEvents() {
     });
 }
 
+// Setup mobile tabs for switching between global and local nav
+function setupMobileTabs() {
+    const tabButtons = document.querySelectorAll('.mobile-tab-btn');
+    const tabPanels = document.querySelectorAll('.mobile-tab-panel');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.getAttribute('data-tab');
+            
+            // Update buttons
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            
+            // Update panels
+            tabPanels.forEach(panel => panel.classList.remove('active'));
+            const targetPanel = document.getElementById(`mobile-${targetTab}-nav`);
+            if (targetPanel) {
+                targetPanel.classList.add('active');
+            }
+        });
+    });
+}
+
 // NAVIGATION LOCALE PAR HUB
 async function loadLocalNavigation(hub) {
-    const container = document.getElementById('local-nav');
-    if (!container) return;
-
+    const desktopContainer = document.getElementById('local-nav');
+    const mobileContainer = document.getElementById('mobile-local-nav');
+    
     if (!hub) {
-        container.innerHTML = '';
-        container.classList.remove('visible');
+        if (desktopContainer) {
+            desktopContainer.innerHTML = '';
+            desktopContainer.classList.remove('visible');
+        }
+        if (mobileContainer) {
+            mobileContainer.innerHTML = '<div class="mobile-no-local-nav">Pas de navigation locale</div>';
+        }
         document.body.classList.remove('has-local-nav');
+        hideMobileLocalTab();
         return;
     }
 
@@ -155,14 +208,57 @@ async function loadLocalNavigation(hub) {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const navData = await response.json();
         const innerHtml = generateNavHTML(navData);
-        container.innerHTML = `<div class="local-nav-menu">${innerHtml}</div>`;
-        container.classList.add('visible');
+        
+        // Desktop
+        if (desktopContainer) {
+            desktopContainer.innerHTML = `<div class="local-nav-menu">${innerHtml}</div>`;
+            desktopContainer.classList.add('visible');
+        }
+        
+        // Mobile
+        if (mobileContainer) {
+            mobileContainer.innerHTML = innerHtml;
+        }
+        
         document.body.classList.add('has-local-nav');
+        showMobileLocalTab();
+        
+        // Réinitialiser les dropdowns après injection de la nav locale
+        if (window.innerWidth <= 768) {
+            setupMobileDropdowns();
+        }
     } catch (error) {
         console.warn(`Navigation locale indisponible pour le hub ${hub}:`, error);
-        container.innerHTML = '';
-        container.classList.remove('visible');
+        if (desktopContainer) {
+            desktopContainer.innerHTML = '';
+            desktopContainer.classList.remove('visible');
+        }
+        if (mobileContainer) {
+            mobileContainer.innerHTML = '<div class="mobile-no-local-nav">Pas de navigation locale</div>';
+        }
         document.body.classList.remove('has-local-nav');
+        hideMobileLocalTab();
+    }
+}
+
+function showMobileLocalTab() {
+    const localTabBtn = document.querySelector('.mobile-tab-btn[data-tab="local"]');
+    if (localTabBtn) {
+        localTabBtn.style.display = 'block';
+    }
+}
+
+function hideMobileLocalTab() {
+    const localTabBtn = document.querySelector('.mobile-tab-btn[data-tab="local"]');
+    if (localTabBtn) {
+        localTabBtn.style.display = 'none';
+        // Switch to global tab if local was active
+        if (localTabBtn.classList.contains('active')) {
+            const globalTabBtn = document.querySelector('.mobile-tab-btn[data-tab="global"]');
+            if (globalTabBtn) {
+                globalTabBtn.click();
+            }
+        }
     }
 }
 
@@ -183,13 +279,20 @@ function applyHubStyles(hub) {
 }
 
 function setupMobileDropdowns() {
+    // Cleanup old event listeners first
+    cleanupMobileDropdowns();
+    
+    const mobileToggle = document.getElementById('mobile-menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    
     const hasDropdownItems = document.querySelectorAll('.nav-item.has-dropdown, .dropdown-item.has-dropdown');
     
     hasDropdownItems.forEach(item => {
         const link = item.querySelector(':scope > a');
         
-        link.replaceWith(link.cloneNode(true));
-        const newLink = item.querySelector(':scope > a');
+        // Créer un nouveau link sans les anciens listeners
+        const newLink = link.cloneNode(true);
+        link.replaceWith(newLink);
         
         newLink.addEventListener('click', (e) => {
             e.preventDefault();
@@ -202,6 +305,26 @@ function setupMobileDropdowns() {
             }
         });
     });
+    
+    // Fermer le menu quand on clique sur un lien de navigation (pas un dropdown)
+    const navLinks = navMenu.querySelectorAll('.nav-link, .nav-item > a:not([href="#"]), .dropdown-item > a:not([href="#"])');
+    navLinks.forEach(link => {
+        if (link.getAttribute('href') && link.getAttribute('href') !== '#') {
+            link.addEventListener('click', () => {
+                mobileToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            });
+        }
+    });
+    
+    // Fermer le menu quand on clique sur le logo
+    const logo = document.querySelector('.logo a');
+    if (logo) {
+        logo.addEventListener('click', () => {
+            mobileToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    }
 }
 
 function cleanupMobileDropdowns() {
