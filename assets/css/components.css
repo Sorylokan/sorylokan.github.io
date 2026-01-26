@@ -348,6 +348,7 @@
     position: absolute;
     right: 1rem;
     font-size: 0.7em;
+    padding-top: 0.25rem;
 }
 
 .dropdown-item .dropdown-menu {

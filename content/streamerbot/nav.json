@@ -3,27 +3,51 @@
   {
     "label": "Discord related",
     "dropdown": [
-      { "label": "Webhook Embed Builder", "href": "?p=content/streamerbot/extensions/webhook-embed-builder" },
-      { "label": "DscrdWWE: Resurgence", "href": "?p=content/streamerbot/extensions/dscrdwwe-resurgence" }
+      {
+        "label": "Webhook Embed Builder",
+        "href": "?p=content/streamerbot/extensions/webhook-embed-builder",
+        "dropdown": [
+          {
+            "label": "Webhook Builder Interface",
+            "href": "https://sorylokan.github.io/content/streamerbot/web-ui/"
+          }
+        ]
+      },
+      {
+        "label": "DscrdWWE: Resurgence",
+        "href": "?p=content/streamerbot/extensions/dscrdwwe-resurgence"
+      }
     ]
   },
   {
     "label": "OBS related",
     "dropdown": [
-      { "label": "OBS Timer", "href": "?p=content/streamerbot/extensions/obs-timer" }
+      {
+        "label": "OBS Timer",
+        "href": "?p=content/streamerbot/extensions/obs-timer"
+      }
     ]
   },
   {
     "label": "StreamerBot kit",
     "dropdown": [
-      { "label": "Essential Starter Kit", "href": "?p=content/streamerbot/extensions/essential-starter-kit" }
+      {
+        "label": "Essential Starter Kit",
+        "href": "?p=content/streamerbot/extensions/essential-starter-kit"
+      }
     ]
   },
   {
     "label": "Music related",
     "dropdown": [
-      { "label": "MPVar", "href": "?p=content/streamerbot/extensions/mpvar" },
-      { "label": "YouTube Video Alert", "href": "?p=content/streamerbot/extensions/youtube-video-alert" }
+      {
+        "label": "MPVar",
+        "href": "?p=content/streamerbot/extensions/mpvar"
+      },
+      {
+        "label": "YouTube Video Alert",
+        "href": "?p=content/streamerbot/extensions/youtube-video-alert"
+      }
     ]
   }
 ]
