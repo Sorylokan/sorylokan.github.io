@@ -1,6 +1,4 @@
 // Webhook Embed Builder with User Interface • [WEB•UI] - Main Application Orchestrator
-// Modular architecture with separated responsibilities
-
 import { WebUIRenderer } from './modules/renderer.js';
 import { WebUIManager } from './modules/manager.js';
 import { WebUIWebSocket } from './modules/websocket.js';
@@ -27,7 +25,6 @@ class DiscordWebhookUI {
                 onError: (error) => this.handleConnectionError()
             });
 
-            // Initialize the interface with saved configuration
             this.ui.initialize();
 
             console.log('WEB•UI initialized successfully with modular architecture');
@@ -39,21 +36,20 @@ class DiscordWebhookUI {
 
     handleWebSocketMessage(data) {
         console.log('WebSocket message received:', data);
-        
-        // Handle GetGlobal responses
+
         if (data.id === '2') {
             try {
                 console.log('GetGlobal response:', data);
-                
+
                 if (data.variables && Object.keys(data.variables).length > 0) {
-                    // Get the first variable from the response
+                    // Get the first variable
                     const varName = Object.keys(data.variables)[0];
                     const variable = data.variables[varName];
-                    
+
                     if (variable && variable.value) {
                         const config = this.manager.importConfig(variable.value);
                         const embeds = this.manager.applyConfigToDOM(config);
-                        
+
                         // Recreate embeds in UI
                         const embedsContainer = document.getElementById('embedsContainer');
                         if (embedsContainer) {
@@ -65,7 +61,7 @@ class DiscordWebhookUI {
 
                         this.ui.updatePreview();
                         this.manager.saveToLocalStorage();
-                        
+
                         this.renderer.showNotification(`Loaded variable: ${varName}`, 'success');
                     } else {
                         this.renderer.showNotification(`Variable "${varName}" is empty or has no value`, 'warn');
@@ -78,7 +74,7 @@ class DiscordWebhookUI {
                 this.renderer.showNotification(`Failed to load variable: ${err.message}`, 'error');
             }
         }
-        
+
         // Handle DoAction responses
         if (data.id === '1') {
             if (data.error) {
@@ -91,19 +87,14 @@ class DiscordWebhookUI {
 
     handleDisconnection(wasActuallyConnected) {
         if (wasActuallyConnected) {
-            // Was connected before, now disconnected
             this.renderer.showNotification('Disconnected from Streamer.bot', 'warn');
         }
-        // If wasActuallyConnected is false, it means connection failed initially
-        // In that case, we don't show a disconnection notification
     }
 
     handleConnectionError() {
         if (!this.websocket.wsConnected && this.websocket.connectionAttempted) {
-            // Failed to connect initially
             this.renderer.showNotification('Unable to connect to Streamer.bot', 'error');
         } else {
-            // Other WebSocket errors
             this.renderer.showNotification('WebSocket error', 'error');
         }
     }
@@ -114,5 +105,4 @@ document.addEventListener('DOMContentLoaded', () => {
     window.webUI = new DiscordWebhookUI();
 });
 
-// Export for debugging purposes
 export { DiscordWebhookUI };

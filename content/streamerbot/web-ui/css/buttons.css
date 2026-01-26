@@ -48,3 +48,50 @@
 .button-group.vertical .btn { width: 100%; }
 
 .save-section { padding: 1rem; background-color: var(--bg-header); border-top: 1px solid var(--color-border); flex-shrink: 0; }
+
+.kofi-link {
+    color: var(--primary) !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    transition: var(--transition);
+    border: 1px solid transparent;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.kofi-link:hover {
+    color: var(--primary-hover) !important;
+    background-color: rgba(255, 119, 85, 0.1);
+    border-color: var(--primary);
+    transform: translateY(-1px);
+}
+
+.kofi-link:focus {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+}
+
+.kofi-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    flex-shrink: 0;
+}
+
+@keyframes kofi-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.kofi-link:hover .kofi-icon {
+    animation: kofi-pulse 0.6s ease-in-out;
+}

@@ -4,7 +4,7 @@ export class WebUIInterface {
         this.manager = manager;
         this.renderer = renderer;
         this.websocket = websocket;
-        
+
         this.initializeElements();
         this.attachEventListeners();
     }
@@ -14,17 +14,17 @@ export class WebUIInterface {
         this.connectBtn = document.getElementById('connectBtn');
         this.loadVarBtn = document.getElementById('loadVarBtn');
         this.testWebhookBtn = document.getElementById('testWebhookBtn');
-        
+
         // Message / info inputs
         this.msgContent = document.getElementById('msgContent');
         this.webhookUsername = document.getElementById('webhookUsername');
         this.webhookAvatarUrl = document.getElementById('webhookAvatarUrl');
         this.webhookUrl = document.getElementById('webhookUrl');
-        
+
         // Embeds controls
         this.addEmbedBtn = document.getElementById('addEmbedBtn');
         this.embedsContainer = document.getElementById('embedsContainer');
-        
+
         // Preview / JSON controls
         this.exportJsonBtn = document.getElementById('exportJsonBtn');
         this.importJsonBtn = document.getElementById('importJsonBtn');
@@ -32,7 +32,7 @@ export class WebUIInterface {
         this.saveBtn = document.getElementById('saveToStreamerBtn');
         this.copyJsonBtn = document.getElementById('copyJsonBtn');
         this.clearBtn = document.getElementById('clearBtn');
-        
+
         // Modals
         this.importModal = document.getElementById('importModal');
         this.clearModal = document.getElementById('clearModal');
@@ -40,7 +40,7 @@ export class WebUIInterface {
         this.importConfigModal = document.getElementById('importConfigModal');
         this.removeEmbedModal = document.getElementById('removeEmbedModal');
         this.removeFieldModal = document.getElementById('removeFieldModal');
-        
+
         // Store references for confirmation actions
         this._pendingAction = null;
         this._pendingTarget = null;
@@ -88,10 +88,10 @@ export class WebUIInterface {
 
     _attachInputListeners() {
         const inputFields = [this.msgContent, this.webhookUsername, this.webhookAvatarUrl, this.webhookUrl];
-        
+
         inputFields.forEach(el => {
             if (!el) return;
-            
+
             el.addEventListener('input', () => {
                 this.updateWebhookButtonState();
                 this.updatePreview();
@@ -140,11 +140,11 @@ export class WebUIInterface {
         // Import modal
         const importConfirm = document.getElementById('importConfirmBtn');
         const importCancel = document.getElementById('importCancelBtn');
-        
+
         if (importConfirm) {
             importConfirm.addEventListener('click', () => this.importJSON());
         }
-        
+
         if (importCancel) {
             importCancel.addEventListener('click', () => {
                 this.importModal?.classList.add('hidden');
@@ -155,7 +155,7 @@ export class WebUIInterface {
         // Clear modal
         const clearConfirm = document.getElementById('clearConfirmBtn');
         const clearCancel = document.getElementById('clearCancelBtn');
-        
+
         if (clearConfirm) {
             clearConfirm.addEventListener('click', () => {
                 this.manager.clearAll();
@@ -163,7 +163,7 @@ export class WebUIInterface {
                 this.updatePreview();
             });
         }
-        
+
         if (clearCancel) {
             clearCancel.addEventListener('click', () => {
                 this.clearModal?.classList.add('hidden');
@@ -174,7 +174,7 @@ export class WebUIInterface {
     _attachJsonCollapseListener() {
         const jsonCollapseBtn = document.getElementById('jsonCollapseBtn');
         const jsonContent = document.getElementById('jsonContent');
-        
+
         if (jsonCollapseBtn && jsonContent) {
             jsonCollapseBtn.addEventListener('click', () => {
                 const isCollapsed = jsonContent.classList.contains('collapsed');
@@ -196,13 +196,13 @@ export class WebUIInterface {
         document.querySelectorAll('.tab-content').forEach(t => {
             t.classList.remove('active');
         });
-        
+
         // Show selected tab
         const targetTab = document.querySelector(`[data-content="${tabName}"]`);
         if (targetTab) {
             targetTab.classList.add('active');
         }
-        
+
         // Update button states
         document.querySelectorAll('[data-tab]').forEach(btn => {
             if (btn.getAttribute('data-tab') === tabName) {
@@ -278,7 +278,7 @@ export class WebUIInterface {
 
         // Populate with data if provided
         this.populateEmbedContainer(container, data);
-        
+
         return container;
     }
 
@@ -289,31 +289,31 @@ export class WebUIInterface {
         if (data.title) container.querySelector('.emb-title').value = data.title;
         if (data.description) container.querySelector('.emb-desc').value = data.description;
         if (data.url) container.querySelector('.emb-url').value = data.url;
-        
+
         // Color
         if (data.color !== undefined && data.color !== null) {
             const colorValue = '#' + Number(data.color).toString(16).padStart(6, '0');
             container.querySelector('.emb-color').value = colorValue;
             container.querySelector('.emb-color-picker').value = colorValue;
         }
-        
+
         // Author
         if (data.author) {
             container.querySelector('.emb-author-name').value = data.author.name || '';
             container.querySelector('.emb-author-url').value = data.author.url || '';
             container.querySelector('.emb-author-icon').value = data.author.icon_url || '';
         }
-        
+
         // Footer
         if (data.footer) {
             container.querySelector('.emb-footer-text').value = data.footer.text || '';
             container.querySelector('.emb-footer-icon').value = data.footer.icon_url || '';
         }
-        
+
         // Images
         if (data.thumbnail) container.querySelector('.emb-thumbnail').value = data.thumbnail.url || '';
         if (data.image) container.querySelector('.emb-image').value = data.image.url || '';
-        
+
         // Timestamp
         if (data.timestamp) {
             container.querySelector('.emb-timestamp-enabled').checked = true;
@@ -323,7 +323,7 @@ export class WebUIInterface {
                 console.error('Invalid timestamp:', data.timestamp);
             }
         }
-        
+
         // Fields
         const fieldsContainer = container.querySelector('.embed-fields-container');
         if (data.fields && Array.isArray(data.fields)) {
@@ -367,7 +367,7 @@ export class WebUIInterface {
         // Color picker sync
         const colorInput = container.querySelector('.emb-color');
         const colorPicker = container.querySelector('.emb-color-picker');
-        
+
         if (colorInput && colorPicker) {
             colorInput.addEventListener('input', () => {
                 if (colorInput.value.startsWith('#')) {
@@ -376,7 +376,7 @@ export class WebUIInterface {
                 this.updatePreview();
                 this.manager.saveToLocalStorage();
             });
-            
+
             colorPicker.addEventListener('input', () => {
                 colorInput.value = colorPicker.value;
                 this.updatePreview();
@@ -388,18 +388,18 @@ export class WebUIInterface {
         const inputs = container.querySelectorAll('input, textarea');
         inputs.forEach(input => {
             if (input.type === 'color') return; // Already handled above
-            
+
             input.addEventListener('input', () => {
                 this.updatePreview();
                 this.manager.saveToLocalStorage();
             });
         });
-        
+
         // Timestamp auto checkbox - hide datetime-local when auto is checked
         const timestampAuto = container.querySelector('.emb-timestamp-auto');
         const timestampEnabled = container.querySelector('.emb-timestamp-enabled');
         const timestampInput = container.querySelector('.emb-timestamp');
-        
+
         if (timestampAuto && timestampEnabled && timestampInput) {
             const toggleTimestampInput = () => {
                 if (timestampAuto.checked) {
@@ -408,19 +408,19 @@ export class WebUIInterface {
                     timestampInput.style.display = timestampEnabled.checked ? 'block' : 'none';
                 }
             };
-            
+
             timestampAuto.addEventListener('change', () => {
                 toggleTimestampInput();
                 this.updatePreview();
                 this.manager.saveToLocalStorage();
             });
-            
+
             timestampEnabled.addEventListener('change', () => {
                 toggleTimestampInput();
                 this.updatePreview();
                 this.manager.saveToLocalStorage();
             });
-            
+
             // Initial state
             toggleTimestampInput();
         }
@@ -482,10 +482,10 @@ export class WebUIInterface {
     updatePreview() {
         const json = this.manager.buildJSON();
         const payload = json.payload || {};
-        
+
         const webhookUsername = this.webhookUsername?.value || 'WEB•UI - Announcement';
         const webhookAvatarUrl = this.webhookAvatarUrl?.value || 'WEBWUI_Icon.svg';
-        
+
         this.renderer.updatePreview(payload, webhookUsername, webhookAvatarUrl);
         this.renderer.updateJSONViewer(json);
         this._updateValidationDisplay(json.validation);
@@ -502,13 +502,13 @@ export class WebUIInterface {
 
         // Update test webhook button state
         this._updateWebhookButtonState(validation);
-        
+
         // Show validation notifications if there are errors
         if (validation.errors.length > 0) {
             const errorMsg = validation.errors.join('\n• ');
             console.warn('Payload validation errors:\n• ' + errorMsg);
         }
-        
+
         if (validation.warnings.length > 0) {
             const warningMsg = validation.warnings.join('\n• ');
             console.info('Payload validation warnings:\n• ' + warningMsg);
@@ -517,12 +517,12 @@ export class WebUIInterface {
 
     _updateWebhookButtonState(validation) {
         if (!this.testWebhookBtn) return;
-        
+
         const hasUrl = this.webhookUrl?.value?.trim();
         const isValid = validation && validation.isValid;
-        
+
         this.testWebhookBtn.disabled = !hasUrl || !isValid;
-        
+
         if (!hasUrl) {
             this.testWebhookBtn.title = 'Enter a Discord Webhook URL to test';
         } else if (!isValid) {
@@ -547,16 +547,16 @@ export class WebUIInterface {
 
         try {
             const json = this.manager.buildJSON();
-            
+
             // Check validation before sending
             if (!json.validation.isValid) {
                 const errorMsg = json.validation.errors.join('\n• ');
                 this.renderer.showNotification('Cannot send webhook:\n• ' + errorMsg, 'error');
                 return;
             }
-            
+
             const result = await this.websocket.testWebhookDirect(webhookUrl, json.payload);
-            
+
             if (result.ok) {
                 this.renderer.showNotification('Test webhook sent successfully! 📤', 'success');
             } else if (result.status === 401 || result.status === 404) {
@@ -578,23 +578,23 @@ export class WebUIInterface {
 
         try {
             const json = this.manager.buildJSON();
-            
+
             // Check validation before saving
             if (!json.validation.isValid) {
                 const errorMsg = json.validation.errors.join('\n• ');
                 this.renderer.showNotification('Cannot save invalid payload:\n• ' + errorMsg, 'error');
                 return;
             }
-            
+
             // Show warnings if any
             if (json.validation.warnings.length > 0) {
                 const warningMsg = json.validation.warnings.join('\n• ');
                 console.warn('Payload warnings:\n• ' + warningMsg);
             }
-            
+
             const processed = this.manager.processStreamerBotVariables(json);
             const result = this.websocket.sendPayloadToAction(processed);
-            
+
             this.renderer.showNotification('Payload sent to Streamer.bot action', 'success');
             console.log('Saved to Streamer.bot:', result);
         } catch (err) {
@@ -650,7 +650,7 @@ export class WebUIInterface {
 
             const config = this.manager.importConfig(jsonText);
             const embeds = this.manager.applyConfigToDOM(config);
-            
+
             // Recreate embeds
             if (this.embedsContainer) {
                 this.embedsContainer.innerHTML = '';
@@ -661,10 +661,10 @@ export class WebUIInterface {
 
             this.updatePreview();
             this.manager.saveToLocalStorageNow(); // Immediate save for import action
-            
+
             this.importModal?.classList.add('hidden');
             if (this.jsonImportArea) this.jsonImportArea.value = '';
-            
+
             this.renderer.showNotification('Configuration imported successfully', 'success');
         } catch (err) {
             this.renderer.showNotification(`Import failed: ${err.message}`, 'error');
@@ -675,7 +675,7 @@ export class WebUIInterface {
         try {
             const json = this.manager.buildJSON();
             const jsonString = JSON.stringify(json, null, 2);
-            
+
             navigator.clipboard.writeText(jsonString).then(() => {
                 this.renderer.showNotification('JSON copied to clipboard', 'success');
             }).catch(() => {
@@ -697,13 +697,13 @@ export class WebUIInterface {
         const config = this.manager.loadFromLocalStorage();
         if (config) {
             const embeds = this.manager.applyConfigToDOM(config);
-            
+
             // Recreate embeds
             if (embeds && embeds.length > 0) {
                 embeds.forEach(embedData => this.addEmbed(embedData));
             }
         }
-        
+
         this.updateWebhookButtonState();
         this.updatePreview();
     }
@@ -713,7 +713,7 @@ export class WebUIInterface {
         window.addEventListener('beforeunload', () => {
             this.manager.saveToLocalStorageNow();
         });
-        
+
         // Also save on page visibility change (tab switch, minimize, etc.)
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) {
@@ -726,43 +726,43 @@ export class WebUIInterface {
         // Load Config Modal
         const loadConfigConfirmBtn = document.getElementById('loadConfigConfirmBtn');
         const loadConfigCancelBtn = document.getElementById('loadConfigCancelBtn');
-        
+
         if (loadConfigConfirmBtn) {
             loadConfigConfirmBtn.addEventListener('click', () => {
                 this.loadConfigModal?.classList.add('hidden');
                 this._performLoadConfig();
             });
         }
-        
+
         if (loadConfigCancelBtn) {
             loadConfigCancelBtn.addEventListener('click', () => {
                 this.loadConfigModal?.classList.add('hidden');
                 this.renderer.showNotification('Load canceled', 'info');
             });
         }
-        
+
         // Import Config Modal
         const importConfigConfirmBtn = document.getElementById('importConfigConfirmBtn');
         const importConfigCancelBtn = document.getElementById('importConfigCancelBtn');
-        
+
         if (importConfigConfirmBtn) {
             importConfigConfirmBtn.addEventListener('click', () => {
                 this.importConfigModal?.classList.add('hidden');
                 this._performImportConfig();
             });
         }
-        
+
         if (importConfigCancelBtn) {
             importConfigCancelBtn.addEventListener('click', () => {
                 this.importConfigModal?.classList.add('hidden');
                 this.renderer.showNotification('Import canceled', 'info');
             });
         }
-        
+
         // Remove Embed Modal
         const removeEmbedConfirmBtn = document.getElementById('removeEmbedConfirmBtn');
         const removeEmbedCancelBtn = document.getElementById('removeEmbedCancelBtn');
-        
+
         if (removeEmbedConfirmBtn) {
             removeEmbedConfirmBtn.addEventListener('click', () => {
                 this.removeEmbedModal?.classList.add('hidden');
@@ -775,18 +775,18 @@ export class WebUIInterface {
                 }
             });
         }
-        
+
         if (removeEmbedCancelBtn) {
             removeEmbedCancelBtn.addEventListener('click', () => {
                 this.removeEmbedModal?.classList.add('hidden');
                 this._pendingTarget = null;
             });
         }
-        
+
         // Remove Field Modal
         const removeFieldConfirmBtn = document.getElementById('removeFieldConfirmBtn');
         const removeFieldCancelBtn = document.getElementById('removeFieldCancelBtn');
-        
+
         if (removeFieldConfirmBtn) {
             removeFieldConfirmBtn.addEventListener('click', () => {
                 this.removeFieldModal?.classList.add('hidden');
@@ -799,7 +799,7 @@ export class WebUIInterface {
                 }
             });
         }
-        
+
         if (removeFieldCancelBtn) {
             removeFieldCancelBtn.addEventListener('click', () => {
                 this.removeFieldModal?.classList.add('hidden');
@@ -814,7 +814,7 @@ export class WebUIInterface {
         const webhookUsername = document.getElementById('webhookUsername')?.value?.trim();
         const embedsContainer = document.getElementById('embedsContainer');
         const hasEmbeds = embedsContainer && embedsContainer.children.length > 0;
-        
+
         return !!(msgContent || webhookUrl || webhookUsername || hasEmbeds);
     }
 }

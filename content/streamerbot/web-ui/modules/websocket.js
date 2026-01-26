@@ -10,7 +10,7 @@ export class WebUIWebSocket {
             onMessage: null,
             onError: null
         };
-        
+
         // DOM elements for connection
         this.wsAddress = document.getElementById('wsAddress');
         this.wsPort = document.getElementById('wsPort');
@@ -31,15 +31,15 @@ export class WebUIWebSocket {
             console.warn('Already connected to WebSocket');
             return;
         }
-        
+
         const host = this.wsAddress?.value || 'ws://localhost';
         const port = this.wsPort?.value || '8080';
         const url = host.includes('://') ? `${host}:${port}` : `ws://${host}:${port}`;
-        
+
         try {
             this.connectionAttempted = true;
             this.ws = new WebSocket(url);
-            
+
             this.ws.addEventListener('open', () => {
                 this.wsConnected = true;
                 this.updateConnectionStatus();
@@ -47,11 +47,11 @@ export class WebUIWebSocket {
                     this.callbacks.onConnect();
                 }
             });
-            
+
             this.ws.addEventListener('message', (event) => {
                 this.handleMessage(event);
             });
-            
+
             this.ws.addEventListener('close', (event) => {
                 const wasActuallyConnected = this.wsConnected;
                 this.wsConnected = false;
@@ -61,14 +61,14 @@ export class WebUIWebSocket {
                     this.callbacks.onDisconnect(wasActuallyConnected);
                 }
             });
-            
+
             this.ws.addEventListener('error', (error) => {
                 console.error('WebSocket error:', error);
                 if (this.callbacks.onError) {
                     this.callbacks.onError(error);
                 }
             });
-            
+
         } catch (err) {
             console.error('Failed to create WebSocket connection:', err);
             this.connectionAttempted = false;
@@ -87,7 +87,7 @@ export class WebUIWebSocket {
         this.wsConnected = false;
         this.connectionAttempted = false;
         this.updateConnectionStatus();
-        
+
         // Trigger disconnect callback if we were actually connected
         if (wasConnected && this.callbacks.onDisconnect) {
             this.callbacks.onDisconnect(true);
@@ -98,11 +98,11 @@ export class WebUIWebSocket {
         if (this.wsStatusDot) {
             this.wsStatusDot.className = this.wsConnected ? 'status-dot online' : 'status-dot offline';
         }
-        
+
         if (this.wsStatusText) {
             this.wsStatusText.textContent = this.wsConnected ? 'Connected' : 'Disconnected';
         }
-        
+
         // Update connect button text
         const connectBtn = document.getElementById('connectBtn');
         if (connectBtn) {
@@ -114,7 +114,7 @@ export class WebUIWebSocket {
         try {
             const data = JSON.parse(event.data);
             console.log('WebSocket message received:', data);
-            
+
             if (this.callbacks.onMessage) {
                 this.callbacks.onMessage(data);
             }
@@ -127,12 +127,12 @@ export class WebUIWebSocket {
         if (!this.wsConnected || !this.ws) {
             throw new Error('Not connected to Streamer.bot');
         }
-        
+
         const varName = this.globalVarName?.value || 'WEBWUI_WebhookPayload';
         const jsonString = JSON.stringify(payload);
-        
+
         console.log('Sending to Streamer.bot:', { varName, jsonString });
-        
+
         // StreamerBot DoAction format
         const request = {
             request: 'DoAction',
@@ -163,10 +163,10 @@ export class WebUIWebSocket {
             variable: varName,
             persisted: true
         };
-        
+
         this.ws.send(JSON.stringify(request));
         console.log('Requested global variable:', varName);
-        
+
         return varName;
     }
 
@@ -174,7 +174,7 @@ export class WebUIWebSocket {
         if (!webhookUrl) {
             throw new Error('Webhook URL is required');
         }
-        
+
         // Replace auto timestamps with current time for testing
         let testPayload = JSON.parse(JSON.stringify(payload));
         if (testPayload.embeds) {
@@ -185,11 +185,11 @@ export class WebUIWebSocket {
                 return embed;
             });
         }
-        
+
         // Add ?wait=true for response
         const testUrl = webhookUrl.includes('?wait=true') ? webhookUrl : 
                        webhookUrl + (webhookUrl.includes('?') ? '&wait=true' : '?wait=true');
-        
+
         try {
             const response = await fetch(testUrl, {
                 method: 'POST',
@@ -198,7 +198,7 @@ export class WebUIWebSocket {
                 },
                 body: JSON.stringify(testPayload)
             });
-            
+
             let responseData = null;
             try {
                 const text = await response.text();
@@ -208,7 +208,7 @@ export class WebUIWebSocket {
             } catch (e) {
                 console.warn('Failed to parse webhook response as JSON:', e.message);
             }
-            
+
             return {
                 ok: response.ok,
                 status: response.status,
