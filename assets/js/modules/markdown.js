@@ -43,23 +43,23 @@ function setupCopyButtons() {
             navigator.clipboard.writeText(textToCopy)
                 .then(() => {
                     this.innerHTML = copyIcons.success;
-                    this.setAttribute('data-tooltip', 'Copié !');
+                    this.setAttribute('data-tooltip', 'Copied!');
                     this.querySelector('svg').style.color = '#28a745';
                     
                     setTimeout(() => {
                         this.innerHTML = copyIcons.normal;
-                        this.setAttribute('data-tooltip', 'Copier ?');
+                        this.setAttribute('data-tooltip', 'Copy?');
                         this.querySelector('svg').style.color = '';
                     }, 2500);
                 })
                 .catch(() => {
                     this.innerHTML = copyIcons.error;
-                    this.setAttribute('data-tooltip', 'Erreur !');
+                    this.setAttribute('data-tooltip', 'Error!');
                     this.querySelector('svg').style.color = '#dc3545';
                     
                     setTimeout(() => {
                         this.innerHTML = copyIcons.normal;
-                        this.setAttribute('data-tooltip', 'Copier ?');
+                        this.setAttribute('data-tooltip', 'Copy?');
                         this.querySelector('svg').style.color = '';
                     }, 2500);
                 });
@@ -97,7 +97,7 @@ async function loadContent(path) {
         
         html = html.replace(/<copybutton data-text="([^"]*)"[^>]*><\/copybutton>/g, (match, textToCopy) => {
             const decodedText = textToCopy.replace(/&quot;/g, '"');
-            return `<span class="copy-btn-container" data-copy="${decodedText}" data-tooltip="Copier ?">${copyIcons.normal}</span>`;
+            return `<span class="copy-btn-container" data-copy="${decodedText}" data-tooltip="Copy?">${copyIcons.normal}</span>`;
         });
         
         document.getElementById('content').innerHTML = html;
