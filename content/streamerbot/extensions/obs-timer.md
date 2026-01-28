@@ -1,4 +1,4 @@
-# **⌛ OBS Timer for StreamerBot**
+# **⌛ OBS Timer for Streamer.bot**
 ### **A Flexible Countdown Timer for Starting Soon and BRB Scenes**
 
 After weeks of tinkering, learning, and fine-tuning, I’m thrilled to share this timer script! :tada:  
@@ -7,9 +7,9 @@ I’m not a developer—just learning as I go—but I’ve built something funct
 ## **What This Timer Does**
 - **Perfect for Starting Soon or Pause Scenes**: Automatically display a countdown on OBS to inform your viewers.  
 - **Highly Customizable**: 
-  - Define your timer duration and actions directly in StreamerBot.  
+  - Define your timer duration and actions directly in Streamer.bot.  
   - Customize the appearance and style of the timer in OBS.  
-- **Flexible Triggering**: Activate the timer from any StreamerBot trigger—chat commands, channel points, subscriptions, or custom actions.  
+- **Flexible Triggering**: Activate the timer from any Streamer.bot trigger—chat commands, channel points, subscriptions, or custom actions.  
 - **Dynamic End Actions**: Automatically display a message, switch scenes, or restart the timer when it ends.  
 
 ## **How to Use It**
@@ -57,7 +57,7 @@ The timer stops automatically after reaching **-2:00** to avoid running indefini
 
 ## **Why You’ll Love It**
 - **Streamlined for Streamers**: Simplifies scene transitions and break management with automated countdowns.  
-- **Easy to Use**: Fully configurable within StreamerBot without modifying the script.  
+- **Easy to Use**: Fully configurable within Streamer.bot without modifying the script.  
 - **Collaborative and Open-Ended**: I built this while learning and am open to feedback to make it even better!  
 
 I’m looking forward to hearing what you think of this timer!  

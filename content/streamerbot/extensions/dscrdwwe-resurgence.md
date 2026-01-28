@@ -14,28 +14,28 @@
 > * **Webhook Embed Builder with User Interface • [WEB•UI]**
 
 Same idea, cleaner architecture, modern Web UI, and more flexibility.  
-👉 {"See the new project"-n}(?p=content/streamerbot/extensions/webhook-embed-builder)
+👉 {"See the new project"-n}(?p=content/streamer.bot/extensions/webhook-embed-builder)
 :::
 
 ***
 
-*Discord **W**ebhook **W**ith **E**mbed*, or, **DscrdWWE: Resurgence** is a powerful tool for automating the sending of **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **StreamerBot**. It allows you to create dynamic **embeds** and modify every detail on the fly!
+*Discord **W**ebhook **W**ith **E**mbed*, or, **DscrdWWE: Resurgence** is a powerful tool for automating the sending of **rich messages** on **Discord** via custom **webhooks**, designed to easily integrate with **Streamer.bot**. It allows you to create dynamic **embeds** and modify every detail on the fly!
 
 ---
 
 ## \# What makes DscrdWWE unique?
-**DscrdWWE: Resurgence** goes beyond simple Discord messages. With **DscrdWWE: Resurgence**, you get access to **advanced customization** of embeds via **StreamerBot**. You can update information in real-time, making announcements and interactions smoother.
+**DscrdWWE: Resurgence** goes beyond simple Discord messages. With **DscrdWWE: Resurgence**, you get access to **advanced customization** of embeds via **Streamer.bot**. You can update information in real-time, making announcements and interactions smoother.
 
 > DscrdWWE simplifies the automation of your Discord notifications, giving you complete control flexibility and allows you to adapt it to any communication needs with your community, without tedious manual management.
 
 ### Key Features:
 * **Full customization** of Discord messages **embeds**: content, title, description, links, images, colors, and more.
 * **Automatic editing**: Live the moment and share it with your community in real-time with this feature!
-* **Integration** with **StreamerBot**: Seamless automation for streamers and content creators. **DscrdWWE: Resurgence** takes into account all StreamerBot variables, making real-time modifications easy!
+* **Integration** with **Streamer.bot**: Seamless automation for streamers and content creators. **DscrdWWE: Resurgence** takes into account all Streamer.bot variables, making real-time modifications easy!
 
 ## \# How it works:
 **Setup**:
-* Import the plugin into StreamerBot.
+* Import the plugin into Streamer.bot.
 * Set the arguments to customize your messages and actions.
 > Example: Modify the title, description, or image in real-time with arguments.
 - Import DscrdWWE
@@ -64,7 +64,7 @@ Same idea, cleaner architecture, modern Web UI, and more flexibility.
 - Removed: Herobrine
 
 [10.10.24] # DscrdWWE: Resurgence (BETA-1.3) (Only on demand)
-* Changed: Complete code overhaul and full integration with StreamerBot
+* Changed: Complete code overhaul and full integration with Streamer.bot
 + Added: Advanced embed customization
 + Added: Message ID retrieval (no use)
 + Added: Custom logs for better troubleshooting
@@ -79,7 +79,7 @@ Same idea, cleaner architecture, modern Web UI, and more flexibility.
 - Removed: Herobrine
 
 [31.08.24] # DiscordWWE (v2.3)
-+ Added: Support for some StreamerBot Variables
++ Added: Support for some Streamer.bot Variables
 - Removed: Herobrine
 
 [25.08.24] # DiscordWebhookWithEmbed (v1) - Initial release!

@@ -1,8 +1,8 @@
 # **🎉 Essential Starter Kit**
 ### **_Basic Commands and Tools for Beginners_**
 
-A **turnkey kit** to get started with **StreamerBot** without any hassle. Whether you are:
-> - _A **beginner** who finds the StreamerBot interface somewhat intimidating,_
+A **turnkey kit** to get started with **Streamer.bot** without any hassle. Whether you are:
+> - _A **beginner** who finds the Streamer.bot interface somewhat intimidating,_
 > - _A **streamer in a hurry** who wants to configure quickly,_
 > - _Or a **professional procrastinator** who puts everything off until later..._
 
@@ -76,7 +76,7 @@ A **turnkey kit** to get started with **StreamerBot** without any hassle. Whethe
 
 ## **💡 Why wait?**
 With the **Essential Starter Kit**, you can:
-- Set up StreamerBot **in no time**.
+- Set up Streamer.bot **in no time**.
 - Avoid complexity and **unnecessary hassle**.
 - **Wow** your viewers with your first **interactive stream**!
 
