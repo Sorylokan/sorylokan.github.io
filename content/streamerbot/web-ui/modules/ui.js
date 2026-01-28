@@ -231,6 +231,12 @@ export class WebUIInterface {
                 </div>
             </div>
             <div class="embed-section">
+                <strong>Author</strong>
+                <input class="emb-author-name" placeholder="Name" maxlength="256">
+                <input class="emb-author-url" placeholder="URL">
+                <input class="emb-author-icon" placeholder="Icon URL">
+            </div>
+            <div class="embed-section">
                 <strong>Basic Info</strong>
                 <div class="basic-info-row">
                     <input class="emb-title" placeholder="Title" maxlength="256">
@@ -241,12 +247,6 @@ export class WebUIInterface {
                 </div>
                 <textarea class="emb-desc" placeholder="Description" rows="3" maxlength="4096"></textarea>
                 <input class="emb-url" placeholder="URL">
-            </div>
-            <div class="embed-section">
-                <strong>Author</strong>
-                <input class="emb-author-name" placeholder="Name" maxlength="256">
-                <input class="emb-author-url" placeholder="URL">
-                <input class="emb-author-icon" placeholder="Icon URL">
             </div>
             <div class="embed-section">
                 <strong>Fields</strong>

@@ -49,7 +49,7 @@ export class WebUIRenderer {
 
         // Title and description
         if (embed.title) {
-            html += `<div class="embed-title">${this.parseDiscordMarkdown(embed.title)}</div>`;
+            html += `<div class="embed-title">${this.escapeHtml(embed.title)}</div>`;
         }
         if (embed.description) {
             html += `<div class="embed-description">${this.parseDiscordMarkdown(embed.description).replace(/\n/g, '<br>')}</div>`;
@@ -60,7 +60,7 @@ export class WebUIRenderer {
             html += `<img src="${embed.thumbnail.url}" class="embed-thumbnail" onerror="this.style.display='none'">`;
         }
 
-        // Fields with proper inline/non-inline rendering
+        // Fields with inline/non-inline rendering
         if (embed.fields && embed.fields.length) {
             html += this._renderEmbedFields(embed.fields);
         }
@@ -92,8 +92,8 @@ export class WebUIRenderer {
                     html += '<div class="embed-fields">';
                     currentInlineGroup.forEach(inlineField => {
                         html += `<div class="embed-field">
-                            <div class="embed-field-name">${this.parseDiscordMarkdown(inlineField.name)}</div>
-                            <div class="embed-field-value">${this.parseDiscordMarkdown(inlineField.value).replace(/\n/g, '<br>')}</div>
+                            <div class="embed-field-name">${this.escapeHtml(inlineField.name)}</div>
+                            <div class="embed-field-value">${this.parseSmallOnly(inlineField.value).replace(/\n/g, '<br>')}</div>
                         </div>`;
                     });
                     html += '</div>';
@@ -101,8 +101,8 @@ export class WebUIRenderer {
                 }
             } else {
                 html += `<div class="embed-field">
-                    <div class="embed-field-name">${this.parseDiscordMarkdown(field.name)}</div>
-                    <div class="embed-field-value">${this.parseDiscordMarkdown(field.value).replace(/\n/g, '<br>')}</div>
+                    <div class="embed-field-name">${this.escapeHtml(field.name)}</div>
+                    <div class="embed-field-value">${this.parseSmallOnly(field.value).replace(/\n/g, '<br>')}</div>
                 </div>`;
                 currentInlineGroup = []; // Reset inline group
             }
@@ -118,7 +118,7 @@ export class WebUIRenderer {
             if (footer.icon_url) {
                 html += `<img src="${footer.icon_url}" class="embed-footer-icon" onerror="this.style.display='none'">`;
             }
-            html += `<span class="embed-footer-text">${this.parseDiscordMarkdown(footer.text)}</span>`;
+            html += `<span class="embed-footer-text">${this.escapeHtml(footer.text)}</span>`;
         }
 
         if (timestamp) {
@@ -151,11 +151,28 @@ export class WebUIRenderer {
         return div.innerHTML;
     }
 
+    parseSmallOnly(text) {
+        if (typeof text !== 'string') return '';
+        
+        // First escape HTML to prevent XSS
+        let result = this.escapeHtml(text);
+        
+        // Only parse -# for small text (Discord field value special formatting)
+        result = result.replace(/^-# (.+)$/gm, '<small>$1</small>');
+        
+        return result;
+    }
+
     parseDiscordMarkdown(text) {
         if (typeof text !== 'string') return '';
 
         // First escape HTML to prevent XSS
         let result = this.escapeHtml(text);
+
+        // Titles: # ## ### etc (consume trailing newline to avoid extra <br>)
+        result = result.replace(/^### (.*?)$\n?/gm, '<h3>$1</h3>');
+        result = result.replace(/^## (.*?)$\n?/gm, '<h2>$1</h2>');
+        result = result.replace(/^# (.*?)$\n?/gm, '<h1>$1</h1>');
 
         // Bold: **text** 
         result = result.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -201,17 +218,14 @@ export class WebUIRenderer {
         const notificationEl = document.getElementById('notification');
         if (!notificationEl) return;
 
-        // Clear existing timeout
         if (this._notifTimeout) {
             clearTimeout(this._notifTimeout);
         }
 
-        // Set message and type
         notificationEl.textContent = message;
         notificationEl.className = `notification ${type}`;
         notificationEl.classList.remove('hidden');
 
-        // Auto-hide after 3 seconds
         this._notifTimeout = setTimeout(() => {
             notificationEl.classList.add('hidden');
         }, 3000);

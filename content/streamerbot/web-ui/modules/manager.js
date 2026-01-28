@@ -452,14 +452,14 @@ export class WebUIManager {
     }
 
     clearAll() {
-        // Clear form fields
-        const fields = ['msgContent', 'webhookUsername', 'webhookAvatarUrl', 'webhookUrl'];
+        // Clear fields
+        const fields = ['msgContent', 'webhookUsername', 'webhookAvatarUrl', 'webhookUrl', 'globalVarName'];
         fields.forEach(fieldId => {
             const field = document.getElementById(fieldId);
             if (field) field.value = '';
         });
 
-        // Clear embeds container
+        // Clear embeds
         const embedsContainer = document.getElementById('embedsContainer');
         if (embedsContainer) {
             embedsContainer.innerHTML = '';
@@ -472,7 +472,6 @@ export class WebUIManager {
             console.error('Failed to clear localStorage:', err);
         }
 
-        // Reset internal config
         this.config = {
             msgContent: '',
             webhookUsername: '',

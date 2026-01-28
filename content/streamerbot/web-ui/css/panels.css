@@ -70,3 +70,54 @@
 .json-viewer pre { color: var(--secondary); white-space: pre-wrap; word-wrap: break-word; margin: 0; }
 
 .preview-header .btn { flex-shrink: 0; }
+
+/* Markdown titles styling for preview */
+.message-content h1,
+.message-content h2,
+.message-content h3,
+.embed-description h1,
+.embed-description h2,
+.embed-description h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.message-content h1 { 
+    font-size: 1.5rem; 
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+.message-content h2 { 
+    font-size: 1.25rem; 
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+.message-content h3 { 
+    font-size: 1rem; 
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+
+.embed-description h1 { 
+    font-size: 1.5rem; 
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+.embed-description h2 { 
+    font-size: 1.25rem; 
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+.embed-description h3 { 
+    font-size: 1rem; 
+    font-weight: 700;
+    margin: 16px 0 8px;
+}
+
+/* Small text formatting for field values (Discord -# syntax) */
+.embed-field-value small {
+    color: var(--text-subtle, var(--text-muted));
+    display: block;
+    font-size: 0.875rem;
+    line-height: 1.20313rem;
+}

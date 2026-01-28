@@ -50,7 +50,7 @@ class DiscordWebhookUI {
                         const config = this.manager.importConfig(variable.value);
                         const embeds = this.manager.applyConfigToDOM(config);
 
-                        // Recreate embeds in UI
+                        // Recreate embeds
                         const embedsContainer = document.getElementById('embedsContainer');
                         if (embedsContainer) {
                             embedsContainer.innerHTML = '';
@@ -100,7 +100,7 @@ class DiscordWebhookUI {
     }
 }
 
-// Initialize when DOM is ready
+// Initialize
 document.addEventListener('DOMContentLoaded', () => {
     window.webUI = new DiscordWebhookUI();
 });
