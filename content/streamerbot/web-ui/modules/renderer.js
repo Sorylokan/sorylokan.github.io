@@ -36,7 +36,7 @@ export class WebUIRenderer {
 
     renderEmbedPreview(embed) {
         const color = embed.color ? '#' + embed.color.toString(16).padStart(6, '0') : '#5865f2';
-        let html = `<div class="embed-preview" style="border-left: 4px solid ${color}">`;
+        let html = `<div class="embed-preview" style="border-left: 4px solid ${color}"><div class="embed-grid"><div class="embed-content">`;
 
         // Author section
         if (embed.author) {
@@ -55,10 +55,16 @@ export class WebUIRenderer {
             html += `<div class="embed-description">${this.parseDiscordMarkdown(embed.description).replace(/\n/g, '<br>')}</div>`;
         }
 
-        // Thumbnail
+        // Close content column
+        html += '</div>';
+
+        // Thumbnail in separate column
         if (embed.thumbnail && embed.thumbnail.url) {
-            html += `<img src="${embed.thumbnail.url}" class="embed-thumbnail" onerror="this.style.display='none'">`;
+            html += `<div class="embed-thumbnail-container"><img src="${embed.thumbnail.url}" class="embed-thumbnail" onerror="this.style.display='none'"></div>`;
         }
+
+        // Close grid, start fields
+        html += '</div>';
 
         // Fields with inline/non-inline rendering
         if (embed.fields && embed.fields.length) {

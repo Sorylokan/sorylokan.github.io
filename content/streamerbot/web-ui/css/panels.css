@@ -41,18 +41,16 @@
 .message-content { color: var(--text-main); font-size: 0.95rem; line-height: 1.5; white-space: pre-wrap; word-wrap: break-word; margin-bottom: 0.8rem; font-family: inherit; }
 
 .embed-preview { background-color: rgba(47, 49, 54, 0.3); border-left: 4px solid #5865f2; padding: 0.75rem; border-radius: 4px; margin: 0.5rem 0; max-width: 520px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05); }
+.embed-grid { display: grid; grid-template-columns: 1fr auto; gap: 0.8rem; }
+.embed-content { display: flex; flex-direction: column; min-width: 0; }
+.embed-thumbnail-container { display: flex; align-items: flex-start; }
 .embed-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
 .embed-author-icon { width: 24px; height: 24px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 .embed-author-name { color: var(--secondary); font-size: 0.75rem; font-weight: 500; }
 .embed-title { color: var(--text-main); font-weight: 700; font-size: 1rem; margin-bottom: 0.6rem; word-wrap: break-word; }
 .embed-description { color: var(--secondary); font-size: 0.9rem; line-height: 1.5; margin-bottom: 0.8rem; word-wrap: break-word; white-space: pre-wrap; font-family: inherit; }
-.embed-fields { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 0.8rem; }
-.embed-field { flex: 1; min-width: 150px; max-width: 33.333%; }
-.embed-field-full { margin-bottom: 0.8rem; }
-.embed-field-name { color: var(--text-main); font-weight: 600; font-size: 0.85rem; margin-bottom: 0.3rem; }
-.embed-field-value { color: var(--secondary); font-size: 0.85rem; word-wrap: break-word; white-space: pre-wrap; font-family: inherit; }
-.embed-image { width: 100%; max-width: 500px; border-radius: var(--radius-sm); margin-bottom: 0.8rem; }
-.embed-thumbnail { width: 80px; height: 80px; border-radius: 4px; object-fit: cover; float: right; margin-left: 1rem; margin-top: 0.5rem; }
+.embed-image { width: 100%; max-width: 500px; border-radius: var(--radius-sm); margin-bottom: 0.8rem; grid-column: 1 / -1; }
+.embed-thumbnail { width: 80px; height: 80px; border-radius: 4px; object-fit: cover; }
 .embed-footer { display: flex; align-items: center; gap: 0.6rem; color: var(--text-muted); font-size: 0.75rem; padding-top: 0.5rem; }
 .embed-footer-icon { width: 16px; height: 16px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
 
