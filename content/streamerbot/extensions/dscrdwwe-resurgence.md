@@ -14,7 +14,7 @@
 > * **Webhook Embed Builder with User Interface • [WEB•UI]**
 
 Same idea, cleaner architecture, modern Web UI, and more flexibility.  
-👉 {"See the new project"-n}(?p=content/streamer.bot/extensions/webhook-embed-builder)
+👉 {"See the new project"-n}(?p=content/streamerbot/extensions/webhook-embed-builder)
 :::
 
 ***
