@@ -31,6 +31,14 @@
                     <span id="wsStatusText">Disconnected</span>
                 </div>
                 <button id="connectBtn" class="btn btn-primary btn-sm">Connect</button>
+                <button id="theme-toggle" class="btn btn-icon" title="Toggle theme">
+                    <svg id="theme-toggle-dark-icon" class="theme-icon" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                    </svg>
+                    <svg id="theme-toggle-light-icon" class="theme-icon hidden" width="20" height="20" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                    </svg>
+                </button>
             </div>
             <div id="notification" class="notification hidden"></div>
         </header>
@@ -294,7 +302,7 @@
 
         <!-- Footer -->
         <footer class="footer">
-            <p><a href="https://streamer.bot" class="external-link footer-link"><img width="16" height="16" src="https://streamer.bot/favicon.ico" class="footer-icon" /> Streamer.bot</a> extension • <b>Webhook Embed Builder with User Interface • [WEB•UI]</b> v1.6 • by <b>Sorylokan</b> • <a href="https://ko-fi.com/sorylokan" class="external-link footer-link">
+            <p><a href="https://streamer.bot" class="external-link footer-link"><img width="16" height="16" src="https://streamer.bot/favicon.ico" class="footer-icon" /> Streamer.bot</a> extension • <b>Webhook Embed Builder with User Interface • [WEB•UI]</b> v2.3 • by <b>Sorylokan</b> • <a href="https://ko-fi.com/sorylokan" class="external-link footer-link">
                 <svg width="16" height="16" viewBox="0 0 48 48" fill="none" class="footer-icon">
                     <circle cx="24" cy="24" r="20" fill="#1196cc"/>
                     <path fill-rule="evenodd" clip-rule="evenodd" d="M32.531 16H15.262c-.697 0-1.262.565-1.262 1.262v11.643a2.524 2.524 0 0 0 2.524 2.524h11.918a2.524 2.524 0 0 0 2.523-2.524v-1.646h1.566A5.47 5.47 0 0 0 38 21.79v-.321A5.47 5.47 0 0 0 32.531 16m-1.565 8.34v-5.421h1.427a2.71 2.71 0 1 1 0 5.42zm-6.051-4.911q-2.187 0-2.772 1.71-.585-1.71-2.772-1.71c-2.187 0-2.998 2.72-1.852 4.5q1.147 1.779 4.624 4.5 3.478-2.721 4.623-4.5c1.147-1.78.336-4.5-1.851-4.5" fill="#fff"/>

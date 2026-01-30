@@ -79,27 +79,25 @@ export class WebUIManager {
         }
 
         // Timestamp
-        const timestampEnabled = container.querySelector('.emb-timestamp-enabled')?.checked;
-        const timestampAuto = container.querySelector('.emb-timestamp-auto')?.checked;
+        const timestampMode = container.querySelector('.emb-timestamp-mode')?.value;
 
-        if (timestampEnabled || timestampAuto) {
-            if (timestampAuto) {
-                // Use auto timestamp - placeholder for C# to replace
-                embed.timestamp = '__AUTO_TIMESTAMP__';
-            } else {
-                const timestampValue = container.querySelector('.emb-timestamp')?.value;
-                if (timestampValue) {
-                    try {
-                        embed.timestamp = new Date(timestampValue).toISOString();
-                    } catch (e) {
-                        // Invalid timestamp, use current time
-                        embed.timestamp = new Date().toISOString();
-                    }
-                } else {
+        if (timestampMode === 'auto') {
+            // Use auto timestamp - placeholder for C# to replace
+            embed.timestamp = '__AUTO_TIMESTAMP__';
+        } else if (timestampMode === 'custom') {
+            const timestampValue = container.querySelector('.emb-timestamp')?.value;
+            if (timestampValue) {
+                try {
+                    embed.timestamp = new Date(timestampValue).toISOString();
+                } catch (e) {
+                    // Invalid timestamp, use current time
                     embed.timestamp = new Date().toISOString();
                 }
+            } else {
+                embed.timestamp = new Date().toISOString();
             }
         }
+        // If timestampMode === 'none', don't set timestamp at all
 
         return embed;
     }

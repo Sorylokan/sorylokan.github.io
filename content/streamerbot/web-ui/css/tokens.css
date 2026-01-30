@@ -13,7 +13,7 @@
     --shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 
     --color-success: #57f287;
-    --color-danger: #ed4245;
+    --color-danger: #c20000;
     --color-warning: #faa81a;
     --color-border: rgba(255, 255, 255, 0.03);
     --color-border-light: rgba(255, 255, 255, 0.06);
@@ -21,4 +21,23 @@
     --radius-sm: 4px;
     --spacing: 1rem;
     --transition: all 0.18s ease;
+}
+
+/* Light Theme */
+:root[data-theme="light"] {
+    --bg-main: #d8dddf;
+    --bg-header: #e8ebeb;
+    --bg-content: #e8ebeb;
+    --text-main: #242423;
+    --text-muted: #333533;
+    --text-bright: #242423;
+    --text-heading: #E45D3D;
+    --primary: #E45D3D;
+    --primary-hover: #FF7755;
+    --secondary: #4D6D9A;
+    --secondary-hover: #3D5980;
+    --shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    --color-border: rgba(0, 0, 0, 0.1);
+    --color-border-light: rgba(0, 0, 0, 0.15);
 }

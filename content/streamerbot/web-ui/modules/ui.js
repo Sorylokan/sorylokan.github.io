@@ -241,9 +241,9 @@ export class WebUIInterface {
                 <strong>Basic Info</strong>
                 <div class="basic-info-row">
                     <input class="emb-title" placeholder="Title" maxlength="256">
-                    <div class="embed-row-color">
+                    <div class="color-picker-group">
+                        <input type="color" class="emb-color-picker" value="#3366ff">
                         <input class="emb-color" placeholder="#3366ff">
-                        <input type="color" class="emb-color-picker">
                     </div>
                 </div>
                 <textarea class="emb-desc" placeholder="Description" rows="3" maxlength="4096"></textarea>
@@ -265,15 +265,13 @@ export class WebUIInterface {
                 <input class="emb-footer-icon" placeholder="Footer icon URL">
             </div>
             <div class="embed-section">
-                <div style="display: flex; gap: 1rem; align-items: center;">
-                    <label>
-                        <input type="checkbox" class="emb-timestamp-enabled"> Set a timestamp
-                    </label>
-                    <label title="Timestamp will be set to the exact moment the webhook is sent">
-                        <input type="checkbox" class="emb-timestamp-auto"> Use current timestamp
-                    </label>
-                </div>
-                <input type="datetime-local" class="emb-timestamp">
+                <label>Timestamp</label>
+                <select class="emb-timestamp-mode">
+                    <option value="none">None</option>
+                    <option value="auto">Auto (sending time)</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <input type="datetime-local" class="emb-timestamp" style="display: none;">
             </div>
         `;
 
@@ -317,11 +315,17 @@ export class WebUIInterface {
 
         // Timestamp
         if (data.timestamp) {
-            container.querySelector('.emb-timestamp-enabled').checked = true;
-            try {
-                container.querySelector('.emb-timestamp').value = new Date(data.timestamp).toISOString().slice(0, 16);
-            } catch (e) {
-                console.error('Invalid timestamp:', data.timestamp);
+            const timestampMode = container.querySelector('.emb-timestamp-mode');
+            if (data.timestamp === '__AUTO_TIMESTAMP__') {
+                timestampMode.value = 'auto';
+            } else {
+                timestampMode.value = 'custom';
+                try {
+                    container.querySelector('.emb-timestamp').value = new Date(data.timestamp).toISOString().slice(0, 16);
+                    container.querySelector('.emb-timestamp').style.display = 'block';
+                } catch (e) {
+                    console.error('Invalid timestamp:', data.timestamp);
+                }
             }
         }
 
@@ -414,34 +418,20 @@ export class WebUIInterface {
             });
         });
 
-        // Timestamp auto checkbox - hide datetime-local when auto is checked
-        const timestampAuto = container.querySelector('.emb-timestamp-auto');
-        const timestampEnabled = container.querySelector('.emb-timestamp-enabled');
+        // Timestamp mode dropdown
+        const timestampMode = container.querySelector('.emb-timestamp-mode');
         const timestampInput = container.querySelector('.emb-timestamp');
 
-        if (timestampAuto && timestampEnabled && timestampInput) {
-            const toggleTimestampInput = () => {
-                if (timestampAuto.checked) {
-                    timestampInput.style.display = 'none';
+        if (timestampMode && timestampInput) {
+            timestampMode.addEventListener('change', () => {
+                if (timestampMode.value === 'custom') {
+                    timestampInput.style.display = 'block';
                 } else {
-                    timestampInput.style.display = timestampEnabled.checked ? 'block' : 'none';
+                    timestampInput.style.display = 'none';
                 }
-            };
-
-            timestampAuto.addEventListener('change', () => {
-                toggleTimestampInput();
                 this.updatePreview();
                 this.manager.saveToLocalStorage();
             });
-
-            timestampEnabled.addEventListener('change', () => {
-                toggleTimestampInput();
-                this.updatePreview();
-                this.manager.saveToLocalStorage();
-            });
-
-            // Initial state
-            toggleTimestampInput();
         }
     }
 
@@ -456,9 +446,14 @@ export class WebUIInterface {
                     <button class="btn btn-remove">Remove</button>
                 </div>
             </div>
-            <input class="field-name" placeholder="Name" maxlength="256">
+            <div class="field-name-row">
+                <input class="field-name" placeholder="Name" maxlength="256">
+                <label class="inline-checkbox-label">
+                    <input type="checkbox" class="field-inline" id="inline-${fid}">
+                    Inline
+                </label>
+            </div>
             <textarea class="field-value" rows="2" placeholder="Value" maxlength="1024"></textarea>
-            <label><input type="checkbox" class="field-inline" id="inline-${fid}"> Inline</label>
         `;
 
         // Set field data if provided

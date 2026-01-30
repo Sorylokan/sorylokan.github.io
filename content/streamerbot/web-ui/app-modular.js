@@ -3,6 +3,7 @@ import { WebUIRenderer } from './modules/renderer.js';
 import { WebUIManager } from './modules/manager.js';
 import { WebUIWebSocket } from './modules/websocket.js';
 import { WebUIInterface } from './modules/ui.js';
+import { initTheme } from './modules/theme.js';
 
 class DiscordWebhookUI {
     constructor() {
@@ -11,6 +12,9 @@ class DiscordWebhookUI {
 
     async initialize() {
         try {
+            // Initialize theme
+            initTheme();
+
             // Initialize core modules
             this.renderer = new WebUIRenderer();
             this.manager = new WebUIManager();
