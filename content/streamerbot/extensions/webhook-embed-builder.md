@@ -37,28 +37,15 @@ You design first, automate second.
 
 ## 🚀 Core Features
 
-* 🎨 **Visual Embed Builder**
-  Create Discord embeds visually with a live Discord-style preview
-
-* 👁️ **Real-time Preview**
-  See exactly what will be sent to Discord as you edit
-
-* 🔌 **Native Streamer.bot Integration**
-  Save payloads directly into global variables via WebSocket
-
+* 🎨 **Visual Embed Builder** • Create Discord embeds visually with a live Discord-style preview
+* 👁️ **Real-time Preview** • See exactly what will be sent to Discord as you edit
+* 🔌 **Native Streamer.bot Integration** • Save payloads directly into global variables via WebSocket
 * 🔁 **Dynamic Variables Support**
-
   * Action arguments: `%myArgument%`
   * Global variables: `~myGlobalVar~`
-
-* 💾 **Reusable Payloads**
-  Design once, reuse everywhere
-
-* 📤 **Import / Export JSON**
-  Backup, share, and version your embeds easily
-
-* 🧪 **Live Webhook Testing**
-  Test payloads instantly without touching Streamer.bot
+* 💾 **Reusable Payloads** • Design once, reuse everywhere
+* 📤 **Import / Export JSON** • Backup, share, and version your embeds easily
+* 🧪 **Live Webhook Testing** • Test payloads instantly without touching Streamer.bot
 
 ---
 
