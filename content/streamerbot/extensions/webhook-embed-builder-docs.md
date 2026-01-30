@@ -22,9 +22,9 @@ To load a webhook payload from a **custom global variable** into the Web UI:
 3. Set **Destination Variable** to `WEBWUI_WebhookPayload`
 4. The Web UI will automatically detect and load this payload
 
-**Example workflow:**
+**Example of a workflow:**
 ```
-Trigger → Global Variable Get (MyCustomPayload → WEBWUI_WebhookPayload) → Execute Action
+Trigger → Global Variable Get (MyCustomPayload to WEBWUI_WebhookPayload) → Execute Action
 ```
 
 ---
@@ -42,17 +42,17 @@ You can use **any Streamer.bot variable** within your webhook payloads:
 2. **Set proper triggers** - Ensure your action has the right trigger to populate variables
 3. **Test thoroughly** - The "Test Webhook" button in Web UI does **NOT** process Streamer.bot variables
 
-### Example Use Cases
+### Use Case Examples
 ```
-Title: "%user% just subscribed!" 
-Description: "Welcome to ~streamerName~'s community!"
-Image URL: "%userProfileImage%"
+/-[Embed]--
+| Title: "%user% just subscribed!" 
+| Description: "Welcome to ~streamerName~'s community!"
+| Image URL: "%userProfileImage%"
+\----------
 ```
 
 ### 📚 Learn More
-- [Variables Guide](https://docs.streamer.bot/guide/variables)
-- [Trigger Variables](https://docs.streamer.bot/api/triggers)
-- [Sub-action Variables](https://docs.streamer.bot/api/sub-actions)
+* {"Variables Guide"-s}(https://docs.streamer.bot/guide/variables) - {"Trigger Variables"-g}(https://docs.streamer.bot/api/triggers) - {"Sub-action Variables"-n}(https://docs.streamer.bot/api/sub-actions)
 
 ---
 
@@ -103,6 +103,15 @@ This action will **completely overwrite** your current work in the Web UI:
 
 ## 💡 Best Practices
 
+### Typical Use Cases
+- Stream start notifications
+- Scheduled announcements
+- Game events
+- Community milestones
+- Dynamic embeds with static layout
+- Subscription / Follow alerts
+- Multi-language messages
+
 ### Testing Workflow
 1. **Design** your webhook in the Web UI
 2. **Save** the configuration to Streamer.bot
@@ -135,6 +144,4 @@ This action will **completely overwrite** your current work in the Web UI:
 | Images not displaying | Check URL accessibility and Discord's CDN requirements |
 
 
-**Web UI Version:** 1.6 •
-**Extension Version:** 1 •
-**Last Updated:** January 2026
+**Web UI Version:** 2.3 • **Extension Version:** 1 • **Last Updated:** January 2026
