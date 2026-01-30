@@ -1,24 +1,24 @@
 :root {
-    --bg-main: #161B22;
-    --bg-header: #1F262E;
-    --bg-content: #2A313B;
-    --text-main: #E6E6E6;
-    --text-muted: #A0A0A0;
-    --text-bright: #F7F7F7;
-    --text-heading: #FFA08A;
-    --primary: #FF7755;
-    --primary-hover: #FFA08A;
-    --secondary: #A8BBD1;
-    --secondary-hover: #C3D1E0;
-    --shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+	--bg-main: #161B22;
+	--bg-header: #1F262E;
+	--bg-content: #2A313B;
+	--text-main: #E6E6E6;
+	--text-muted: #A0A0A0;
+	--text-bright: #F7F7F7;
+	--text-heading: #FFA08A;
+	--primary: #FF7755;
+	--primary-hover: #FFA08A;
+	--secondary: #A8BBD1;
+	--secondary-hover: #C3D1E0;
+	--shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
 
-    --color-success: #57f287;
-    --color-danger: #ed4245;
-    --color-warning: #faa81a;
-    --color-border: rgba(255,255,255,0.03);
-    --color-border-light: rgba(255,255,255,0.06);
-    --radius: 6px;
-    --radius-sm: 4px;
-    --spacing: 1rem;
-    --transition: all 0.18s ease;
+	--color-success: #57f287;
+	--color-danger: #ed4245;
+	--color-warning: #faa81a;
+	--color-border: rgba(255, 255, 255, 0.03);
+	--color-border-light: rgba(255, 255, 255, 0.06);
+	--radius: 6px;
+	--radius-sm: 4px;
+	--spacing: 1rem;
+	--transition: all 0.18s ease;
 }

@@ -214,7 +214,7 @@ export class WebUIManager {
                 .filter(field => field.name?.trim() || field.value?.trim())
                 .slice(0, 25)
                 .map(field => ({
-                    name: (field.name?.trim() || 'Field').substring(0, 256),
+                    name: (field.name?.trim() || '').substring(0, 256),
                     value: (field.value?.trim() || '').substring(0, 1024),
                     inline: !!field.inline
                 }));

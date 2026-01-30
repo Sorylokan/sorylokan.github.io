@@ -134,7 +134,6 @@ This action will **completely overwrite** your current work in the Web UI:
 | Load Config not working | Verify variable name matches exactly in Streamer.bot |
 | Images not displaying | Check URL accessibility and Discord's CDN requirements |
 
-===
 
 **Web UI Version:** 1.6 •
 **Extension Version:** 1 •

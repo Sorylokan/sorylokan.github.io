@@ -172,11 +172,12 @@ export class WebUIInterface {
     }
 
     _attachJsonCollapseListener() {
+        const jsonHeader = document.querySelector('.json-header');
         const jsonCollapseBtn = document.getElementById('jsonCollapseBtn');
         const jsonContent = document.getElementById('jsonContent');
 
-        if (jsonCollapseBtn && jsonContent) {
-            jsonCollapseBtn.addEventListener('click', () => {
+        if (jsonHeader && jsonCollapseBtn && jsonContent) {
+            jsonHeader.addEventListener('click', () => {
                 const isCollapsed = jsonContent.classList.contains('collapsed');
                 if (isCollapsed) {
                     jsonContent.classList.remove('collapsed');
@@ -334,10 +335,13 @@ export class WebUIInterface {
     }
 
     attachEmbedContainerListeners(container) {
-        // Collapse toggle
+        // Collapse toggle - click on entire header
+        const embedHeader = container.querySelector('.embed-item-header');
         const collapseToggle = container.querySelector('.collapse-toggle');
-        if (collapseToggle) {
-            collapseToggle.addEventListener('click', (e) => {
+        if (embedHeader && collapseToggle) {
+            embedHeader.addEventListener('click', (e) => {
+                // Don't trigger if clicking on remove button
+                if (e.target.closest('[data-remove-embed]')) return;
                 e.preventDefault();
                 collapseToggle.classList.toggle('collapsed');
                 container.classList.toggle('collapsed');
@@ -465,10 +469,13 @@ export class WebUIInterface {
             this.removeFieldModal?.classList.remove('hidden');
         });
 
-        // Collapse functionality
+        // Collapse functionality - click on entire header
+        const fieldHeader = fieldItem.querySelector('.field-item-header');
         const fieldCollapseBtn = fieldItem.querySelector('.collapse-toggle');
-        if (fieldCollapseBtn) {
-            fieldCollapseBtn.addEventListener('click', (e) => { 
+        if (fieldHeader && fieldCollapseBtn) {
+            fieldHeader.addEventListener('click', (e) => { 
+                // Don't trigger if clicking on remove button
+                if (e.target.closest('.btn-remove')) return;
                 e.preventDefault(); 
                 fieldCollapseBtn.classList.toggle('collapsed'); 
                 fieldItem.classList.toggle('collapsed'); 
