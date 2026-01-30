@@ -177,6 +177,44 @@ export class WebUIRenderer {
             descEl.remove();
         }
 
+        // Update fields - recreate if changed
+        const existingFieldsContainers = embedEl.querySelectorAll('.embed-fields, .embed-field');
+        const hasFields = embed.fields && embed.fields.length > 0;
+        
+        if (hasFields) {
+            const newFieldsHTML = this._renderEmbedFields(embed.fields);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = newFieldsHTML;
+            
+            // Simple comparison: if number of field containers changed or content different, recreate
+            const needsUpdate = existingFieldsContainers.length === 0 || 
+                               tempDiv.innerHTML !== Array.from(existingFieldsContainers)
+                                   .map(el => el.outerHTML).join('');
+            
+            if (needsUpdate) {
+                // Remove all existing fields
+                existingFieldsContainers.forEach(el => el.remove());
+                
+                // Insert new fields after embed-grid, before image
+                const embedGrid = embedEl.querySelector('.embed-grid');
+                const imageEl = embedEl.querySelector('.embed-image');
+                
+                if (imageEl) {
+                    imageEl.before(...tempDiv.childNodes);
+                } else {
+                    const footerEl = embedEl.querySelector('.embed-footer');
+                    if (footerEl) {
+                        footerEl.before(...tempDiv.childNodes);
+                    } else if (embedGrid) {
+                        embedGrid.after(...tempDiv.childNodes);
+                    }
+                }
+            }
+        } else if (existingFieldsContainers.length > 0) {
+            // Remove all fields if none in embed
+            existingFieldsContainers.forEach(el => el.remove());
+        }
+
         // Update main image - only if URL changed
         const imageEl = embedEl.querySelector('.embed-image');
         if (embed.image?.url) {
@@ -185,7 +223,13 @@ export class WebUIRenderer {
                 newImg.className = 'embed-image';
                 newImg.src = embed.image.url;
                 newImg.onerror = function() { this.style.display = 'none'; };
-                embedEl.appendChild(newImg);
+                // Insert before footer if it exists, otherwise append
+                const footerEl = embedEl.querySelector('.embed-footer');
+                if (footerEl) {
+                    footerEl.before(newImg);
+                } else {
+                    embedEl.appendChild(newImg);
+                }
             } else if (imageEl.getAttribute('src') !== embed.image.url) {
                 imageEl.src = embed.image.url;
                 imageEl.style.display = '';
