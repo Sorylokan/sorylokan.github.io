@@ -3,9 +3,22 @@ export class WebUIRenderer {
     constructor() {
         this.previewMessage = document.getElementById('previewMessage');
         this.jsonViewer = document.getElementById('jsonViewer');
+        this._isInitialized = false;
     }
 
     updatePreview(payload, webhookUsername = 'WEB•UI - Announcement', webhookAvatarUrl = 'WEBWUI_Icon.svg') {
+        // First render: create everything
+        if (!this._isInitialized || !this.previewMessage.hasChildNodes()) {
+            this._fullRender(payload, webhookUsername, webhookAvatarUrl);
+            this._isInitialized = true;
+            return;
+        }
+
+        // Incremental update: only update changed parts
+        this._incrementalUpdate(payload, webhookUsername, webhookAvatarUrl);
+    }
+
+    _fullRender(payload, webhookUsername, webhookAvatarUrl) {
         let previewHTML = this._renderWebhookHeader(webhookUsername, webhookAvatarUrl);
 
         if (payload.content) {
@@ -24,6 +37,248 @@ export class WebUIRenderer {
 
         if (this.previewMessage) {
             this.previewMessage.innerHTML = previewHTML;
+        }
+    }
+
+    _incrementalUpdate(payload, webhookUsername, webhookAvatarUrl) {
+        // Update webhook header (username/avatar) without recreating images
+        const webhookHeader = this.previewMessage.querySelector('.webhook-header');
+        if (webhookHeader) {
+            const nameEl = webhookHeader.querySelector('.webhook-name');
+            const avatarEl = webhookHeader.querySelector('.webhook-avatar');
+            
+            if (nameEl) {
+                const escapedUsername = this.escapeHtml(webhookUsername);
+                if (nameEl.innerHTML !== escapedUsername) {
+                    nameEl.innerHTML = escapedUsername;
+                }
+            }
+            
+            // Only update avatar if URL actually changed
+            if (avatarEl && avatarEl.getAttribute('src') !== webhookAvatarUrl) {
+                avatarEl.src = webhookAvatarUrl;
+            }
+        }
+
+        // Update message content
+        let messageContent = this.previewMessage.querySelector('.message-content');
+        if (payload.content) {
+            const newContent = this.parseDiscordMarkdown(payload.content);
+            if (!messageContent) {
+                // Create if doesn't exist
+                messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                webhookHeader?.parentNode.insertBefore(messageContent, webhookHeader.nextSibling);
+            }
+            if (messageContent.innerHTML !== newContent) {
+                messageContent.innerHTML = newContent;
+            }
+        } else if (messageContent && !payload.embeds?.length) {
+            messageContent.innerHTML = 'No message configured yet';
+        } else if (messageContent && payload.embeds?.length) {
+            messageContent.remove();
+        }
+
+        // Update embeds - for now do a simple check
+        const existingEmbeds = this.previewMessage.querySelectorAll('.embed-preview');
+        if (payload.embeds && payload.embeds.length !== existingEmbeds.length) {
+            // Number of embeds changed, do full re-render
+            this._fullRender(payload, webhookUsername, webhookAvatarUrl);
+        } else if (payload.embeds && payload.embeds.length > 0) {
+            // Update each embed individually
+            payload.embeds.forEach((embed, index) => {
+                this._updateEmbed(existingEmbeds[index], embed);
+            });
+        }
+    }
+
+    _updateEmbed(embedEl, embed) {
+        if (!embedEl) return;
+
+        const embedContent = embedEl.querySelector('.embed-content');
+
+        // Update author section
+        const authorHeader = embedEl.querySelector('.embed-header');
+        if (embed.author) {
+            if (!authorHeader) {
+                // Create author section
+                const newAuthor = document.createElement('div');
+                newAuthor.className = 'embed-header';
+                if (embed.author.icon_url) {
+                    const icon = document.createElement('img');
+                    icon.className = 'embed-author-icon';
+                    icon.src = embed.author.icon_url;
+                    icon.onerror = function() { this.style.display = 'none'; };
+                    newAuthor.appendChild(icon);
+                }
+                const name = document.createElement('span');
+                name.className = 'embed-author-name';
+                name.textContent = this.escapeHtml(embed.author.name || '');
+                newAuthor.appendChild(name);
+                embedContent?.prepend(newAuthor);
+            } else {
+                // Update existing author
+                const authorIcon = authorHeader.querySelector('.embed-author-icon');
+                const authorName = authorHeader.querySelector('.embed-author-name');
+                
+                // Update author icon
+                if (embed.author.icon_url) {
+                    if (!authorIcon) {
+                        const icon = document.createElement('img');
+                        icon.className = 'embed-author-icon';
+                        icon.src = embed.author.icon_url;
+                        icon.onerror = function() { this.style.display = 'none'; };
+                        authorHeader.prepend(icon);
+                    } else if (authorIcon.getAttribute('src') !== embed.author.icon_url) {
+                        authorIcon.src = embed.author.icon_url;
+                        authorIcon.style.display = '';
+                    }
+                } else if (authorIcon) {
+                    authorIcon.remove();
+                }
+                
+                // Update author name
+                if (authorName && authorName.textContent !== (embed.author.name || '')) {
+                    authorName.textContent = this.escapeHtml(embed.author.name || '');
+                }
+            }
+        } else if (authorHeader) {
+            authorHeader.remove();
+        }
+
+        // Update title
+        const titleEl = embedEl.querySelector('.embed-title');
+        if (embed.title) {
+            if (!titleEl) {
+                const newTitle = document.createElement('div');
+                newTitle.className = 'embed-title';
+                newTitle.textContent = this.escapeHtml(embed.title);
+                embedContent?.appendChild(newTitle);
+            } else if (titleEl.textContent !== embed.title) {
+                titleEl.textContent = this.escapeHtml(embed.title);
+            }
+        } else if (titleEl) {
+            titleEl.remove();
+        }
+
+        // Update description
+        const descEl = embedEl.querySelector('.embed-description');
+        const newDesc = embed.description ? this.parseDiscordMarkdown(embed.description).replace(/\n/g, '<br>') : '';
+        if (embed.description) {
+            if (!descEl) {
+                const newDescEl = document.createElement('div');
+                newDescEl.className = 'embed-description';
+                newDescEl.innerHTML = newDesc;
+                embedContent?.appendChild(newDescEl);
+            } else if (descEl.innerHTML !== newDesc) {
+                descEl.innerHTML = newDesc;
+            }
+        } else if (descEl) {
+            descEl.remove();
+        }
+
+        // Update main image - only if URL changed
+        const imageEl = embedEl.querySelector('.embed-image');
+        if (embed.image?.url) {
+            if (!imageEl) {
+                const newImg = document.createElement('img');
+                newImg.className = 'embed-image';
+                newImg.src = embed.image.url;
+                newImg.onerror = function() { this.style.display = 'none'; };
+                embedEl.appendChild(newImg);
+            } else if (imageEl.getAttribute('src') !== embed.image.url) {
+                imageEl.src = embed.image.url;
+                imageEl.style.display = '';
+            }
+        } else if (imageEl) {
+            imageEl.remove();
+        }
+
+        // Update thumbnail - only if URL changed
+        const thumbnailEl = embedEl.querySelector('.embed-thumbnail');
+        if (embed.thumbnail?.url) {
+            if (thumbnailEl && thumbnailEl.getAttribute('src') !== embed.thumbnail.url) {
+                thumbnailEl.src = embed.thumbnail.url;
+                thumbnailEl.style.display = '';
+            }
+        }
+
+        // Update footer section
+        const footerEl = embedEl.querySelector('.embed-footer');
+        if (embed.footer || embed.timestamp) {
+            if (!footerEl) {
+                // Create footer
+                const newFooter = document.createElement('div');
+                newFooter.className = 'embed-footer';
+                newFooter.innerHTML = this._renderEmbedFooter(embed.footer, embed.timestamp).match(/<div class="embed-footer">(.*?)<\/div>/s)?.[1] || '';
+                embedEl.appendChild(newFooter);
+            } else {
+                // Update footer icon
+                const footerIcon = footerEl.querySelector('.embed-footer-icon');
+                if (embed.footer?.icon_url) {
+                    if (!footerIcon) {
+                        const icon = document.createElement('img');
+                        icon.className = 'embed-footer-icon';
+                        icon.src = embed.footer.icon_url;
+                        icon.onerror = function() { this.style.display = 'none'; };
+                        footerEl.prepend(icon);
+                    } else if (footerIcon.getAttribute('src') !== embed.footer.icon_url) {
+                        footerIcon.src = embed.footer.icon_url;
+                        footerIcon.style.display = '';
+                    }
+                } else if (footerIcon) {
+                    footerIcon.remove();
+                }
+
+                // Update footer text
+                const footerText = footerEl.querySelector('.embed-footer-text');
+                if (embed.footer?.text) {
+                    if (!footerText) {
+                        const text = document.createElement('span');
+                        text.className = 'embed-footer-text';
+                        text.textContent = this.escapeHtml(embed.footer.text);
+                        if (footerIcon) {
+                            footerIcon.after(text);
+                        } else {
+                            footerEl.prepend(text);
+                        }
+                    } else if (footerText.textContent !== embed.footer.text) {
+                        footerText.textContent = this.escapeHtml(embed.footer.text);
+                    }
+                } else if (footerText) {
+                    footerText.remove();
+                }
+
+                // Update timestamp
+                const timestampEl = footerEl.querySelector('.embed-timestamp');
+                if (embed.timestamp) {
+                    const date = new Date(embed.timestamp);
+                    const timeStr = !isNaN(date.getTime()) ? date.toLocaleString() : '';
+                    if (!timestampEl && timeStr) {
+                        const ts = document.createElement('span');
+                        ts.className = 'embed-timestamp';
+                        ts.textContent = (embed.footer ? ' • ' : '') + timeStr;
+                        footerEl.appendChild(ts);
+                    } else if (timestampEl) {
+                        const newTimeStr = (embed.footer ? ' • ' : '') + timeStr;
+                        if (timestampEl.textContent !== newTimeStr) {
+                            timestampEl.textContent = newTimeStr;
+                        }
+                    }
+                } else if (timestampEl) {
+                    timestampEl.remove();
+                }
+            }
+        } else if (footerEl) {
+            footerEl.remove();
+        }
+
+        // Update color
+        if (embed.color) {
+            const color = '#' + embed.color.toString(16).padStart(6, '0');
+            if (embedEl.style.borderLeftColor !== color) {
+                embedEl.style.borderLeftColor = color;
+            }
         }
     }
 
