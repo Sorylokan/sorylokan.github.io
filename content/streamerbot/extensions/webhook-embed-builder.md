@@ -10,9 +10,11 @@
 **WEB•UI** is a visual editor that lets you **design Discord webhook embeds exactly as they will appear**, then **store them once** as Streamer.bot global variables and reuse them in any action.
 
 *What you see is what Discord gets.*
-</div>
 
+
+> **_Quick access:_** {"Web UI"-g}(https://sorylokan.github.io/content/streamerbot/web-ui/) • {"Docs"-s}(?p=content/streamerbot/extensions/webhook-embed-builder-docs)
 ---
+</div>
 
 ## ✨ Why WEB•UI exists
 
