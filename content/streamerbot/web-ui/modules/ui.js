@@ -335,6 +335,13 @@ export class WebUIInterface {
     }
 
     attachEmbedContainerListeners(container) {
+        // Helper: check if embed has content (any text field filled)
+        const isEmbedEmpty = () => {
+            // Get ALL inputs except color/checkbox, plus textareas
+            const inputs = container.querySelectorAll('input:not([type="color"]):not([type="checkbox"]), textarea');
+            return Array.from(inputs).every(input => !input.value.trim());
+        };
+
         // Collapse toggle - click on entire header
         const embedHeader = container.querySelector('.embed-item-header');
         const collapseToggle = container.querySelector('.collapse-toggle');
@@ -352,8 +359,16 @@ export class WebUIInterface {
         const removeBtn = container.querySelector('[data-remove-embed]');
         if (removeBtn) {
             removeBtn.addEventListener('click', () => {
-                this._pendingTarget = container;
-                this.removeEmbedModal?.classList.remove('hidden');
+                if (isEmbedEmpty()) {
+                    // No content, remove directly
+                    container.remove();
+                    this.updatePreview();
+                    this.manager.saveToLocalStorage();
+                } else {
+                    // Has content, show confirmation modal
+                    this._pendingTarget = container;
+                    this.removeEmbedModal?.classList.remove('hidden');
+                }
             });
         }
 
@@ -465,8 +480,21 @@ export class WebUIInterface {
             this.manager.saveToLocalStorage(); 
         });
         fieldItem.querySelector('.btn-remove').addEventListener('click', () => { 
-            this._pendingTarget = fieldItem;
-            this.removeFieldModal?.classList.remove('hidden');
+            // Check if field has content
+            const nameInput = fieldItem.querySelector('.field-name');
+            const valueInput = fieldItem.querySelector('.field-value');
+            const isEmpty = !nameInput?.value.trim() && !valueInput?.value.trim();
+            
+            if (isEmpty) {
+                // No content, remove directly
+                fieldItem.remove();
+                this.updatePreview();
+                this.manager.saveToLocalStorage();
+            } else {
+                // Has content, show confirmation modal
+                this._pendingTarget = fieldItem;
+                this.removeFieldModal?.classList.remove('hidden');
+            }
         });
 
         // Collapse functionality - click on entire header
