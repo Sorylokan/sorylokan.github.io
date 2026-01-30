@@ -45,9 +45,9 @@ You can use **any Streamer.bot variable** within your webhook payloads:
 ### Use Case Examples
 ```
 /-[Embed]--
-| Title: "%user% just subscribed!" 
+| Title:       "%user% just subscribed!" 
 | Description: "Welcome to ~streamerName~'s community!"
-| Image URL: "%userProfileImage%"
+| Image URL:   "%userProfileImage%"
 \----------
 ```
 
