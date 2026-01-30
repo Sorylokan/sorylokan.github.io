@@ -362,7 +362,7 @@
 }
 
 .embed-preview {
-    background-color: var(--bg-content);
+    background-color: var(--bg-header);
     border-left: 4px solid #5865f2;
     padding: 0.75rem;
     border-radius: 4px;
