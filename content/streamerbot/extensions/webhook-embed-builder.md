@@ -166,7 +166,6 @@ That’s it. No manual setup required.
 
 ## 🧭 Coming Soon
 
-* 🌗 Dark / light theme toggle
 * 🖥️ **WEB•UI Desktop App**
 
   * Fully offline
