@@ -51,7 +51,7 @@ You can use **any Streamer.bot variable** within your webhook payloads:
 \----------
 ```
 
-### 📚 Learn More
+### 📚 Learn More About Streamer.bot Variables
 * {"Variables Guide"-s}(https://docs.streamer.bot/guide/variables) - {"Trigger Variables"-g}(https://docs.streamer.bot/api/triggers) - {"Sub-action Variables"-n}(https://docs.streamer.bot/api/sub-actions)
 
 ---
