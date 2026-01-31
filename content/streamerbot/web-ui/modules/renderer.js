@@ -239,11 +239,26 @@ export class WebUIRenderer {
         }
 
         // Update thumbnail - only if URL changed
-        const thumbnailEl = embedEl.querySelector('.embed-thumbnail');
+        const thumbnailContainer = embedEl.querySelector('.embed-thumbnail-container');
         if (embed.thumbnail?.url) {
-            if (thumbnailEl && thumbnailEl.getAttribute('src') !== embed.thumbnail.url) {
-                thumbnailEl.src = embed.thumbnail.url;
-                thumbnailEl.style.display = '';
+            if (!thumbnailContainer) {
+                // Create thumbnail container if it doesn't exist
+                const newContainer = document.createElement('div');
+                newContainer.className = 'embed-thumbnail-container';
+                newContainer.innerHTML = `<img src="${embed.thumbnail.url}" class="embed-thumbnail" onerror="this.style.display='none'">`;
+                embedEl.querySelector('.embed-grid').appendChild(newContainer);
+            } else {
+                // Update existing thumbnail
+                const thumbnailEl = thumbnailContainer.querySelector('.embed-thumbnail');
+                if (thumbnailEl && thumbnailEl.getAttribute('src') !== embed.thumbnail.url) {
+                    thumbnailEl.src = embed.thumbnail.url;
+                    thumbnailEl.style.display = '';
+                }
+            }
+        } else {
+            // Remove thumbnail if no URL
+            if (thumbnailContainer) {
+                thumbnailContainer.remove();
             }
         }
 

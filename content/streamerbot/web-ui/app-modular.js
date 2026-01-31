@@ -4,6 +4,7 @@ import { WebUIManager } from './modules/manager.js';
 import { WebUIWebSocket } from './modules/websocket.js';
 import { WebUIInterface } from './modules/ui.js';
 import { initTheme } from './modules/theme.js';
+import { ModalsManager } from './modules/modals.js';
 
 class DiscordWebhookUI {
     constructor() {
@@ -12,6 +13,9 @@ class DiscordWebhookUI {
 
     async initialize() {
         try {
+            // Initialize modals
+            new ModalsManager();
+
             // Initialize theme
             initTheme();
 

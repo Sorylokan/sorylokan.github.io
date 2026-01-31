@@ -1,4 +1,5 @@
 # Webhook Embed Builder • Documentation
+***
 
 ## 📦 Global Variables
 
@@ -138,10 +139,13 @@ This action will **completely overwrite** your current work in the Web UI:
 | Issue | Solution |
 |-------|----------|
 | Variables showing as literal text | Ensure variables are defined before action execution |
-| Webhook not sending | Check WebSocket connection and `WEBWUI_WebhookURL` value |
+| Webhook not sending | Check the WebSocket connection and the value of `WEBWUI_WebhookURL`, or if a variable in the payload is invalid |
 | Preview looks different in Discord | Expected behavior - test in real Discord channel |
-| Load Config not working | Verify variable name matches exactly in Streamer.bot |
-| Images not displaying | Check URL accessibility and Discord's CDN requirements |
+| Load Config not working | Verify variable name matches exactly (Case-sensitive) in Streamer.bot |
+| Images not displaying in Preview | The image may be too large or in a format incompatible with the preview. Try sending it on Discord |
+| Images not displaying in Discord | Check URL accessibility and Discord's CDN requirements |
 
 
-**Web UI Version:** 2.3 • **Extension Version:** 1 • **Last Updated:** January 2026
+**Web UI Version:** 1.3.1 • **Extension Version:** 1.1.0 • **Last Updated:** January 2026
+
+[WEB•UI] • Webhook Embed Builder with User Interface

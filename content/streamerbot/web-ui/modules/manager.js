@@ -138,31 +138,28 @@ export class WebUIManager {
         const webhookAvatarUrl = document.getElementById('webhookAvatarUrl')?.value || '';
         const webhookUrl = document.getElementById('webhookUrl')?.value || '';
 
-        // Build payload
-        const payload = {};
-
-        if (msgContent.trim()) {
-            payload.content = msgContent;
-        }
+        // Build payload - ALWAYS include fields, even if empty
+        // This allows the backend to detect deleted fields for edits
+        const payload = {
+            content: msgContent,
+            username: webhookUsername || null,
+            avatar_url: webhookAvatarUrl || null
+        };
 
         const embeds = this.getEmbedsData();
-        if (embeds.length > 0) {
-            payload.embeds = embeds.map(embed => this._cleanEmbed(embed));
-        }
-
-        if (webhookUsername.trim()) {
-            payload.username = webhookUsername;
-        }
-
-        if (webhookAvatarUrl.trim()) {
-            payload.avatar_url = webhookAvatarUrl;
-        }
+        payload.embeds = embeds.length > 0 ? embeds.map(embed => this._cleanEmbed(embed)) : [];
 
         return {
-            payload: payload,
+            payload: this._cleanPayload(payload),
             WebHookUrl: webhookUrl,
             validation: this._validatePayload(payload, webhookUrl)
         };
+    }
+
+    _cleanPayload(payload) {
+        // Ensure all fields are present for the backend to process deletions
+        // Empty strings and null values are intentionally kept
+        return payload;
     }
 
     _cleanEmbed(embed) {
