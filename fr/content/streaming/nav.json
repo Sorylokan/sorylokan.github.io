@@ -1,0 +1,11 @@
+[
+  { "label": "Accueil", "href": "?p=content/streaming/index" },
+  {
+    "label": "Overlays",
+    "dropdown": [
+      { "label": "Starlight Reimagined", "href": "?p=content/streaming/overlays/starlight-reimagined" },
+      { "label": "Grand Wizardery", "href": "?p=content/streaming/overlays/grand-wizardery" }
+    ]
+  },
+  { "label": "Montage", "href": "?p=content/streaming/montage" }
+]

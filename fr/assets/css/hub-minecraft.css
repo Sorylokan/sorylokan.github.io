@@ -1,0 +1,9 @@
+body[data-hub="minecraft"] {
+  --primary: #4caf50;
+  --primary-hover: #6ecf72;
+  --text-heading: #c8f7c9;
+}
+
+body[data-hub="minecraft"] .local-nav {
+  border-color: rgba(76, 175, 80, 0.35);
+}

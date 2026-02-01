@@ -1,0 +1,287 @@
+/* Dark Theme */
+:root {
+  --primary: #FF7755;
+  --primary-hover: #FFA08A;
+
+  --secondary: #A8BBD1;
+  --secondary-hover: #C3D1E0;
+
+  --bg-main: #161B22;
+  --bg-header: #1F262E;
+  --bg-content: #2A313B;
+
+  --text-main: #E6E6E6;
+  --text-muted: #A0A0A0;
+  --text-bright: #F7F7F7;
+  --text-heading: #FFA08A;
+
+  --shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+  
+  --scrollbar-track: rgba(255,255,255,0.05);
+  --scrollbar-thumb: rgba(255,255,255,0.2);
+  --scrollbar-thumb-hover: rgba(255,255,255,0.35);
+  
+  /* Navigation & UI */
+  --nav-hover: rgba(255,255,255,0.1);
+  --dropdown-hover: rgba(255,255,255,0.1);
+  --primary-bg: rgba(255, 119, 85, 0.15);
+  --border: rgba(255,255,255,0.1);
+  
+  /* Tables */
+  --table-header-bg: rgba(255, 119, 85, 0.15);
+  --table-header-text: var(--text-bright);
+  --table-border: rgba(255, 255, 255, 0.1);
+  --table-row-hover: rgba(255, 255, 255, 0.05);
+  --table-row-alt: rgba(255, 255, 255, 0.02);
+  --code-bg: rgba(255, 255, 255, 0.1);
+  
+  /* Changelog */
+  --changelog-date: #BB86FC;
+  --changelog-version: var(--primary);
+  --changelog-new: #4FC3F7;
+  --changelog-add: #66BB6A;
+  --changelog-remove: #FFA726;
+  --changelog-fix: #FFA726;
+  --changelog-meta: #90A4AE;
+  
+  /* Buttons */
+  --btn-normal-bg: #1683f0bb;
+  --btn-normal-text: var(--text-main);
+  --btn-success-bg: #13a04ebb;
+  --btn-success-text: var(--btn-normal-text);
+  --btn-primary-bg: #cc8007bb;
+  --btn-primary-text: var(--btn-normal-text);
+  --btn-gray-bg: #c03222bb;
+  --btn-gray-text: var(--btn-normal-text);
+}
+
+/* BASE STYLES */
+body {
+    background-color: var(--bg-main);
+    color: var(--text-main);
+}
+
+.logo {
+    color: var(--primary);
+}
+
+nav {
+    background-color: var(--bg-header);
+    box-shadow: var(--shadow);
+}
+
+.nav-link {
+    color: var(--text-muted);
+}
+
+.nav-link:hover {
+    color: var(--text-bright);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+#content {
+    background-color: var(--bg-content);
+    color: var(--text-main);
+}
+
+#content h1, #content h2, #content h3 {
+    color: var(--text-heading);
+}
+
+#content blockquote {
+    background-color: rgba(255, 255, 255, 0.025);
+    border-left-color: var(--primary);
+}
+
+.theme-toggle-btn {
+    color: var(--text-muted);
+    fill: var(--text-muted);
+}
+
+.theme-toggle-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--text-bright);
+}
+
+/* COPY BUTTONS */
+.copy-btn-icon {
+    color: var(--text-muted);
+}
+
+.copy-btn-icon:hover {
+    color: var(--primary-hover);
+}
+
+.copy-btn-icon.success {
+    color: #28a745;
+}
+
+.copy-btn-icon.error {
+    color: #dc3545;
+}
+
+#content code {
+    background-color: #2C3034;
+    color: #E9ECEF;
+}
+
+#content pre {
+    background-color: #2C3034;
+    color: #E9ECEF;
+    border-color: #495057;
+}
+
+/* SYNTAX HIGHLIGHTING */
+.keyword {
+    color: #5A9FFF;
+}
+
+.type {
+    color: #40C463;
+}
+
+.string {
+    color: #FF6B6B;
+}
+
+.number {
+    color: #FFB347;
+}
+
+.comment {
+    color: #ADB5BD;
+}
+
+.yaml-key {
+    color: #40C463;
+}
+
+.md-header {
+    color: #5A9FFF;
+}
+
+.md-code {
+    color: #FF6B6B;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.md-link {
+    color: #5A9FFF;
+}
+
+.md-bold {
+    color: #F8F9FA;
+}
+
+.md-italic {
+    color: #B794F6;
+}
+
+.html-tag {
+    color: #5A9FFF;
+}
+
+.html-attr {
+    color: #B794F6;
+}
+
+.html-doctype {
+    color: #40C463;
+}
+
+.html-entity {
+    color: #FF6B6B;
+}
+
+/* Coloration changelog */
+.changelog-date {
+    color: var(--changelog-date);
+}
+
+.changelog-version {
+    color: var(--changelog-version);
+}
+
+.changelog-new {
+    color: var(--changelog-new);
+}
+
+.changelog-add {
+    color: var(--changelog-add);
+}
+
+.changelog-remove {
+    color: var(--changelog-remove);
+}
+
+.changelog-fix {
+    color: var(--changelog-fix);
+}
+
+.changelog-meta {
+    color: var(--changelog-meta);
+}
+
+/* Containers markdown-it */
+#content .warning {
+    background-color: #ffc1071a;
+    border-left-color: #ffc107;
+}
+
+#content .info {
+    background-color: rgba(23, 162, 184, 0.1);
+    border-left-color: #17a2b8;
+}
+
+#content .success {
+    background-color: rgba(40, 167, 69, 0.1);
+    border-left-color: #28a745;
+}
+
+#content .danger {
+    background-color: rgba(220, 53, 69, 0.1);
+    border-left-color: #dc3545;
+}
+
+/* Modal de confirmation des liens externes - Couleurs thème sombre */
+#popup-container {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.popup {
+    background: var(--bg-content);
+    color: var(--text-main);
+    border-color: var(--secondary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.popup h2 {
+    color: var(--text-heading);
+}
+
+.popup button:not(.cancel) {
+    background-color: var(--primary);
+    color: white;
+}
+
+.popup button:not(.cancel):hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-1px);
+}
+
+.popup button.cancel {
+    background-color: #dc3545;
+    color: white;
+}
+
+.popup button.cancel:hover {
+    background-color: #c82333;
+    transform: translateY(-1px);
+}
+
+/* Navigation Dropdown - Thème sombre */
+:root {
+    --border: rgba(255, 255, 255, 0.1);
+    --dropdown-hover: rgba(255, 255, 255, 0.1);
+    --dropdown-mobile-bg: rgba(255, 255, 255, 0.05);
+}

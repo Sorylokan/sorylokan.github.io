@@ -1,0 +1,7 @@
+[
+  { "label": "StreamerBot", "href": "?p=content/streamerbot/index" },
+  { "label": "Streaming", "href": "?p=content/streaming/index" },
+  { "label": "Minecraft", "href": "?p=content/minecraft/index" },
+  { "label": "Projets", "href": "?p=content/projects/index" },
+  { "label": "À propos", "href": "?p=about" }
+]

@@ -1,6 +1,10 @@
 // NAVIGATION & ROUTING
 
 // NAVIGATION HANDLER
+function getBasePath() {
+    return window.location.pathname.includes('/fr/') ? '/fr/' : '/';
+}
+
 function handleNavigation() {
     const params = new URLSearchParams(window.location.search);
     const path = params.get('p') || 'home';
@@ -16,9 +20,9 @@ function getCurrentPath() {
     return params.get('p') || 'home';
 }
 
-function buildFrLink(path) {
+function buildEnLink(path) {
     const encodedPath = encodeURIComponent(path);
-    return `/fr/index.html?p=${encodedPath}`;
+    return `/index.html?p=${encodedPath}`;
 }
 
 // Listen for back/forward buttons
@@ -48,7 +52,8 @@ function getHubFromPath(path) {
 
 async function initNavigation() {
     try {
-        const response = await fetch('/nav.json');
+        const basePath = getBasePath();
+        const response = await fetch(`${basePath}nav.json`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -214,15 +219,16 @@ async function loadLocalNavigation(hub) {
     }
 
     try {
-        const response = await fetch(`/content/${hub}/nav.json`);
+        const basePath = getBasePath();
+        const response = await fetch(`${basePath}content/${hub}/nav.json`);
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const navData = await response.json();
         const innerHtml = generateNavHTML(navData);
         const currentPath = getCurrentPath();
-        const frLink = buildFrLink(currentPath);
+        const enLink = buildEnLink(currentPath);
         const langSwitchHtml = `
             <div class="nav-item lang-switch">
-                <a href="${frLink}" title="Existe aussi en français" aria-label="Existe aussi en français">🇫🇷</a>
+                <a href="${enLink}" title="Also available in English" aria-label="Also available in English">🇬🇧</a>
             </div>
         `;
         

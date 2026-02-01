@@ -1,0 +1,337 @@
+<div class="center icon"><img src="https://sorylokan.github.io/content/streamerbot/web-ui/WEBWUI_Icon.svg" alt="WEB•UI Logo" title="Webhook Embed Builder"></div>
+<div class="center">
+
+# **WEB•UI**
+## Créez des embeds Discord visuellement. Utilisez-les partout dans Streamer.bot.
+
+***
+
+**Arrêtez de vous battre avec le JSON et les arguments.**
+**WEB•UI** est un éditeur visuel qui vous permet de **concevoir des embeds de webhook Discord exactement comme ils apparaîtront**, puis de les **stocker une fois** comme variables globales Streamer.bot et de les réutiliser dans n'importe quelle action.
+
+*Ce que vous voyez est ce que Discord obtient.*
+
+
+> **_Accès rapide :_** {"Web UI"-g}(https://sorylokan.github.io/content/streamerbot/web-ui/) • {"Docs"-s}(?p=content/streamerbot/extensions/webhook-embed-builder-docs)
+---
+</div>
+
+## ✨ Pourquoi WEB•UI existe
+
+Créer des embeds Discord dans Streamer.bot signifie généralement :
+
+* des dizaines d'arguments
+* édition manuelle du JSON
+* des configurations fragiles difficiles à réutiliser
+
+**WEB•UI inverse le flux de travail.**
+Vous concevez d'abord, automatisez ensuite.
+
+* Éditeur visuel au lieu de données brutes
+* Un payload sauvegardé au lieu d'une configuration répétée
+* Compatibilité totale avec les variables Streamer.bot
+
+<!-- video youtube here placeholder -->
+
+---
+
+## 🚀 Fonctionnalités principales
+
+* 🎨 **Constructeur d'Embed Visuel** • Créez des embeds Discord visuellement avec un aperçu en direct de style Discord
+* 👁️ **Aperçu en Temps Réel** • Voyez exactement ce qui sera envoyé à Discord pendant que vous éditez
+* 🔌 **Intégration Native Streamer.bot** • Sauvegardez les payloads directement dans les variables globales via WebSocket
+* 🔁 **Support des Variables Dynamiques**
+  * Arguments d'action : `%myArgument%`
+  * Variables globales : `~myGlobalVar~`
+* 💾 **Payloads Réutilisables** • Concevez une fois, réutilisez partout
+* 📤 **Import / Export JSON** • Sauvegardez, partagez et versionnez vos embeds facilement
+* 🧪 **Test de Webhook en Direct** • Testez les payloads instantanément sans toucher à Streamer.bot
+
+---
+
+## 🎯 Pour qui est-ce ?
+
+<details>
+<summary><strong>🎮 Streamers & Créateurs de Contenu</strong></summary>
+
+* Annonces de début / fin de stream
+* Notifications de follow, sub, raid, donation
+* Changements de jeu ou de catégorie
+* Mises à jour de statut automatisées
+
+</details>
+
+<details>
+<summary><strong>👥 Communautés & Serveurs Discord</strong></summary>
+
+* Annonces d'événements
+* Notifications multi-serveurs
+* Messages informatifs enrichis
+* Statistiques et classements
+
+</details>
+
+---
+
+## 🧠 Comment fonctionne WEB•UI
+
+### Flux de travail simple
+
+1. Ouvrez l'interface WEB•UI
+2. Concevez votre embed visuellement
+3. Prévisualisez le message Discord final
+4. Sauvegardez-le dans Streamer.bot
+5. Réutilisez-le dans n'importe quelle action
+
+> De l'idée à l'automatisation en moins de 5 minutes.
+
+---
+
+## 🖥️ Aperçu de l'Interface Utilisateur
+
+WEB•UI est divisé en deux panneaux principaux :
+
+### 📝 Panneau de Configuration
+
+* Paramètres Webhook & Streamer.bot
+* Configuration du contenu et de l'embed
+* Gestion des embeds et des champs
+
+### 👁️ Panneau d'Aperçu
+
+* Aperçu du message de style Discord
+* Visualiseur JSON généré
+* Outils de copie / export / import
+
+---
+
+## ⚙️ Intégration Streamer.bot
+
+### Sauvegarder un payload
+
+Par défaut, WEB•UI sauvegarde votre configuration dans :
+
+* `WEBWUI_WebhookPayload` *(Global Variable)*
+
+You can change the variable name if needed.
+
+### Utiliser le payload
+
+1. Ajoutez **Core → C# → Execute C# Method**
+2. Groupe de méthode : `[WEB•UI] > Mode`
+3. Méthode :
+
+  * `SendOnly` – envoyer l'embed
+  * `EditMode` – éditer un message existant
+
+> Les payloads peuvent être réutilisés dans un nombre illimité d'actions.
+
+---
+
+## 🔧 Variables
+
+### Variables principales
+
+| Variable                | Description               | Type     |
+| ----------------------- | ------------------------- | -------- |
+| `WEBWUI_WebhookPayload` | Payload JSON complet du webhook | Global   |
+| `WEBWUI_WebhookURL`     | URL webhook de secours      | Argument |
+
+### Support du texte dynamique
+
+* `%argument%` → Arguments d'action
+* `~globalVar~` → Variables globales Streamer.bot
+
+> Les variables sont résolues lors de l'envoi via Streamer.bot.
+
+---
+
+## 📥 Installation
+
+### Installation rapide
+
+1. Téléchargez le fichier d'import `.sb` *(ou copiez la chaîne [copy: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])*
+2. Glissez-déposez-le dans Streamer.bot
+
+C'est tout. Aucune configuration manuelle requise.
+
+### Prérequis
+
+* Streamer.bot en cours d'exécution
+* WebSocket activé
+* Une URL de webhook Discord
+* Un navigateur web moderne
+
+---
+
+## 🧭 Prochainement
+
+* 🖥️ **Application Desktop WEB•UI**
+
+  * Entièrement hors ligne
+  * Pas de navigateur requis
+  * Pas de serveur local
+
+---
+
+### 🔗 Liens Utiles
+
+* 🌐 **Ouvrir WEB•UI**
+  {"Web UI"-s}(https://sorylokan.github.io/content/streamerbot/web-ui/)
+
+* 📦 **Télécharger l'Import Streamer.bot**
+  {"Github Repo"-n}(https://github.com/Sorylokan/sorylokan.github.io/blob/main/content/streamerbot/web-ui/Script/WEBWUI-import.sb)
+
+* 🧠 **Voir le Script C#**
+  {"voir le script c#"-g}(https://github.com/Sorylokan/sorylokan.github.io/blob/main/content/streamerbot/web-ui/Script/WEBWUI-Sender.cs)
+
+---
+
+## 📜 Changelog
+
+<details>
+<summary><strong>WEB•UI v1.3.2</strong></summary>
+
+```changelog
+[01-31-26] # WEBUI-Builder (v1.3.2 - Architecture & Corrections de Bugs)
+* Corrigé :
+  • Miniature ne se mettant pas à jour dans l'aperçu lorsque l'URL est supprimée ou effacée
+  • Miniature ne réapparaissant pas lorsque l'URL est rajoutée
+  • Payload n'incluant pas les champs vides (empêchait les modifications de messages Discord de supprimer les champs supprimés)
++ Ajouté :
+  • Module modals.js dédié pour la gestion modulaire des modales
+~ Modifié :
+  • Modales : déplacées de 160+ lignes HTML dans index.html vers le modals.js modulaire (6 modales maintenant générées dynamiquement)
+  • Rendu de la miniature : amélioration de la création/suppression dynamique basée sur la présence de l'URL
+  • Classe ModalsManager : initialisation et gestion centralisées des modales
+  • buildJSON() : inclut maintenant toujours tous les champs (content, username, avatar_url, embeds) même vides
+  • Structure du payload : les champs vides sont envoyés avec `null` ou chaîne vide pour permettre au backend de détecter les suppressions de champs
+
+**Impact** : Structure HTML plus propre, architecture de composants modulaires, meilleur comportement de l'aperçu des miniatures, support approprié de la suppression de champs pour les modifications de messages
+
+***
+
+[01-30-26] # WEBUI-Builder (v1.3.0 - Raffinement UI "Less is More" & Système de Thèmes)
+* Corrigé :
+  • Rendu du markdown Discord dans l'aperçu
+  • Image rebondissant/clignotant à chaque saisie de lettre
+  • Champs Embed ne s'affichant pas correctement
+  • Problèmes d'alignement de la miniature
+  • Problèmes d'alignement du footer
+  • Problèmes de rendu de la fenêtre d'aperçu
+  • Champs Author apparaissant avant les champs Body (ordre des champs)
+  • Lisibilité du texte du menu déroulant Timestamp (était blanc sur gris clair)
+  • Adaptation des couleurs des notifications aux thèmes clair/sombre
+  • Adaptation de l'arrière-plan de l'aperçu embed aux thèmes
+  • Fonctionnalité du sélecteur de couleur
++ Ajouté :
+  • Sélecteur de thème Sombre/Clair avec icône lune/soleil dans l'en-tête
+  • Persistance du thème via localStorage
+  • Module theme.js dédié pour la gestion des thèmes
+  • Chevron SVG personnalisé pour les menus déroulants
+~ Modifié :
+  • Interface Timestamp : remplacement des 2 cases à cocher par un menu déroulant unique (Aucun/Auto/Personnalisé)
+  • Sélecteur de couleur : redessiné dans le style Pickr Nano (carré de couleur + saisie hexa côte à côte)
+  • Case à cocher inline du champ : déplacée sur la même ligne que la saisie Nom pour un layout compact
+  • Couleurs des thèmes : alignées avec les tokens du site principal (thèmes sombre et clair)
+  • Tokens CSS : ajout du système de sélecteur :root[data-theme="light"]
+  • Éléments select : style personnalisé avec appearance:none et flèche SVG
+  • Footer Web-UI mis à jour avec lien vers le site web Streamer.bot
+
+**Impact** : Interface épurée "less is more", support complet des thèmes correspondant au design du site principal, amélioration de la clarté UX et de la cohérence visuelle
+
+***
+
+[01-28-26] # WEBUI-Builder (v1.1.0 - Support Markdown Discord)
+* Corrigé :
+  • Alignement de la miniature
+  • Alignement du footer
+  • Problème de la fenêtre d'aperçu
+  • Champs Author apparaissant avant les champs Body (ordre des champs)
++ Ajouté :
+  • Support du markdown Discord pour les titres (h1, h2, h3, -h) dans l'aperçu et l'embed
+~ Modifié :
+  • Ajustements CSS pour le rendu de l'aperçu
+
+**Impact** : Support du markdown pour le formatage Discord, amélioration de la cohérence visuelle
+
+***
+
+[01-28-26] # WEBUI-Builder (v1.0.1 - Corrections de Layout & Affichage)
+* Corrigé :
+  • Alignement de la miniature
+  • Alignement du footer
+  • Problème de la fenêtre d'aperçu
+  • Champs Author apparaissant avant les champs Body
+~ Modifié :
+  • Ajustements CSS pour le rendu de l'aperçu
+
+**Impact** : Amélioration de la cohérence visuelle et de la stabilité du layout
+
+***
+
+[01-27-26] # WEBUI-Builder (v1.0.0 - Version Initiale)
++ Ajouté :
+  • Interface web visuelle pour le constructeur d'embed Discord
+  • Aperçu Discord en temps réel
+  • Intégration WebSocket Streamer.bot
+  • Fonctionnalité d'import / export JSON
+  • Support de plusieurs embeds et champs
+  • Variables dynamiques Streamer.bot
+  • Script d'envoi C# optimisé
+- Supprimé :
+  • Herobrine (Mais... Il était là !?)
+
+**Impact** : Constructeur d'embed Discord complet avec aperçu en temps réel et intégration Streamer.bot
+```
+
+</details>
+
+<details>
+<summary><strong>WEB•UI SCRIPT v1.1.0</strong></summary>
+
+```changelog
+[01-31-26] # WEBWUI-Sender (v1.1.1 - Corrections Critiques & Mode Édition Remplacement Complet)
+* Corrigé :
+  • Timestamp non remplacé en EditMode lorsque le placeholder `__AUTO_TIMESTAMP__` est présent (critique)
+  • Vulnérabilité d'injection JSON : caractères spéciaux dans les variables/arguments maintenant correctement échappés via `JsonConvert.ToString()`
+* Ajouté :
+  • `NormalizeEditPayload()` garantit que EditMode se comporte comme un vrai remplacement complet : `content`, `embeds`, ou `fields` manquants sont explicitement effacés au lieu que Discord garde les anciennes valeurs
+* Modifié :
+  • `ReplaceAutoTimestampsWithValue()` maintenant appelé après `RestoreTimestampInPayload()` dans le pipeline EditMode
+  • EditMode PATCH envoie maintenant un payload complet avec des valeurs vides explicites pour les champs supprimés
+
+**Impact** : EditMode maintenant intuitif et prévisible - ce que vous voyez dans l'UI correspond parfaitement à Discord, payloads JSON sécurisés contre les attaques par injection
+
+***
+
+[01-31-26] # WEBWUI-Sender (v1.1.0 - Refonte HttpClient & Surcharge URL)
+* Corrigé :
+  • Résolu le problème de fuite de ressources causé par la création d'une nouvelle instance HttpClient à chaque envoi de webhook
+  • Corrigé l'épuisement du pool de sockets pouvant causer des erreurs "Adresse déjà utilisée" lors d'une fréquence élevée de webhooks
+  • Corrigé l'erreur "Cette instance a déjà démarré une ou plusieurs requêtes" en déplaçant l'initialisation des propriétés vers le constructeur statique
++ Ajouté :
+  • Implémentation d'un champ HttpClient statique en lecture seule pour la réutilisation de connexion dans toutes les méthodes webhook
+  • Ajout d'un constructeur statique pour initialiser les propriétés HttpClient une fois au démarrage
+  • L'argument URL webhook prend maintenant la priorité sur le `WebHookUrl` du payload pour le flux de travail dev/test/prod
+~ Modifié :
+  • Refonte de `SendWebhookAsync()`, `SendWebhookWithIdStorageAsync()`, et `EditExistingMessageAsync()` pour utiliser l'instance HttpClient partagée
+  • Suppression des instructions `using` autour de HttpClient (plus nécessaire avec l'instance statique)
+  • Déplacement de l'initialisation `Timeout` et `DefaultRequestHeaders` des méthodes individuelles vers le constructeur statique
+  • Logique de priorité inversée : l'argument `WEBWUI_WebhookURL` surcharge maintenant la valeur du payload pour la cohérence
+- Supprimé :
+  • Élimination des blocs redondants `using (HttpClient client = new HttpClient())` dans les trois méthodes HTTP
+  • Suppression des modifications d'en-tête et de délai d'attente par requête
+
+**Impact** : Correction complète pour l'exécution concurrente de webhooks, fonctionnalité EditMode stable, flux de travail dev/test/prod plus propre, amélioration significative des performances sous charge
+```
+
+</details>
+---
+
+<div class="center">
+
+**Développé avec passion par Sorylokan**
+*WEB•UI — Parce que de superbes embeds Discord devraient être faciles.*
+
+</div>

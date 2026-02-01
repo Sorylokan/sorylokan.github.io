@@ -1,0 +1,9 @@
+body[data-hub="streaming"] {
+  --primary: #5ec3ff;
+  --primary-hover: #8ad6ff;
+  --text-heading: #cde9ff;
+}
+
+body[data-hub="streaming"] .local-nav {
+  border-color: rgba(94, 195, 255, 0.35);
+}

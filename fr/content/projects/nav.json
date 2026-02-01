@@ -1,0 +1,7 @@
+[
+  { "label": "Accueil", "href": "?p=content/projects/index" },
+  {
+    "label": "Statut",
+    "href": "?p=content/projects/index"
+  }
+]
