@@ -100,6 +100,9 @@ async function loadContent(path) {
             return `<span class="copy-btn-container" data-copy="${decodedText}" data-tooltip="Copy?">${copyIcons.normal}</span>`;
         });
         
+        // Nettoyer les paragraphes vides qui suivent immédiatement un <hr>
+        html = html.replace(/<hr([^>]*)>\s*<p><\/p>/g, '<hr$1>');
+        
         document.getElementById('content').innerHTML = html;
         
         // Appliquer la coloration syntaxique

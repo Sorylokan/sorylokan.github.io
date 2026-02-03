@@ -190,9 +190,20 @@ That’s it. No manual setup required.
 ## 📜 Changelog
 
 <details>
-<summary><strong>WEB•UI v1.3.2</strong></summary>
+<summary><strong>WEB•UI v1.4.0</strong></summary>
 
 ```changelog
+[02-03-26] # WEBUI-Builder (v1.4.0 - Copy JSON Enhancement)
++ Added:
+  • Ctrl+Click support on "Copy JSON" button for compact (one-line) JSON output
+  • Normal click: copies formatted JSON (indented, readable)
+  • Ctrl+Click: copies minified JSON (one line, compact)
+  • Notification feedback adapts to copy mode (shows "compact" when Ctrl is used)
+
+**Impact**: Enhanced flexibility for JSON copying, supporting both human-readable and compact formats for different use cases
+
+===
+
 [01-31-26] # WEBUI-Builder (v1.3.2 - Architecture & Bug Fixes)
 * Fixed:
   • Thumbnail not updating in preview when URL is removed or cleared
@@ -209,7 +220,7 @@ That’s it. No manual setup required.
 
 **Impact**: Cleaner HTML structure, modular components architecture, better thumbnail preview behavior, proper field deletion support for message edits
 
-***
+===
 
 [01-30-26] # WEBUI-Builder (v1.3.0 - "Less is More" UI Refinement & Theme System)
 * Fixed:
@@ -240,7 +251,7 @@ That’s it. No manual setup required.
 
 **Impact**: Streamlined "less is more" interface, full theme support matching main site design, improved UX clarity and visual consistency
 
-***
+===
 
 [01-28-26] # WEBUI-Builder (v1.1.0 - Discord Markdown Support)
 * Fixed:
@@ -255,7 +266,7 @@ That’s it. No manual setup required.
 
 **Impact**: Markdown support for Discord formatting, improved visual consistency
 
-***
+===
 
 [01-28-26] # WEBUI-Builder (v1.0.1 - Layout & Display Fixes)
 * Fixed:
@@ -268,7 +279,7 @@ That’s it. No manual setup required.
 
 **Impact**: Improved visual consistency and layout stability
 
-***
+===
 
 [01-27-26] # WEBUI-Builder (v1.0.0 - Initial Release)
 + Added:
@@ -303,7 +314,7 @@ That’s it. No manual setup required.
 
 **Impact**: EditMode now intuitive and predictable - what you see in UI matches Discord perfectly, JSON payloads secure against injection attacks
 
-***
+===
 
 [01-31-26] # WEBWUI-Sender (v1.1.0 - HttpClient Refactor & URL Override)
 * Fixed:

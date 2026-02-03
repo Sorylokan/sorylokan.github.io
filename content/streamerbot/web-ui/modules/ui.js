@@ -126,7 +126,7 @@ export class WebUIInterface {
         }
 
         if (this.copyJsonBtn) {
-            this.copyJsonBtn.addEventListener('click', () => this.copyJSON());
+            this.copyJsonBtn.addEventListener('click', (e) => this.copyJSON(e));
         }
 
         if (this.clearBtn) {
@@ -701,13 +701,23 @@ export class WebUIInterface {
         }
     }
 
-    copyJSON() {
+    copyJSON(event) {
         try {
             const json = this.manager.buildJSON();
-            const jsonString = JSON.stringify(json, null, 2);
+            
+            // Check if Ctrl key is pressed
+            const isCompact = event && event.ctrlKey;
+            
+            // Format JSON: compact if Ctrl+Click, formatted if normal click
+            const jsonString = isCompact 
+                ? JSON.stringify(json)  // One line
+                : JSON.stringify(json, null, 2);  // Formatted with indentation
 
             navigator.clipboard.writeText(jsonString).then(() => {
-                this.renderer.showNotification('JSON copied to clipboard', 'success');
+                const message = isCompact 
+                    ? 'JSON copied (compact) to clipboard' 
+                    : 'JSON copied to clipboard';
+                this.renderer.showNotification(message, 'success');
             }).catch(() => {
                 // Fallback for older browsers
                 const textarea = document.createElement('textarea');
@@ -716,7 +726,10 @@ export class WebUIInterface {
                 textarea.select();
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
-                this.renderer.showNotification('JSON copied to clipboard', 'success');
+                const message = isCompact 
+                    ? 'JSON copied (compact) to clipboard' 
+                    : 'JSON copied to clipboard';
+                this.renderer.showNotification(message, 'success');
             });
         } catch (err) {
             this.renderer.showNotification(`Failed to copy: ${err.message}`, 'error');
