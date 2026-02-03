@@ -190,9 +190,20 @@ C'est tout. Aucune configuration manuelle requise.
 ## 📜 Changelog
 
 <details>
-<summary><strong>WEB•UI v1.3.2</strong></summary>
+<summary><strong>WEB•UI v1.4.0</strong></summary>
 
 ```changelog
+[02-03-26] # WEBUI-Builder (v1.4.0 - Amélioration de la Copie JSON)
++ Ajouté :
+  • Support Ctrl+Clic sur le bouton "Copy JSON" pour sortie JSON compacte (une ligne)
+  • Clic normal : copie le JSON formaté (indenté, lisible)
+  • Ctrl+Clic : copie le JSON minifié (une ligne, compact)
+  • La notification s'adapte au mode de copie (affiche "compact" quand Ctrl est utilisé)
+
+**Impact** : Flexibilité accrue pour la copie JSON, supportant à la fois les formats lisibles et compacts pour différents cas d'usage
+
+***
+
 [01-31-26] # WEBUI-Builder (v1.3.2 - Architecture & Corrections de Bugs)
 * Corrigé :
   • Miniature ne se mettant pas à jour dans l'aperçu lorsque l'URL est supprimée ou effacée
