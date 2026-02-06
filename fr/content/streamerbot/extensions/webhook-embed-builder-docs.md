@@ -146,6 +146,6 @@ Cette action va **complètement écraser** votre travail actuel dans l'interface
 | Les images ne s'affichent pas dans Discord | Vérifiez l'accessibilité de l'URL et les exigences CDN de Discord |
 
 
-**Version Web UI :** 1.4.0 • **Version Extension :** 1.1.0 • **Dernière Mise à Jour :** Janvier 2026
+**Version Web UI :** 1.4.0 • **Version Extension :** 1.1.0 • **Dernière Mise à Jour :** 3 Février 206
 
 [WEB•UI] • Webhook Embed Builder with User Interface
