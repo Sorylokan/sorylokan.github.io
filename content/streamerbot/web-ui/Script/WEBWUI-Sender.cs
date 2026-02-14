@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,8 +27,7 @@ public class CPHInline
             var (payload, webhookUrl) = GetPayloadAndWebhookUrl();
             if (payload == null || string.IsNullOrEmpty(webhookUrl)) return false;
 
-            if (!webhookUrl.Contains("?wait=true"))
-                webhookUrl += webhookUrl.Contains("?") ? "&wait=true" : "?wait=true";
+            webhookUrl = EnsureWaitTrue(webhookUrl);
 
             string processedPayload = ReplaceStreamerBotVariables(payload.ToString(Formatting.None));
             var (finalPayload, _) = ReplaceAutoTimestampsWithValue(processedPayload);
@@ -51,6 +51,8 @@ public class CPHInline
 
             var (payload, webhookUrl) = GetPayloadAndWebhookUrl();
             if (payload == null || string.IsNullOrEmpty(webhookUrl)) return false;
+
+            webhookUrl = EnsureWaitTrue(webhookUrl);
 
             string variableName = GenerateDynamicVariableName();
             CPH.LogInfo($"Using variable: {variableName}");
@@ -118,34 +120,8 @@ public class CPHInline
 
     private async Task<bool> SendWebhookAsync(string webhookUrl, string payloadJson)
     {
-        try
-        {
-            var content = new StringContent(payloadJson, Encoding.UTF8, "application/json");
-
-            CPH.LogDebug("Sending POST request to Discord");
-            HttpResponseMessage response = await client.PostAsync(webhookUrl, content);
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            CPH.LogDebug($"Discord response: {response.StatusCode}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                CPH.LogInfo("Webhook sent successfully");
-                return true;
-            }
-            else
-            {
-                CPH.LogError($"Discord error: {response.StatusCode}");
-                if ((int)response.StatusCode == 429)
-                    CPH.LogWarn("Rate limit reached, retry later");
-                return false;
-            }
-        }
-        catch (Exception ex)
-        {
-            CPH.LogError($"Send error: {ex.Message}");
-            return false;
-        }
+        var (success, _) = await PostWithRetryAsync(webhookUrl, payloadJson);
+        return success;
     }
 
     private async Task<bool> EditModeWebhookAsync(string webhookUrl, string payloadJson, string variableName)
@@ -192,59 +168,22 @@ public class CPHInline
 
     private async Task<bool> SendWebhookWithIdStorageAsync(string webhookUrl, string payloadJson, string variableName, string timestamp)
     {
-        if (!webhookUrl.Contains("?wait=true"))
-            webhookUrl += webhookUrl.Contains("?") ? "&wait=true" : "?wait=true";
+        var (success, messageId) = await PostWithRetryAsync(webhookUrl, payloadJson);
 
-        try
+        if (success && !string.IsNullOrEmpty(messageId))
         {
-            var content = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+            CPH.SetGlobalVar(variableName, messageId, false);
+            CPH.LogDebug($"Stored message ID in {variableName}: {messageId}");
 
-            CPH.LogDebug("Sending POST request to Discord (with ID storage)");
-            HttpResponseMessage response = await client.PostAsync(webhookUrl, content);
-            string responseBody = await response.Content.ReadAsStringAsync();
-
-            CPH.LogDebug($"Discord response: {response.StatusCode}");
-
-            if (response.IsSuccessStatusCode)
+            if (!string.IsNullOrEmpty(timestamp))
             {
-                CPH.LogInfo("Webhook sent successfully");
-
-                if (!string.IsNullOrEmpty(responseBody) && responseBody.StartsWith("{"))
-                {
-                    try
-                    {
-                        var responseObj = JObject.Parse(responseBody);
-                        string messageId = responseObj["id"]?.ToString();
-                        if (!string.IsNullOrEmpty(messageId))
-                        {
-                            CPH.SetGlobalVar(variableName, messageId, false);
-                            CPH.LogDebug($"Stored message ID in {variableName}: {messageId}");
-
-                            if (!string.IsNullOrEmpty(timestamp))
-                            {
-                                string timestampVarName = variableName + "_Timestamp";
-                                CPH.SetGlobalVar(timestampVarName, timestamp, false);
-                                CPH.LogDebug($"Stored timestamp in {timestampVarName}: {timestamp}");
-                            }
-                        }
-                    }
-                    catch { }
-                }
-                return true;
-            }
-            else
-            {
-                CPH.LogError($"Discord error: {response.StatusCode}");
-                if ((int)response.StatusCode == 429)
-                    CPH.LogWarn("Rate limit reached, retry later");
-                return false;
+                string timestampVarName = variableName + "_Timestamp";
+                CPH.SetGlobalVar(timestampVarName, timestamp, false);
+                CPH.LogDebug($"Stored timestamp in {timestampVarName}: {timestamp}");
             }
         }
-        catch (Exception ex)
-        {
-            CPH.LogError($"Send error: {ex.Message}");
-            return false;
-        }
+
+        return success;
     }
 
     private string GenerateDynamicVariableName()
@@ -458,5 +397,106 @@ public class CPHInline
             CPH.LogError($"Error normalizing edit payload: {ex.Message}");
             return payloadJson;
         }
+    }
+
+    private async Task<(bool success, string messageId)> PostWithRetryAsync(string webhookUrl, string payloadJson)
+    {
+        try
+        {
+            for (int attempt = 0; attempt <= 1; attempt++)
+            {
+                var content = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+
+                CPH.LogDebug("Sending POST request to Discord");
+                HttpResponseMessage response = await client.PostAsync(webhookUrl, content);
+                string responseBody = await response.Content.ReadAsStringAsync();
+
+                CPH.LogDebug($"Discord response: {response.StatusCode}");
+
+                if (response.IsSuccessStatusCode)
+                {
+                    CPH.LogInfo("Webhook sent successfully");
+
+                    string messageId = null;
+                    if (!string.IsNullOrEmpty(responseBody) && responseBody.StartsWith("{"))
+                    {
+                        try
+                        {
+                            var responseObj = JObject.Parse(responseBody);
+                            messageId = responseObj["id"]?.ToString();
+                        }
+                        catch { }
+                    }
+
+                    return (true, messageId);
+                }
+
+                if ((int)response.StatusCode == 429 && attempt == 0)
+                {
+                    int delayMs = GetRetryDelayMilliseconds(response, responseBody);
+                    CPH.LogWarn($"Rate limit reached, retrying in {delayMs} ms");
+                    await Task.Delay(delayMs);
+                    continue;
+                }
+
+                CPH.LogError($"Discord error: {response.StatusCode} - {Truncate(responseBody, 500)}");
+                return (false, null);
+            }
+
+            return (false, null);
+        }
+        catch (Exception ex)
+        {
+            CPH.LogError($"Send error: {ex.Message}");
+            return (false, null);
+        }
+    }
+
+    private int GetRetryDelayMilliseconds(HttpResponseMessage response, string responseBody)
+    {
+        int defaultDelayMs = 1000;
+
+        try
+        {
+            if (response.Headers.TryGetValues("Retry-After", out var values))
+            {
+                string raw = values.FirstOrDefault();
+                if (int.TryParse(raw, out int seconds) && seconds > 0)
+                    return seconds * 1000;
+            }
+
+            if (!string.IsNullOrEmpty(responseBody) && responseBody.StartsWith("{"))
+            {
+                var responseObj = JObject.Parse(responseBody);
+                double? retryAfter = responseObj["retry_after"]?.Value<double>();
+                if (retryAfter.HasValue && retryAfter.Value > 0)
+                    return (int)Math.Ceiling(retryAfter.Value * 1000);
+            }
+        }
+        catch
+        {
+            return defaultDelayMs;
+        }
+
+        return defaultDelayMs;
+    }
+
+    private string Truncate(string value, int maxLength)
+    {
+        if (string.IsNullOrEmpty(value) || value.Length <= maxLength)
+            return value ?? string.Empty;
+
+        return value.Substring(0, maxLength) + "...";
+    }
+
+    private string EnsureWaitTrue(string webhookUrl)
+    {
+        if (string.IsNullOrEmpty(webhookUrl))
+            return webhookUrl;
+
+        if (webhookUrl.IndexOf("wait=true", StringComparison.OrdinalIgnoreCase) >= 0)
+            return webhookUrl;
+
+        return webhookUrl.Contains("?") ? webhookUrl + "&wait=true" : webhookUrl + "?wait=true";
     }
 }
