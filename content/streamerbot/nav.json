@@ -9,7 +9,7 @@
         "href": "?p=content/streamerbot/extensions/essential-starter-kit"
       },
       {
-        "label": "Starter Kit Docs",
+        "label": "Docs - Essential Starter Kit",
         "href": "?p=content/streamerbot/extensions/docs/essential-starter-kit"
       }
     ]
@@ -22,11 +22,11 @@
         "href": "?p=content/streamerbot/extensions/webhook-embed-builder",
         "dropdown": [
           {
-            "label": "Docs - webwui",
+            "label": "Docs - Webhook Embed Builder",
             "href": "?p=content/streamerbot/extensions/docs/webhook-embed-builder"
           },
           {
-            "label": "Webhook Builder Interface",
+            "label": "Interface - Webhook Embed Builder",
             "href": "https://sorylokan.github.io/WEBWUI-Web_Interface"
           }
         ]
@@ -38,13 +38,8 @@
     ]
   },
   {
-    "label": "OBS related",
-    "dropdown": [
-      {
-        "label": "OBS Timer",
-        "href": "?p=content/streamerbot/extensions/obs-timer"
-      }
-    ]
+    "label": "OBS Timer",
+    "href": "?p=content/streamerbot/extensions/obs-timer"
   },
   {
     "label": "Music related",
