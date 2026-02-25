@@ -357,6 +357,7 @@ All you have to do now is explore the examples or create your own action!
 ```
 
 </details>
+
 ---
 
 <div class="center">

@@ -2,7 +2,17 @@
   { "label": "Main Hub", "href": "?p=content/streamerbot/index" },
   {
     "label": "Streamer.bot kit",
-    "href": "?p=content/streamerbot/extensions/essential-starter-kit"
+    "href": "?p=content/streamerbot/extensions/essential-starter-kit",
+    "dropdown": [
+      {
+        "label": "Essential Starter Kit",
+        "href": "?p=content/streamerbot/extensions/essential-starter-kit"
+      },
+      {
+        "label": "Starter Kit Docs",
+        "href": "?p=content/streamerbot/extensions/docs/essential-starter-kit"
+      }
+    ]
   },
   {
     "label": "Discord related",
