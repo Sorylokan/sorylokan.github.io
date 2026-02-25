@@ -1,4 +1,4 @@
-# StreamerBot Extensions
+# Streamer.bot Extensions
 
 Welcome to my hub dedicated to extensions and tools for Streamer.bot.
 
@@ -17,7 +17,7 @@ Goal: to offer ready-to-use packages and targeted utilities.
 ### OBS Functionality
 - {"OBS Timer"-s}(?p=content/streamerbot/extensions/obs-timer) — Customizable timer for OBS
 
-### StreamerBot Kit
+### Streamer.bot Kit
 - {"Essential Starter Kit"-p}(?p=content/streamerbot/extensions/essential-starter-kit) — Ready-to-start action pack
 
 ### Music / YouTube

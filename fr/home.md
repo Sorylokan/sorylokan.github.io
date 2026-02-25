@@ -6,7 +6,7 @@ Portail unique vers mes univers : outils Streamer.bot, overlays streaming, créa
 
 ## Accès rapide
 
-{"StreamerBot"-p}(?p=content/streamerbot/index) {"Streaming & Overlays"-n}(?p=content/streaming/index) {"Minecraft"-s}(?p=content/minecraft/index) | {"Projets"-n}(?p=content/projects/index) {"À propos"-g}(?p=about)
+{"Streamer.bot"-p}(?p=content/streamerbot/index) {"Streaming & Overlays"-n}(?p=content/streaming/index) {"Minecraft"-s}(?p=content/minecraft/index) | {"Projets"-n}(?p=content/projects/index) {"À propos"-g}(?p=about)
 
 ---
 

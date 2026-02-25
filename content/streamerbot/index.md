@@ -18,7 +18,7 @@ Enough talk, here's what I propose!
 ### OBS Functionality
 - {"OBS Timer"-s}(?p=content/streamerbot/extensions/obs-timer) ◇ Customizable timer for OBS
 
-### StreamerBot Kit
+### Streamer.bot Kit
 - {"Essential Starter Kit"-p}(?p=content/streamerbot/extensions/essential-starter-kit) ◇ Ready-to-start action pack
 
 ### Music / YouTube

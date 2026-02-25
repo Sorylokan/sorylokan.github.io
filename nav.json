@@ -1,5 +1,5 @@
 [
-  { "label": "StreamerBot", "href": "?p=content/streamerbot/index" },
+  { "label": "Streamer.bot", "href": "?p=content/streamerbot/index" },
   { "label": "Streaming", "href": "?p=content/streaming/index" },
   { "label": "À propos", "href": "?p=about" }
 ]
