@@ -1,5 +1,5 @@
 [TOC-true]
-<div class="center icon"><img src="https://sorylokan.github.io/content/streamerbot/web-ui/WEBWUI_Icon.svg" alt="WEB•UI Logo" title="Webhook Embed Builder"></div>
+<div class="center icon"><img src="https://sorylokan.github.io/WEBWUI-Web_Interface/WEBWUI_Icon.svg" alt="WEB•UI Logo" title="Webhook Embed Builder"></div>
 <div class="center">
 
 # **WEB•UI**
