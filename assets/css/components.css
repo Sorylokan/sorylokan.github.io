@@ -330,7 +330,7 @@
     transition: transform 0.2s;
 }
 
-.nav-item.has-dropdown:hover > a::after { transform: rotate(180deg); }
+.nav-item.has-dropdown:hover > a::after { transform: rotate(-90deg); }
 
 .dropdown-menu {
     position: absolute;
