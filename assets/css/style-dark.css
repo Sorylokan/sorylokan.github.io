@@ -1,39 +1,39 @@
 /* Dark Theme */
 :root {
-  --primary: #FF7755;
-  --primary-hover: #FFA08A;
+    --primary: #7c3aed;
+    --primary-hover: #8b5cf6;
 
-  --secondary: #A8BBD1;
-  --secondary-hover: #C3D1E0;
+    --secondary: #06b6d4;
+    --secondary-hover: #22d3ee;
 
-  --bg-main: #161B22;
-  --bg-header: #1F262E;
-  --bg-content: #2A313B;
+    --bg-main: #050505;
+    --bg-header: #0b0b10;
+    --bg-content: #0f1118;
 
-  --text-main: #E6E6E6;
-  --text-muted: #A0A0A0;
-  --text-bright: #F7F7F7;
-  --text-heading: #FFA08A;
+    --text-main: #f5f5f5;
+    --text-muted: #8a8a8a;
+    --text-bright: #ffffff;
+    --text-heading: #9b87ff;
 
-  --shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   
   --scrollbar-track: rgba(255,255,255,0.05);
   --scrollbar-thumb: rgba(255,255,255,0.2);
   --scrollbar-thumb-hover: rgba(255,255,255,0.35);
   
   /* Navigation & UI */
-  --nav-hover: rgba(255,255,255,0.1);
-  --dropdown-hover: rgba(255,255,255,0.1);
-  --primary-bg: rgba(255, 119, 85, 0.15);
-  --border: rgba(255,255,255,0.1);
+    --nav-hover: rgba(255,255,255,0.08);
+    --dropdown-hover: rgba(255,255,255,0.08);
+    --primary-bg: rgba(124, 58, 237, 0.18);
+    --border: rgba(255,255,255,0.08);
   
   /* Tables */
-  --table-header-bg: rgba(255, 119, 85, 0.15);
+    --table-header-bg: rgba(124, 58, 237, 0.15);
   --table-header-text: var(--text-bright);
   --table-border: rgba(255, 255, 255, 0.1);
   --table-row-hover: rgba(255, 255, 255, 0.05);
   --table-row-alt: rgba(255, 255, 255, 0.02);
-  --code-bg: rgba(255, 255, 255, 0.1);
+    --code-bg: rgba(255, 255, 255, 0.08);
   
   /* Changelog */
   --changelog-date: #BB86FC;
@@ -45,13 +45,13 @@
   --changelog-meta: #90A4AE;
   
   /* Buttons */
-  --btn-normal-bg: #1683f0bb;
+    --btn-normal-bg: #2563ebbb;
   --btn-normal-text: var(--text-main);
   --btn-success-bg: #13a04ebb;
   --btn-success-text: var(--btn-normal-text);
-  --btn-primary-bg: #cc8007bb;
+    --btn-primary-bg: #7c3aedbb;
   --btn-primary-text: var(--btn-normal-text);
-  --btn-gray-bg: #c03222bb;
+    --btn-gray-bg: #475569bb;
   --btn-gray-text: var(--btn-normal-text);
 }
 

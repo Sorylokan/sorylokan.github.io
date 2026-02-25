@@ -9,6 +9,28 @@ function handleNavigation() {
     applyHubStyles(hub);
     loadLocalNavigation(hub);
     loadContent(path);
+    updateLangSwitch();
+}
+
+let navDataCache = null;
+let navMenuTemplate = null;
+
+function renderGlobalNav() {
+    const navMenu = document.getElementById('nav-menu');
+    if (!navMenu || !navDataCache) return;
+
+    if (window.innerWidth <= 1024) {
+        if (!navMenu.querySelector('.mobile-nav-tabs')) {
+            navMenu.innerHTML = navMenuTemplate || '';
+        }
+
+        const mobileGlobalNav = document.getElementById('mobile-global-nav');
+        if (mobileGlobalNav) {
+            mobileGlobalNav.innerHTML = generateNavHTML(navDataCache);
+        }
+    } else {
+        navMenu.innerHTML = generateNavHTML(navDataCache);
+    }
 }
 
 function getCurrentPath() {
@@ -19,6 +41,15 @@ function getCurrentPath() {
 function buildFrLink(path) {
     const encodedPath = encodeURIComponent(path);
     return `/fr/index.html?p=${encodedPath}`;
+}
+
+// Update language switcher in sidebar footer
+function updateLangSwitch() {
+    const langSwitchLink = document.getElementById('lang-switch-link');
+    if (langSwitchLink) {
+        const currentPath = getCurrentPath();
+        langSwitchLink.href = buildFrLink(currentPath);
+    }
 }
 
 // Listen for back/forward buttons
@@ -48,31 +79,27 @@ function getHubFromPath(path) {
 
 async function initNavigation() {
     try {
+        const navMenu = document.getElementById('nav-menu');
+        if (navMenu && navMenuTemplate === null) {
+            navMenuTemplate = navMenu.innerHTML;
+        }
+
         const response = await fetch('/nav.json');
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         const navData = await response.json();
+        navDataCache = navData;
         
         // Générer le HTML de navigation
-        if (window.innerWidth <= 768) {
-            // Sur mobile, injecter dans le panel global
-            const mobileGlobalNav = document.getElementById('mobile-global-nav');
-            if (mobileGlobalNav) {
-                mobileGlobalNav.innerHTML = generateNavHTML(navData);
-            }
-        } else {
-            // Sur desktop, injecter directement dans nav-menu
-            const navMenu = document.getElementById('nav-menu');
-            navMenu.innerHTML = generateNavHTML(navData);
-        }
+        renderGlobalNav();
         
         setupNavigationEvents();
         
     } catch (error) {
         console.error('Erreur lors du chargement de la navigation:', error);
         // Fallback navigation statique
-        const target = window.innerWidth <= 768 ? 
+        const target = window.innerWidth <= 1024 ? 
             document.getElementById('mobile-global-nav') : 
             document.getElementById('nav-menu');
         if (target) {
@@ -149,12 +176,32 @@ function setupNavigationEvents() {
     // Setup mobile tabs switching
     setupMobileTabs();
     
-    if (window.innerWidth <= 768) {
+    if (window.innerWidth <= 1024) {
         setupMobileDropdowns();
     }
-    
+
+    let lastIsMobile = window.innerWidth <= 1024;
+
     window.addEventListener('resize', () => {
-        if (window.innerWidth <= 768) {
+        const isMobile = window.innerWidth <= 1024;
+
+        if (isMobile !== lastIsMobile) {
+            renderGlobalNav();
+            setupMobileTabs();
+
+            if (isMobile) {
+                const hub = getHubFromPath(getCurrentPath());
+                loadLocalNavigation(hub);
+                setupMobileDropdowns();
+            } else {
+                cleanupMobileDropdowns();
+            }
+
+            lastIsMobile = isMobile;
+            return;
+        }
+
+        if (isMobile) {
             setupMobileDropdowns();
         } else {
             cleanupMobileDropdowns();
@@ -163,7 +210,7 @@ function setupNavigationEvents() {
     
     // Fermer le menu mobile en cliquant à l'extérieur
     document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1024) {
             if (!e.target.closest('nav') && navMenu.classList.contains('active')) {
                 mobileToggle.classList.remove('active');
                 navMenu.classList.remove('active');
@@ -178,6 +225,9 @@ function setupMobileTabs() {
     const tabPanels = document.querySelectorAll('.mobile-tab-panel');
     
     tabButtons.forEach(button => {
+        if (button._tabHandlerAttached) return;
+        button._tabHandlerAttached = true;
+
         button.addEventListener('click', () => {
             const targetTab = button.getAttribute('data-tab');
             
@@ -218,30 +268,23 @@ async function loadLocalNavigation(hub) {
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const navData = await response.json();
         const innerHtml = generateNavHTML(navData);
-        const currentPath = getCurrentPath();
-        const frLink = buildFrLink(currentPath);
-        const langSwitchHtml = `
-            <div class="nav-item lang-switch">
-                <a href="${frLink}" title="Existe aussi en français" aria-label="Existe aussi en français">🇫🇷</a>
-            </div>
-        `;
         
         // Desktop
         if (desktopContainer) {
-            desktopContainer.innerHTML = `<div class="local-nav-menu">${innerHtml}${langSwitchHtml}</div>`;
+            desktopContainer.innerHTML = `<div class="local-nav-menu">${innerHtml}</div>`;
             desktopContainer.classList.add('visible');
         }
         
         // Mobile
         if (mobileContainer) {
-            mobileContainer.innerHTML = `${innerHtml}${langSwitchHtml}`;
+            mobileContainer.innerHTML = `${innerHtml}`;
         }
         
         document.body.classList.add('has-local-nav');
         showMobileLocalTab();
         
         // Réinitialiser les dropdowns après injection de la nav locale
-        if (window.innerWidth <= 768) {
+        if (window.innerWidth <= 1024) {
             setupMobileDropdowns();
         }
     } catch (error) {

@@ -1,5 +1,9 @@
 [
-  { "label": "Accueil", "href": "?p=content/streamerbot/index" },
+  { "label": "Main Hub", "href": "?p=content/streamerbot/index" },
+  {
+    "label": "Streamer.bot kit",
+    "href": "?p=content/streamerbot/extensions/essential-starter-kit"
+  },
   {
     "label": "Discord related",
     "dropdown": [
@@ -8,8 +12,12 @@
         "href": "?p=content/streamerbot/extensions/webhook-embed-builder",
         "dropdown": [
           {
+            "label": "Docs - webwui",
+            "href": "?p=content/streamerbot/extensions/docs/webhook-embed-builder"
+          },
+          {
             "label": "Webhook Builder Interface",
-            "href": "https://sorylokan.github.io/content/streamerbot/web-ui/"
+            "href": "https://sorylokan.github.io/WEBWUI-Web_Interface"
           }
         ]
       },
@@ -25,15 +33,6 @@
       {
         "label": "OBS Timer",
         "href": "?p=content/streamerbot/extensions/obs-timer"
-      }
-    ]
-  },
-  {
-    "label": "StreamerBot kit",
-    "dropdown": [
-      {
-        "label": "Essential Starter Kit",
-        "href": "?p=content/streamerbot/extensions/essential-starter-kit"
       }
     ]
   },

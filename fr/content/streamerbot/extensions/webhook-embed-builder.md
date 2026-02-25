@@ -16,6 +16,26 @@
 ---
 </div>
 
+**WEB•UI (ou webwui pour les intimes)** est un projet ne d'un desir de rendre les annonces Discord et les notifications d'evenements plus **personnelles et intimistes**, surtout pour les streams live propulses par Streamer.bot.
+
+L'objectif est d'offrir un controle creatif total sur l'apparence et le ton des messages, plutot que de se reposer sur des annonces de bots generiques. Dans cet esprit, WEB•UI vise a remplacer — ou au moins proposer une alternative — a des bots comme Wizebot, Streamcord, MEE6, Pingcord, et d'autres outils similaires.
+
+Techniquement, WEB•UI est une combinaison de :
+* une **interface web**
+* et des **actions Streamer.bot**
+
+L'interface web genere un payload JSON qui est stocke dans une **variable globale** de Streamer.bot. Ce payload est ensuite utilise par un **script C# sur mesure** qui peut **envoyer** ou **modifier** un message Discord (generalement via webhooks).
+
+L'idee d'un systeme d'embed totalement visuel vient d'une frustration personnelle : Streamer.bot propose actuellement une action *"Basic Webhook"* qui n'envoie que du texte brut. C'est fonctionnel, mais tres limitant quand on veut des embeds Discord riches et expressifs.
+
+WEB•UI comble ce manque en faisant des embeds webhook une partie visuelle, reutilisable et centrale des workflows Streamer.bot.
+
+---
+
+## Tutoriel video
+
+https://www.youtube.com/watch?v=HmIqm_GuOG0
+
 ## ✨ Pourquoi WEB•UI existe
 
 Créer des embeds Discord dans Streamer.bot signifie généralement :
@@ -30,8 +50,6 @@ Vous concevez d'abord, automatisez ensuite.
 * Éditeur visuel au lieu de données brutes
 * Un payload sauvegardé au lieu d'une configuration répétée
 * Compatibilité totale avec les variables Streamer.bot
-
-<!-- video youtube here placeholder -->
 
 ---
 

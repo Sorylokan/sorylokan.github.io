@@ -1,4 +1,9 @@
-# Webhook Embed Builder • Documentation
+[TOC-true]
+<div class="center icon"><img src="https://sorylokan.github.io/content/streamerbot/web-ui/WEBWUI_Icon.svg" alt="WEB•UI Logo" title="Webhook Embed Builder"></div>
+<div class="center">
+
+# **WEB•UI**
+## Webhook Embed Builder • Documentation </div>
 ***
 
 ## 📦 Global Variables
@@ -12,9 +17,7 @@ The extension uses two primary global variables for communication between the We
 
 > **Note:** If `WEBWUI_WebhookURL` is not specified in the Web UI, you must define it as an argument in Streamer.bot before executing the send action.
 
----
-
-## 🔧 Using Custom Global Variables
+### 🔧 Using Custom Global Variables
 
 To load a webhook payload from a **custom global variable** into the Web UI:
 

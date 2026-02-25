@@ -1,27 +1,17 @@
 # Bienvenue 👋
 
-Portail unique vers mes univers : outils Streamer.bot, overlays streaming, créations Minecraft et projets annexes. Choisis ton hub et explore.
+Hi! This website is currently under development... Please be kind as you explore it!
 
 ---
 
-## Accès rapide
+## Quick access
 
-{"StreamerBot"-p}(?p=content/streamerbot/index) {"Streaming & Overlays"-n}(?p=content/streaming/index) {"Minecraft"-s}(?p=content/minecraft/index) | {"Projets"-n}(?p=content/projects/index) {"À propos"-g}(?p=about)
+<div class="center">{"Streamer.bot extensions"-p}(?p=content/streamerbot/index) | {"Streaming & Overlays"-n}(?p=content/streaming/index) | {"About me"-g}(?p=about)</div>
 
 ---
 
-## En ce moment
-
+## What's hot here?
 - Extension : {"Webhook Embed Builder"-n}(?p=content/streamerbot/extensions/webhook-embed-builder) — webhooks builder Web UI
-
----
-
-## Explorer selon tes besoins
-
-- Streamer.bot : actions, packs et outils classés par usage. {"Voir les extensions"-p}(?p=content/streamerbot/index)
-- Streaming : overlays et montage vidéo prêts à l’emploi. {"Découvrir"-n}(?p=content/streaming/index)
-- Minecraft : builds et resource packs sélectionnés. {"Visiter"-s}(?p=content/minecraft/index)
-- Projets annexes : idées en cours et chantiers transverses. {"En savoir plus"-n}(?p=content/projects/index)
 
 ## Live
 
@@ -35,6 +25,3 @@ Portail unique vers mes univers : outils Streamer.bot, overlays streaming, créa
     <a href="https://twitch.tv/sorylokan" class="btn">Voir le stream</a>
 </div>
 
-:::success
-Envie de discuter ou proposer un projet ? {"Contact"-s}(https://twitch.tv/sorylokan)
-:::
