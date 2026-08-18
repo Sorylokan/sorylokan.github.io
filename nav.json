@@ -1,5 +1,6 @@
 [
   { "label": "Streamer.bot", "href": "?p=content/streamerbot/index" },
   { "label": "Streaming", "href": "?p=content/streaming/index" },
+  { "label": "Projects", "href": "?p=content/projects/index" },
   { "label": "À propos", "href": "?p=about" }
 ]

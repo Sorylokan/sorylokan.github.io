@@ -1,7 +1,7 @@
 [
   { "label": "Accueil", "href": "?p=content/projects/index" },
   {
-    "label": "Statut",
-    "href": "?p=content/projects/index"
+    "label": "Easy Multiple Screenshots",
+    "href": "?p=content/projects/easymultiplescreenshots"
   }
 ]
