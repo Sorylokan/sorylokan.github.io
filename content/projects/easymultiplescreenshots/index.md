@@ -42,10 +42,3 @@ step won't work there.
   window/tab instead to avoid that.
 - On HTTPS (e.g. once hosted on GitHub Pages), screen capture and folder
   access work reliably out of the box — no extra setup needed.
-
-## Deploying to GitHub Pages
-
-1. Push `index.html` (and this `README.md`) to a repository.
-2. In the repo settings, enable **Pages** → deploy from the `main` branch,
-   root folder.
-3. Your tool will be live at `https://<username>.github.io/<repo>/`.
