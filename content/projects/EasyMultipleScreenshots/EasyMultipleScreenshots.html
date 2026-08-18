@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Easy Multiple Screenshots</title>
+<style>
+  :root{
+    --bg: #14171a;
+    --panel: #1c2024;
+    --line: #2c3136;
+    --text: #e8e6e2;
+    --dim: #8b9198;
+    --accent: #e0a458;
+    --accent-dim: #7a5b2e;
+    --ok: #5fb87a;
+    --danger: #d9694f;
+    --mono: "SF Mono", "JetBrains Mono", "Consolas", monospace;
+    --sans: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; min-height:100vh;
+    background:var(--bg); color:var(--text);
+    font-family:var(--sans);
+    display:flex; align-items:flex-start; justify-content:center;
+    padding:24px 20px;
+  }
+  .app{ width:97vw; max-width:2400px; }
+  h1{
+    font-size:15px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--dim); font-weight:600; margin:0 0 4px;
+  }
+  .sub{ color:var(--dim); font-size:13px; margin:0 0 28px; }
+
+  .layout{ display:grid; grid-template-columns:1fr 300px; gap:20px; align-items:start; }
+  @media (max-width:760px){ .layout{ grid-template-columns:1fr; } }
+
+  .stage{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:14px; min-height:280px;
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+    height:min(90vh, 2000px);
+  }
+  .stage-empty{ color:var(--dim); font-size:13px; text-align:center; padding:40px 20px; }
+  .stage-empty kbd{
+    background:#0000; border:1px solid var(--line); border-radius:4px;
+    padding:1px 6px; font-family:var(--mono); font-size:11px; color:var(--accent);
+  }
+  #videoWrap{ position:relative; display:none; max-width:100%; max-height:100%; line-height:0; cursor:crosshair; }
+  #preview{ display:block; max-width:100%; max-height:calc(min(90vh, 2000px) - 28px); width:auto; height:auto; border-radius:4px; }
+  #overlay{ position:absolute; top:0; left:0; }
+
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:18px; display:flex; flex-direction:column; gap:14px; height:fit-content;
+  }
+  .step{ display:flex; flex-direction:column; gap:6px; }
+  .step-label{
+    font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--dim);
+  }
+  .step-value{ font-family:var(--mono); font-size:12px; color:var(--text); word-break:break-all; }
+  .step-value.muted{ color:var(--dim); }
+
+  button{
+    font-family:var(--sans); font-size:13px; font-weight:600;
+    border-radius:7px; border:1px solid var(--line); cursor:pointer;
+    padding:10px 14px; background:#242830; color:var(--text);
+    transition:border-color .15s, background .15s;
+  }
+  button:hover:not(:disabled){ border-color:#454b53; background:#2a2f37; }
+  button:disabled{ opacity:.4; cursor:not-allowed; }
+  button.primary{
+    background:var(--accent); color:#20160a; border-color:var(--accent);
+  }
+  button.primary:hover:not(:disabled){ background:#eab26c; }
+  button.primary:disabled{ background:#3a3327; color:var(--dim); border-color:var(--line); }
+
+  input[type=text]{
+    background:#101316; border:1px solid var(--line); border-radius:7px;
+    color:var(--text); font-family:var(--mono); font-size:13px; padding:9px 10px;
+    width:100%;
+  }
+  input[type=text]:focus{ outline:none; border-color:var(--accent-dim); }
+
+  .capture-btn{
+    padding:16px 14px; font-size:14px; display:flex; align-items:center;
+    justify-content:center; gap:8px;
+  }
+  .capture-count{ font-family:var(--mono); opacity:.75; }
+
+  .hint{ font-size:11px; color:var(--dim); text-align:center; }
+  .hint kbd{
+    background:#0000; border:1px solid var(--line); border-radius:4px;
+    padding:0 5px; font-family:var(--mono); color:var(--accent);
+  }
+
+  .status{ font-size:12px; min-height:16px; }
+  .status.ok{ color:var(--ok); }
+  .status.err{ color:var(--danger); }
+
+  .divider{ height:1px; background:var(--line); margin:2px 0; }
+
+  .browser-warning{
+    background:#2a2712; border:1px solid #6b6024; color:#f0dc96;
+    border-radius:8px; padding:12px 14px; font-size:13px; margin-bottom:20px; display:none;
+  }
+  .browser-warning b{ color:#fff2c4; }
+
+  footer{ margin-top:24px; text-align:center; font-size:11px; color:var(--dim); }
+  footer a{ color:var(--dim); }
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>Easy Multiple Screenshots</h1>
+  <p class="sub">Share your screen, lock in a fixed capture zone, and shoot it as many times as you need.</p>
+
+  <div class="browser-warning" id="warning"></div>
+
+  <div class="layout">
+    <div class="stage" id="stage">
+      <div class="stage-empty" id="stageEmpty">
+        No screen shared yet.<br><br>
+        Click <b>Share screen</b> on the right, then drag a rectangle
+        here with your mouse to set the capture zone.
+      </div>
+      <div id="videoWrap">
+        <video id="preview" autoplay muted playsinline></video>
+        <canvas id="overlay"></canvas>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="step">
+        <div class="step-label">1 — Screen</div>
+        <button id="shareBtn">🖥️  Share screen</button>
+      </div>
+
+      <div class="step">
+        <div class="step-label">2 — Zone</div>
+        <div class="step-value muted" id="zoneInfo">not set — draw it on the preview</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <div class="step">
+        <div class="step-label">3 — Destination folder</div>
+        <button id="folderBtn">📁  Choose folder</button>
+        <div class="step-value muted" id="folderInfo">not set</div>
+      </div>
+
+      <div class="step">
+        <div class="step-label">File name prefix</div>
+        <input type="text" id="prefix" value="capture">
+      </div>
+
+      <div class="divider"></div>
+
+      <button class="primary capture-btn" id="captureBtn" disabled>
+        📸 Capture <span class="capture-count" id="captureCount">(0)</span>
+      </button>
+      <div class="hint">Shortcut: <kbd>F4</kbd> (this tab must be focused)</div>
+
+      <div class="status" id="status"></div>
+    </div>
+  </div>
+
+  <footer>Runs entirely in your browser — nothing is uploaded anywhere. Works on Chrome, Edge, and Opera.</footer>
+</div>
+
+<script>
+const stage = document.getElementById('stage');
+const stageEmpty = document.getElementById('stageEmpty');
+const videoWrap = document.getElementById('videoWrap');
+const video = document.getElementById('preview');
+const overlay = document.getElementById('overlay');
+const zoneInfo = document.getElementById('zoneInfo');
+const shareBtn = document.getElementById('shareBtn');
+const folderBtn = document.getElementById('folderBtn');
+const folderInfo = document.getElementById('folderInfo');
+const prefixInput = document.getElementById('prefix');
+const captureBtn = document.getElementById('captureBtn');
+const captureCount = document.getElementById('captureCount');
+const statusEl = document.getElementById('status');
+const warning = document.getElementById('warning');
+const ctx = overlay.getContext('2d');
+
+let zone = null;        // {x, y, w, h} in native video pixels (source of truth)
+let dirHandle = null;
+let counter = 1;
+let scaleX = 1, scaleY = 1;
+
+// --- Browser compatibility ---
+if (!window.showDirectoryPicker) {
+  warning.style.display = 'block';
+  warning.innerHTML = "👋 Looks like this browser can't do direct folder access yet — try opening this page in <b>Chrome, Edge, Opera,</b> or another Chromium-based browser instead.";
+}
+
+function setStatus(msg, kind){
+  statusEl.textContent = msg;
+  statusEl.className = 'status ' + (kind || '');
+}
+
+// --- 1. Screen sharing ---
+shareBtn.addEventListener('click', async () => {
+  try {
+    const stream = await navigator.mediaDevices.getDisplayMedia({
+      video: { frameRate: 5 },
+      audio: false
+    });
+    video.srcObject = stream;
+    await video.play();
+
+    stageEmpty.style.display = 'none';
+    videoWrap.style.display = 'block';
+    shareBtn.textContent = '🖥️  Screen shared ✓';
+
+    stream.getVideoTracks()[0].addEventListener('ended', () => {
+      videoWrap.style.display = 'none';
+      stageEmpty.style.display = 'block';
+      shareBtn.textContent = '🖥️  Share screen';
+      zone = null;
+      updateZoneInfo();
+      updateCaptureBtn();
+    });
+
+    sizeOverlay();
+  } catch (e) {
+    setStatus('Screen sharing was cancelled or denied.', 'err');
+  }
+});
+
+function sizeOverlay(){
+  const apply = () => {
+    const rect = video.getBoundingClientRect();
+    overlay.width = rect.width;
+    overlay.height = rect.height;
+    overlay.style.width = rect.width + 'px';
+    overlay.style.height = rect.height + 'px';
+    scaleX = video.videoWidth / rect.width;
+    scaleY = video.videoHeight / rect.height;
+    render();
+  };
+  if (video.videoWidth) apply();
+  else video.addEventListener('loadedmetadata', apply, { once: true });
+  window.addEventListener('resize', apply);
+  new ResizeObserver(apply).observe(video);
+}
+
+// --- 2. Editable capture zone (initial draw + resize handles + move) ---
+const HANDLE_SIZE = 9;
+const HANDLE_HIT = 10;
+
+let mode = null;          // null | 'new' | 'move' | 'resize'
+let activeHandle = null;  // handle name currently being dragged
+let dragStart = null;     // mouse position (overlay CSS px) at drag start
+let rectStart = null;     // CSS rect {left,top,w,h} at drag start
+let pendingRect = null;   // CSS rect being edited (before commit on mouseup)
+
+function nativeToCss(z){
+  return { left: z.x / scaleX, top: z.y / scaleY, w: z.w / scaleX, h: z.h / scaleY };
+}
+function cssToNative(r){
+  return {
+    x: Math.round(r.left * scaleX), y: Math.round(r.top * scaleY),
+    w: Math.round(r.w * scaleX), h: Math.round(r.h * scaleY)
+  };
+}
+function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+function getMousePos(e){
+  const r = overlay.getBoundingClientRect();
+  return {
+    x: clamp(e.clientX - r.left, 0, overlay.width),
+    y: clamp(e.clientY - r.top, 0, overlay.height)
+  };
+}
+
+function handlePositions(rect){
+  return {
+    nw:{x:rect.left,           y:rect.top},
+    n: {x:rect.left+rect.w/2,  y:rect.top},
+    ne:{x:rect.left+rect.w,    y:rect.top},
+    e: {x:rect.left+rect.w,    y:rect.top+rect.h/2},
+    se:{x:rect.left+rect.w,    y:rect.top+rect.h},
+    s: {x:rect.left+rect.w/2,  y:rect.top+rect.h},
+    sw:{x:rect.left,           y:rect.top+rect.h},
+    w: {x:rect.left,           y:rect.top+rect.h/2}
+  };
+}
+const CURSORS = { nw:'nwse-resize', se:'nwse-resize', ne:'nesw-resize', sw:'nesw-resize', n:'ns-resize', s:'ns-resize', e:'ew-resize', w:'ew-resize' };
+
+function hitTestHandle(pos, rect){
+  const pts = handlePositions(rect);
+  for (const name in pts){
+    const p = pts[name];
+    if (Math.abs(pos.x - p.x) <= HANDLE_HIT && Math.abs(pos.y - p.y) <= HANDLE_HIT) return name;
+  }
+  return null;
+}
+function pointInRect(pos, rect){
+  return pos.x >= rect.left && pos.x <= rect.left + rect.w && pos.y >= rect.top && pos.y <= rect.top + rect.h;
+}
+function resizeRect(r, handle, dx, dy){
+  let left = r.left, top = r.top, right = r.left + r.w, bottom = r.top + r.h;
+  if (handle.includes('w')) left  = clamp(left + dx, 0, right - HANDLE_SIZE);
+  if (handle.includes('e')) right = clamp(right + dx, left + HANDLE_SIZE, overlay.width);
+  if (handle.includes('n')) top    = clamp(top + dy, 0, bottom - HANDLE_SIZE);
+  if (handle.includes('s')) bottom = clamp(bottom + dy, top + HANDLE_SIZE, overlay.height);
+  return { left, top, w: right - left, h: bottom - top };
+}
+
+function render(rect){
+  const r = rect || (zone ? nativeToCss(zone) : null);
+  ctx.clearRect(0, 0, overlay.width, overlay.height);
+  if (!r) return;
+
+  ctx.strokeStyle = '#e0a458';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(r.left, r.top, r.w, r.h);
+  ctx.fillStyle = 'rgba(224,164,88,0.10)';
+  ctx.fillRect(r.left, r.top, r.w, r.h);
+
+  const label = `${Math.round(r.w * scaleX)}×${Math.round(r.h * scaleY)}`;
+  ctx.font = '12px monospace';
+  const lw = ctx.measureText(label).width + 10;
+  const ly = r.top > 20 ? r.top - 6 : r.top + r.h + 18;
+  ctx.fillStyle = 'rgba(0,0,0,.65)';
+  ctx.fillRect(r.left, ly - 13, lw, 17);
+  ctx.fillStyle = '#e0a458';
+  ctx.fillText(label, r.left + 5, ly);
+
+  if (mode !== 'new' && r.w > 20 && r.h > 20) {
+    const pts = handlePositions(r);
+    ctx.lineWidth = 1.5;
+    Object.values(pts).forEach(p => {
+      ctx.fillStyle = '#14171a';
+      ctx.fillRect(p.x - HANDLE_SIZE/2, p.y - HANDLE_SIZE/2, HANDLE_SIZE, HANDLE_SIZE);
+      ctx.strokeStyle = '#e0a458';
+      ctx.strokeRect(p.x - HANDLE_SIZE/2, p.y - HANDLE_SIZE/2, HANDLE_SIZE, HANDLE_SIZE);
+    });
+  }
+}
+
+overlay.addEventListener('mousedown', (e) => {
+  const pos = getMousePos(e);
+  if (zone) {
+    const r = nativeToCss(zone);
+    const handle = hitTestHandle(pos, r);
+    if (handle) { mode = 'resize'; activeHandle = handle; dragStart = pos; rectStart = r; return; }
+    if (pointInRect(pos, r)) { mode = 'move'; dragStart = pos; rectStart = r; return; }
+  }
+  mode = 'new';
+  dragStart = pos;
+  rectStart = { left: pos.x, top: pos.y, w: 0, h: 0 };
+});
+
+overlay.addEventListener('mousemove', (e) => {
+  const pos = getMousePos(e);
+
+  if (!mode) {
+    // hover: adjust the cursor
+    if (zone) {
+      const r = nativeToCss(zone);
+      const handle = hitTestHandle(pos, r);
+      overlay.style.cursor = handle ? CURSORS[handle] : (pointInRect(pos, r) ? 'move' : 'crosshair');
+    } else {
+      overlay.style.cursor = 'crosshair';
+    }
+    return;
+  }
+
+  const dx = pos.x - dragStart.x, dy = pos.y - dragStart.y;
+  let rect;
+  if (mode === 'new') {
+    rect = {
+      left: Math.min(dragStart.x, pos.x), top: Math.min(dragStart.y, pos.y),
+      w: Math.abs(pos.x - dragStart.x), h: Math.abs(pos.y - dragStart.y)
+    };
+  } else if (mode === 'move') {
+    rect = {
+      left: clamp(rectStart.left + dx, 0, overlay.width - rectStart.w),
+      top: clamp(rectStart.top + dy, 0, overlay.height - rectStart.h),
+      w: rectStart.w, h: rectStart.h
+    };
+  } else if (mode === 'resize') {
+    rect = resizeRect(rectStart, activeHandle, dx, dy);
+  }
+  pendingRect = rect;
+  render(rect);
+});
+
+window.addEventListener('mouseup', () => {
+  if (!mode) return;
+  const rect = pendingRect;
+  if (rect && rect.w > 8 && rect.h > 8) {
+    zone = cssToNative(rect);
+  }
+  mode = null; activeHandle = null; dragStart = null; rectStart = null; pendingRect = null;
+  render();
+  updateZoneInfo();
+  updateCaptureBtn();
+});
+
+function updateZoneInfo(){
+  if (zone) {
+    zoneInfo.textContent = `${zone.w}×${zone.h}px — drag the handles to adjust`;
+    zoneInfo.classList.remove('muted');
+  } else {
+    zoneInfo.textContent = 'not set — draw it on the preview';
+    zoneInfo.classList.add('muted');
+  }
+}
+
+// --- 3. Destination folder ---
+folderBtn.addEventListener('click', async () => {
+  try {
+    dirHandle = await window.showDirectoryPicker({ mode: 'readwrite' });
+    folderInfo.textContent = dirHandle.name;
+    folderInfo.classList.remove('muted');
+    counter = await nextCounter();
+    updateCaptureBtn();
+    setStatus('Folder ready.', 'ok');
+  } catch (e) {
+    // cancelled
+  }
+});
+
+async function nextCounter(){
+  const prefix = (prefixInput.value.trim() || 'capture');
+  let n = 0;
+  for await (const name of dirHandle.keys()) {
+    if (name.startsWith(prefix)) n++;
+  }
+  return n + 1;
+}
+
+function updateCaptureBtn(){
+  captureBtn.disabled = !(zone && dirHandle);
+  captureCount.textContent = `(${counter - 1})`;
+}
+
+// --- 4. Capture ---
+const hiddenCanvas = document.createElement('canvas');
+
+async function capture(){
+  if (!zone || !dirHandle) return;
+  captureBtn.disabled = true;
+  try {
+    hiddenCanvas.width = zone.w;
+    hiddenCanvas.height = zone.h;
+    const hctx = hiddenCanvas.getContext('2d');
+    hctx.drawImage(video, zone.x, zone.y, zone.w, zone.h, 0, 0, zone.w, zone.h);
+
+    const blob = await new Promise(res => hiddenCanvas.toBlob(res, 'image/png'));
+    const prefix = (prefixInput.value.trim() || 'capture');
+    const filename = `${prefix}_${String(counter).padStart(3, '0')}.png`;
+
+    const fileHandle = await dirHandle.getFileHandle(filename, { create: true });
+    const writable = await fileHandle.createWritable();
+    await writable.write(blob);
+    await writable.close();
+
+    counter++;
+    setStatus(`✓ Saved: ${filename}`, 'ok');
+  } catch (e) {
+    setStatus('Error while saving: ' + e.message, 'err');
+  } finally {
+    updateCaptureBtn();
+  }
+}
+
+captureBtn.addEventListener('click', capture);
+document.addEventListener('keydown', (e) => {
+  if (e.code === 'F4' && !e.ctrlKey && !e.altKey && !e.metaKey) {
+    e.preventDefault();
+    if (!captureBtn.disabled) capture();
+  }
+});
+
+prefixInput.addEventListener('change', async () => {
+  if (dirHandle) {
+    counter = await nextCounter();
+    updateCaptureBtn();
+  }
+});
+</script>
+</body>
+</html>
