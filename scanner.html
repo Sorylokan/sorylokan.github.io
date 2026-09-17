@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Scan</title>
+<style>
+  :root{
+    --ink:#100e0c;
+    --paper:#f6f3ec;
+    --line:#e0392b;
+    --line-dim:#e0392b66;
+    --steel:#8a8578;
+    --steel-dim:#8a857833;
+    --ok:#3f7a4f;
+  }
+  :root:not([data-theme="light"]){
+    --ink:#f6f3ec;
+    --paper:#100e0c;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ink:#f6f3ec;
+      --paper:#100e0c;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ink:#f6f3ec;
+    --paper:#100e0c;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--paper); color:var(--ink);
+    font-family:'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    overscroll-behavior:none;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  #app{
+    height:100dvh; width:100vw; overflow:hidden;
+    display:flex; flex-direction:column;
+    position:relative;
+  }
+
+  header{
+    padding:16px 20px 12px;
+    display:flex; align-items:baseline; justify-content:space-between;
+    z-index:5;
+  }
+  header .mark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px; letter-spacing:0.02em; color:var(--steel);
+  }
+  header h1{
+    font-size:17px; font-weight:600; margin:0; letter-spacing:-0.01em;
+  }
+
+  #stage{
+    position:relative; flex:1; min-height:0;
+    background:#050505;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  video{
+    position:absolute; inset:0;
+    width:100%; height:100%; object-fit:cover;
+    filter:contrast(1.05);
+  }
+
+  .frame{
+    position:relative; z-index:2;
+    width:82%; max-width:420px; aspect-ratio:1.5;
+    pointer-events:none;
+  }
+  .frame .corner{
+    position:absolute; width:26px; height:26px;
+    border-color:var(--paper); border-style:solid; border-width:0;
+    opacity:0.85;
+  }
+  .frame .corner.tl{ top:0; left:0; border-top-width:3px; border-left-width:3px; }
+  .frame .corner.tr{ top:0; right:0; border-top-width:3px; border-right-width:3px; }
+  .frame .corner.bl{ bottom:0; left:0; border-bottom-width:3px; border-left-width:3px; }
+  .frame .corner.br{ bottom:0; right:0; border-bottom-width:3px; border-right-width:3px; }
+
+  .laser{
+    position:absolute; left:4%; right:4%; top:50%;
+    height:2px; background:var(--line);
+    box-shadow:0 0 8px 1px var(--line-dim);
+    animation:sweep 2.1s ease-in-out infinite;
+  }
+  @keyframes sweep{
+    0%,100%{ top:10%; opacity:0.9; }
+    50%{ top:88%; opacity:0.5; }
+  }
+  .frame.found .laser{ animation:none; top:50%; background:var(--ok); box-shadow:0 0 10px 2px #3f7a4f88; }
+  .frame.found .corner{ border-color:var(--ok); }
+
+  #hint{
+    position:absolute; bottom:14%; left:0; right:0; z-index:2;
+    text-align:center; color:var(--paper); opacity:0.75;
+    font-size:13px; letter-spacing:0.01em;
+  }
+
+  #permission{
+    position:absolute; inset:0; z-index:6;
+    background:var(--paper); color:var(--ink);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:40px; text-align:center; gap:18px;
+  }
+  #permission.hidden{ display:none; }
+  #permission .icon{ font-size:34px; }
+  #permission p{ max-width:280px; font-size:14px; color:var(--steel); line-height:1.5; margin:0; }
+  #permission button, .torch-btn, #copyHist{
+    font-family:inherit; font-size:14px; font-weight:600;
+    border:none; border-radius:2px; padding:12px 22px;
+    background:var(--ink); color:var(--paper);
+    cursor:pointer;
+  }
+
+  #controls{
+    position:absolute; top:16px; right:16px; z-index:5;
+    display:flex; gap:8px;
+  }
+  .icon-btn{
+    width:40px; height:40px; border-radius:50%;
+    background:#00000055; backdrop-filter:blur(6px);
+    border:1px solid #ffffff22; color:var(--paper);
+    display:flex; align-items:center; justify-content:center;
+    font-size:17px; cursor:pointer;
+  }
+  .icon-btn.active{ background:var(--line); border-color:var(--line); }
+
+  #tray{
+    background:var(--paper);
+    border-top:1px solid var(--steel-dim);
+    max-height:34dvh; min-height:96px;
+    display:flex; flex-direction:column;
+    z-index:5;
+  }
+  #tray .tray-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:10px 20px 4px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px; letter-spacing:0.06em; color:var(--steel);
+  }
+  #history{
+    overflow-y:auto; padding:0 20px 16px; flex:1;
+    display:flex; flex-direction:column; gap:0;
+  }
+  .entry{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:12px; padding:11px 0;
+    border-bottom:1px solid var(--steel-dim);
+  }
+  .entry:last-child{ border-bottom:none; }
+  .entry .val{
+    font-family:'IBM Plex Mono', monospace; font-size:14px;
+    overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  }
+  .entry .meta{
+    font-size:11px; color:var(--steel); white-space:nowrap; margin-top:2px;
+  }
+  .entry .left{ min-width:0; flex:1; }
+  .entry button{
+    flex-shrink:0; background:none; border:1px solid var(--steel-dim);
+    color:var(--ink); font-family:inherit; font-size:11px;
+    padding:6px 10px; border-radius:2px; cursor:pointer;
+  }
+  .empty{
+    color:var(--steel); font-size:13px; padding:20px 0; text-align:center;
+  }
+
+  #toast{
+    position:fixed; left:50%; bottom:calc(34dvh + 18px);
+    transform:translate(-50%,10px);
+    background:var(--ink); color:var(--paper);
+    font-size:13px; padding:9px 16px; border-radius:3px;
+    opacity:0; transition:opacity 0.2s, transform 0.2s;
+    z-index:20; pointer-events:none; white-space:nowrap;
+  }
+  #toast.show{ opacity:1; transform:translate(-50%,0); }
+</style>
+</head>
+<body>
+<div id="app">
+
+  <header>
+    <h1>Scanner</h1>
+    <span class="mark">CODE&nbsp;/&nbsp;BARRES</span>
+  </header>
+
+  <div id="stage">
+    <video id="video" playsinline muted></video>
+    <div id="controls">
+      <button class="icon-btn" id="torchBtn" title="Flash" style="display:none;">⚡</button>
+      <button class="icon-btn" id="switchBtn" title="Changer de caméra">⟳</button>
+    </div>
+    <div class="frame" id="frame">
+      <div class="corner tl"></div><div class="corner tr"></div>
+      <div class="corner bl"></div><div class="corner br"></div>
+      <div class="laser"></div>
+    </div>
+    <div id="hint">Placez le code dans le cadre</div>
+
+    <div id="permission">
+      <div class="icon">◎</div>
+      <p id="permText">Autorise l'accès à la caméra pour commencer à scanner des codes-barres et QR codes.</p>
+      <button id="grantBtn">Activer la caméra</button>
+      <pre id="debugLog" style="text-align:left; font-size:11px; color:var(--steel); max-width:320px; white-space:pre-wrap; margin-top:10px; font-family:'IBM Plex Mono',monospace;"></pre>
+    </div>
+  </div>
+
+  <div id="tray">
+    <div class="tray-head">
+      <span id="histCount">0 SCAN</span>
+      <button id="copyHist" style="padding:5px 10px; font-size:11px; background:none; color:var(--ink); border:1px solid var(--steel-dim);">Tout copier</button>
+    </div>
+    <div id="history">
+      <div class="empty">Les codes scannés apparaîtront ici</div>
+    </div>
+  </div>
+
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  const video = document.getElementById('video');
+  const frame = document.getElementById('frame');
+  const permission = document.getElementById('permission');
+  const permText = document.getElementById('permText');
+  const grantBtn = document.getElementById('grantBtn');
+  const switchBtn = document.getElementById('switchBtn');
+  const torchBtn = document.getElementById('torchBtn');
+  const historyEl = document.getElementById('history');
+  const histCount = document.getElementById('histCount');
+  const copyHistBtn = document.getElementById('copyHist');
+  const toast = document.getElementById('toast');
+
+  const debugLog = document.getElementById('debugLog');
+  function dbg(msg){
+    const line = new Date().toLocaleTimeString('fr-FR') + '  ' + msg;
+    debugLog.textContent += (debugLog.textContent ? '\n' : '') + line;
+    debugLog.scrollTop = debugLog.scrollHeight;
+  }
+  window.addEventListener('error', (e)=> dbg('ERREUR JS: ' + e.message));
+
+  let reader = null;
+  let currentDeviceId = null;
+  let devices = [];
+  let deviceIndex = 0;
+  let track = null;
+  let torchOn = false;
+  let history = [];
+  let lastValue = null;
+  let lastTime = 0;
+  let engine = null; // 'native' or 'zxing'
+  let rafId = null;
+  let zxingLoadPromise = null;
+
+  function loadScript(src){
+    return new Promise((resolve, reject)=>{
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = () => resolve();
+      s.onerror = () => reject(new Error('script-load-failed: ' + src));
+      document.head.appendChild(s);
+    });
+  }
+
+  function loadZXing(){
+    if(window.ZXing) return Promise.resolve();
+    if(zxingLoadPromise) return zxingLoadPromise;
+    // Try a couple of sources in case one is stale/unavailable.
+    zxingLoadPromise = loadScript('https://cdn.jsdelivr.net/npm/@zxing/library@0.20.0/umd/index.min.js')
+      .catch(() => loadScript('https://cdnjs.cloudflare.com/ajax/libs/zxing/0.20.0/index.min.js'));
+    return zxingLoadPromise;
+  }
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(()=> toast.classList.remove('show'), 1400);
+  }
+
+  function fmtFormat(f){
+    try{
+      const map = {
+        0:'AZTEC',1:'CODABAR',2:'CODE_39',3:'CODE_93',4:'CODE_128',
+        5:'DATA_MATRIX',6:'EAN_8',7:'EAN_13',8:'ITF',9:'MAXICODE',
+        10:'PDF_417',11:'QR_CODE',12:'RSS_14',13:'RSS_EXPANDED',
+        14:'UPC_A',15:'UPC_E',16:'UPC_EAN_EXTENSION'
+      };
+      return map[f] || 'CODE';
+    }catch(e){ return 'CODE'; }
+  }
+
+  function renderHistory(){
+    if(history.length === 0){
+      historyEl.innerHTML = '<div class="empty">Les codes scannés apparaîtront ici</div>';
+    } else {
+      historyEl.innerHTML = history.map((h, i) => `
+        <div class="entry">
+          <div class="left">
+            <div class="val">${escapeHtml(h.text)}</div>
+            <div class="meta">${h.format} · ${h.time}</div>
+          </div>
+          <button data-idx="${i}" class="copy-one">Copier</button>
+        </div>
+      `).join('');
+    }
+    histCount.textContent = history.length + (history.length > 1 ? ' SCANS' : ' SCAN');
+  }
+
+  function escapeHtml(s){
+    const d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  historyEl.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.copy-one');
+    if(!btn) return;
+    const idx = +btn.dataset.idx;
+    copyText(history[idx].text);
+  });
+
+  copyHistBtn.addEventListener('click', ()=>{
+    if(history.length === 0) return;
+    copyText(history.map(h => h.text).join('\n'));
+  });
+
+  function copyText(text){
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(text).then(()=> showToast('Copié')).catch(()=> fallbackCopy(text));
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text){
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta);
+    ta.select();
+    try{ document.execCommand('copy'); showToast('Copié'); }catch(e){}
+    document.body.removeChild(ta);
+  }
+
+  function onDetected(result){
+    const text = result.getText();
+    const now = Date.now();
+    if(text === lastValue && (now - lastTime) < 1800) return;
+    lastValue = text; lastTime = now;
+
+    if(navigator.vibrate) navigator.vibrate(60);
+    frame.classList.add('found');
+    setTimeout(()=> frame.classList.remove('found'), 500);
+
+    history.unshift({
+      text,
+      format: fmtFormat(result.getBarcodeFormat()),
+      time: new Date().toLocaleTimeString('fr-FR', {hour:'2-digit', minute:'2-digit', second:'2-digit'})
+    });
+    if(history.length > 40) history.pop();
+    renderHistory();
+  }
+
+  async function listCameras(){
+    const all = await navigator.mediaDevices.enumerateDevices();
+    devices = all.filter(d => d.kind === 'videoinput');
+    switchBtn.style.display = devices.length > 1 ? 'flex' : 'none';
+  }
+
+  function stopEverything(){
+    if(rafId){ cancelAnimationFrame(rafId); rafId = null; }
+    if(reader){ try{ reader.reset(); }catch(e){} }
+    const stream = video.srcObject;
+    if(stream){ stream.getTracks().forEach(t => t.stop()); }
+    video.srcObject = null;
+  }
+
+  async function openCamera(deviceId){
+    dbg('Préparation des contraintes vidéo...');
+    const constraints = {
+      video: deviceId
+        ? { deviceId: { exact: deviceId }, width: {ideal: 1920}, height: {ideal: 1080} }
+        : { facingMode: { ideal: 'environment' }, width: {ideal: 1920}, height: {ideal: 1080} },
+      audio: false
+    };
+    dbg('Appel de getUserMedia...');
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    dbg('Flux caméra obtenu ✓');
+    video.srcObject = stream;
+    await video.play();
+    dbg('Lecture vidéo démarrée ✓ (' + video.videoWidth + '×' + video.videoHeight + ')');
+    track = stream.getVideoTracks()[0];
+    const caps = track.getCapabilities ? track.getCapabilities() : {};
+    torchBtn.style.display = caps.torch ? 'flex' : 'none';
+
+    // Many external webcams default to a fixed focus distance unless
+    // continuous autofocus is explicitly requested, which produces a
+    // permanently blurry image until the subject is pressed right up
+    // against the lens.
+    if(caps.focusMode && caps.focusMode.includes('continuous')){
+      try{
+        await track.applyConstraints({ advanced: [{ focusMode: 'continuous' }] });
+        dbg('Mise au point continue activée ✓');
+      }catch(e){ dbg('Mise au point continue non appliquée: ' + e.message); }
+    } else {
+      dbg('Mise au point continue non supportée par cette caméra');
+    }
+
+    return stream;
+  }
+
+  function runNativeDetectorLoop(detector){
+    let busy = false;
+    const tick = async () => {
+      if(!busy && video.readyState >= 2){
+        busy = true;
+        try{
+          const codes = await detector.detect(video);
+          if(codes && codes.length){
+            onDetected({
+              getText: () => codes[0].rawValue,
+              getBarcodeFormat: () => codes[0].format
+            });
+          }
+        }catch(e){ /* transient decode error, ignore */ }
+        busy = false;
+      }
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+  }
+
+  async function startScan(deviceId){
+    dbg('startScan() appelé');
+    try{
+      dbg('isSecureContext = ' + window.isSecureContext);
+      dbg('getUserMedia dispo = ' + !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia));
+      stopEverything();
+      await openCamera(deviceId);
+      permission.classList.add('hidden');
+      await listCameras();
+      dbg('Caméras listées: ' + devices.length);
+
+      if('BarcodeDetector' in window){
+        dbg('Moteur natif BarcodeDetector utilisé');
+        engine = 'native';
+        let formats;
+        try{ formats = await window.BarcodeDetector.getSupportedFormats(); }
+        catch(e){ formats = ['qr_code','ean_13','ean_8','code_128','code_39','upc_a','upc_e','itf','codabar','data_matrix','pdf417','aztec']; }
+        const detector = new window.BarcodeDetector({ formats });
+        runNativeDetectorLoop(detector);
+        dbg('Boucle de détection lancée ✓');
+      } else {
+        dbg('BarcodeDetector non dispo, chargement de ZXing...');
+        engine = 'zxing';
+        await loadZXing();
+        if(!window.ZXing) throw new Error('zxing-unavailable');
+        dbg('ZXing chargé ✓');
+        if(!reader) reader = new ZXing.BrowserMultiFormatReader();
+        await reader.decodeFromVideoElement(video, (result, err) => {
+          if(result) onDetected(result);
+        });
+        dbg('Décodeur ZXing lancé ✓');
+      }
+    }catch(err){
+      dbg('EXCEPTION: ' + (err && err.name) + ' — ' + (err && err.message));
+      showPermissionError(err);
+    }
+  }
+
+  function showPermissionError(err){
+    permission.classList.remove('hidden');
+    const name = err && err.name;
+    if(name === 'NotAllowedError' || name === 'PermissionDeniedError'){
+      permText.textContent = "L'accès caméra a été refusé pour ce site. Ouvre les réglages du site (icône à côté de l'URL) et autorise la caméra, puis recharge la page.";
+      grantBtn.textContent = 'Réessayer';
+    } else if(name === 'NotFoundError' || name === 'DevicesNotFoundError'){
+      permText.textContent = "Aucune caméra détectée sur cet appareil.";
+      grantBtn.style.display = 'none';
+    } else if(name === 'NotReadableError'){
+      permText.textContent = "La caméra est déjà utilisée par une autre application. Ferme les autres apps/onglets qui l'utilisent et réessaie.";
+      grantBtn.textContent = 'Réessayer';
+    } else if(err && err.message === 'zxing-unavailable'){
+      permText.textContent = "La bibliothèque de décodage n'a pas pu se charger (pas de connexion internet ?). Vérifie ta connexion et réessaie.";
+      grantBtn.textContent = 'Réessayer';
+    } else {
+      permText.textContent = "Impossible d'accéder à la caméra (" + (name || (err && err.message) || 'erreur inconnue') + "). Vérifie les permissions puis réessaie.";
+      grantBtn.style.display = '';
+      grantBtn.textContent = 'Réessayer';
+    }
+  }
+
+  grantBtn.addEventListener('click', ()=>{
+    dbg('Clic sur le bouton reçu');
+    startScan();
+  });
+
+  switchBtn.addEventListener('click', async ()=>{
+    if(devices.length < 2) return;
+    deviceIndex = (deviceIndex + 1) % devices.length;
+    currentDeviceId = devices[deviceIndex].deviceId;
+    startScan(currentDeviceId);
+  });
+
+  torchBtn.addEventListener('click', async ()=>{
+    if(!track) return;
+    try{
+      torchOn = !torchOn;
+      await track.applyConstraints({ advanced:[{ torch: torchOn }] });
+      torchBtn.classList.toggle('active', torchOn);
+    }catch(e){ /* torch not supported after all */ }
+  });
+
+  renderHistory();
+
+  // Require an explicit tap before requesting the camera: many mobile
+  // browsers and in-app webviews silently block getUserMedia when it
+  // isn't triggered directly by a user gesture.
+  if(!(window.isSecureContext)){
+    permText.textContent = "Cette page doit être ouverte en HTTPS pour accéder à la caméra.";
+    grantBtn.style.display = 'none';
+  } else if(!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)){
+    permText.textContent = "Ce navigateur ne supporte pas l'accès à la caméra. Essaie de l'ouvrir dans Safari ou Chrome directement (pas dans une app intégrée).";
+    grantBtn.style.display = 'none';
+  }
+  // Otherwise: leave the permission screen visible, waiting for the tap on grantBtn.
+})();
+</script>
+</body>
+</html>
