@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>···</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-1:#0a0e1f;
+    --bg-2:#131a33;
+    --gold:#e8b563;
+    --gold-soft:#f4d9a8;
+    --lavender:#9aa3c9;
+    --line:rgba(232,181,99,0.18);
+    --teal:#4fb9ad;
+    --plum:#7c5fb5;
+    --rose:#c97a94;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0;
+    height:100%;
+    background:linear-gradient(160deg, var(--bg-1), var(--bg-2));
+    color:var(--lavender);
+    font-family:'Space Mono', monospace;
+    overflow-x:hidden;
+  }
+  .aura{
+    position:fixed;
+    inset:-10%;
+    z-index:0;
+    filter:blur(70px);
+    opacity:0.65;
+    pointer-events:none;
+  }
+  .blob{
+    position:absolute;
+    border-radius:50%;
+    mix-blend-mode:screen;
+    will-change:transform;
+  }
+  .blob-gold{
+    width:52vmax; height:52vmax;
+    top:-18%; left:-14%;
+    background:radial-gradient(circle at 50% 50%, var(--gold) 0%, transparent 68%);
+    animation:driftA 52s ease-in-out infinite alternate;
+  }
+  .blob-teal{
+    width:46vmax; height:46vmax;
+    bottom:-16%; left:8%;
+    background:radial-gradient(circle at 50% 50%, var(--teal) 0%, transparent 70%);
+    opacity:0.8;
+    animation:driftB 63s ease-in-out infinite alternate;
+  }
+  .blob-plum{
+    width:50vmax; height:50vmax;
+    top:6%; right:-18%;
+    background:radial-gradient(circle at 50% 50%, var(--plum) 0%, transparent 70%);
+    opacity:0.75;
+    animation:driftC 58s ease-in-out infinite alternate;
+  }
+  .blob-rose{
+    width:36vmax; height:36vmax;
+    bottom:-10%; right:6%;
+    background:radial-gradient(circle at 50% 50%, var(--rose) 0%, transparent 72%);
+    opacity:0.55;
+    animation:driftD 47s ease-in-out infinite alternate;
+  }
+  @keyframes driftA{
+    from{ transform:translate(0,0) scale(1); }
+    to{ transform:translate(6vw,5vh) scale(1.12); }
+  }
+  @keyframes driftB{
+    from{ transform:translate(0,0) scale(1); }
+    to{ transform:translate(-5vw,-7vh) scale(1.08); }
+  }
+  @keyframes driftC{
+    from{ transform:translate(0,0) scale(1); }
+    to{ transform:translate(-7vw,6vh) scale(1.1); }
+  }
+  @keyframes driftD{
+    from{ transform:translate(0,0) scale(1); }
+    to{ transform:translate(5vw,-4vh) scale(1.15); }
+  }
+  .starfield{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    animation:swayField 220s ease-in-out infinite alternate;
+  }
+  @keyframes swayField{
+    from{ transform:translate(0,0); }
+    to{ transform:translate(1.5%,-1%); }
+  }
+  .star{
+    position:absolute;
+    border-radius:50%;
+    background:#fff;
+    animation-name:twinkle;
+    animation-timing-function:ease-in-out;
+    animation-iteration-count:infinite;
+  }
+  @keyframes twinkle{
+    0%, 100%{ opacity:var(--min-op, 0.15); transform:scale(0.75); }
+    50%{ opacity:var(--max-op, 1); transform:scale(1); }
+  }
+  .veil{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    pointer-events:none;
+    background:radial-gradient(ellipse at 50% 45%, transparent 0%, rgba(8,10,20,0.35) 55%, rgba(8,10,20,0.72) 100%);
+  }
+  .wrap{
+    position:relative;
+    z-index:2;
+    min-height:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:8vh 6vw 6vh;
+    text-align:center;
+  }
+  .hero{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(4.5rem, 18vw, 9rem);
+    line-height:0.9;
+    color:var(--gold-soft);
+    letter-spacing:-0.02em;
+    text-shadow:0 0 40px rgba(232,181,99,0.25);
+    font-variant-numeric:tabular-nums;
+    opacity:0;
+    transform:translateY(12px);
+    animation:rise 1.1s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  .hero #heroDaysNum{
+    display:inline-block;
+    overflow:hidden;
+    white-space:nowrap;
+    vertical-align:bottom;
+    transition:width 0.9s cubic-bezier(.4,0,.2,1);
+  }
+  .hero-label{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:300;
+    font-size:clamp(1rem, 2.4vw, 1.3rem);
+    color:var(--lavender);
+    margin-top:0.4rem;
+    letter-spacing:0.02em;
+    opacity:0;
+    animation:rise 1.1s cubic-bezier(.22,1,.36,1) 0.15s forwards;
+  }
+  @keyframes rise{
+    to{opacity:1; transform:translateY(0);}
+  }
+  .divider{
+    width:100%;
+    max-width:420px;
+    display:flex;
+    align-items:center;
+    gap:1rem;
+    margin:3rem 0 2.6rem;
+    color:var(--gold);
+    opacity:0.55;
+  }
+  .divider::before, .divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line), transparent);
+  }
+  .divider span{
+    font-size:0.9rem;
+    letter-spacing:0.3em;
+  }
+  .lines{
+    display:flex;
+    flex-direction:column;
+    gap:0.85rem;
+    font-size:clamp(0.82rem, 2vw, 0.98rem);
+    color:var(--lavender);
+    max-width:36rem;
+    font-variant-numeric:tabular-nums;
+  }
+  .lines .em{
+    color:var(--gold-soft);
+    font-weight:700;
+  }
+  .lines div{
+    opacity:0.85;
+  }
+  .num{
+    display:inline-block;
+    overflow:hidden;
+    white-space:nowrap;
+    vertical-align:bottom;
+    transition:width 0.9s cubic-bezier(.4,0,.2,1);
+  }
+  .opt-s{
+    display:inline-block;
+    overflow:hidden;
+    white-space:nowrap;
+    vertical-align:bottom;
+    width:0;
+    transition:width 0.9s cubic-bezier(.4,0,.2,1);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero, .hero-label{ animation:none; opacity:1; transform:none; }
+    .num, .opt-s, .hero #heroDaysNum{ transition:none; }
+    .blob{ animation:none; }
+    .starfield{ animation:none; }
+    .star{ animation:none; opacity:0.6; }
+  }
+</style>
+</head>
+<body>
+  <div class="aura">
+    <div class="blob blob-gold"></div>
+    <div class="blob blob-teal"></div>
+    <div class="blob blob-plum"></div>
+    <div class="blob blob-rose"></div>
+  </div>
+  <div class="starfield" id="starfield"></div>
+  <div class="veil"></div>
+  <div class="wrap">
+    <div class="hero"><span class="num" id="heroDaysNum">--</span></div>
+    <div class="hero-label">jour<span class="opt-s" id="s-hero">s</span></div>
+
+    <div class="divider"><span>· · ·</span></div>
+
+    <div class="lines" id="lines">
+      <div>
+        <span class="em"><span class="num" id="n-months">0</span> mois</span>
+        <span class="num" id="n-days2">0</span> jour<span class="opt-s" id="s-days2">s</span>
+        <span class="num" id="n-hours1">0</span> heures
+        <span class="num" id="n-min1">0</span> minutes et
+        <span class="num" id="n-sec1">0</span> seconde<span class="opt-s" id="s-sec1">s</span>...
+      </div>
+      <div>
+        <span class="em"><span class="num" id="n-hours2">0</span> heure<span class="opt-s" id="s-hours2">s</span></span>
+        <span class="num" id="n-min2">0</span> minute<span class="opt-s" id="s-min2">s</span> et
+        <span class="num" id="n-sec2">0</span> seconde<span class="opt-s" id="s-sec2">s</span>...
+      </div>
+      <div>
+        <span class="em"><span class="num" id="n-min3">0</span> minute<span class="opt-s" id="s-min3">s</span></span> et
+        <span class="num" id="n-sec3">0</span> seconde<span class="opt-s" id="s-sec3">s</span>...
+      </div>
+      <div>
+        <span class="em"><span class="num" id="n-sec4">0</span> seconde<span class="opt-s" id="s-sec4">s</span></span>...
+      </div>
+    </div>
+  </div>
+
+<script>
+  // Date des retrouvailles : 24 octobre 2026, 22h35 (heure locale)
+  const target = new Date(2026, 9, 24, 22, 35, 0);
+
+  function calendarDiff(from, to) {
+    let months = (to.getFullYear() - from.getFullYear()) * 12 + (to.getMonth() - from.getMonth());
+    let temp = new Date(from);
+    temp.setMonth(temp.getMonth() + months);
+    if (temp > to) {
+      months--;
+      temp.setMonth(temp.getMonth() - 1);
+    }
+    let ms = to - temp;
+    const days = Math.floor(ms / 86400000); ms -= days * 86400000;
+    const hours = Math.floor(ms / 3600000); ms -= hours * 3600000;
+    const minutes = Math.floor(ms / 60000); ms -= minutes * 60000;
+    const seconds = Math.floor(ms / 1000);
+    return { months, days, hours, minutes, seconds };
+  }
+
+  // Anime la largeur d'un span numérique quand son contenu change,
+  // pour que le texte se resserre en douceur plutôt que de sauter.
+  function setNum(el, value) {
+    value = String(value);
+    if (el.textContent === value) return;
+    const oldWidth = el.getBoundingClientRect().width;
+    el.style.width = oldWidth + 'px';
+    el.textContent = value;
+    const newWidth = el.scrollWidth;
+    void el.offsetWidth; // force reflow avant la transition
+    requestAnimationFrame(() => { el.style.width = newWidth + 'px'; });
+  }
+
+  // Anime l'apparition/disparition du "s" du pluriel de la même façon.
+  const sWidths = new WeakMap();
+  function setOptS(el, show) {
+    if (!sWidths.has(el)) {
+      // largeur naturelle du "s" dans son contexte de police, mesurée une seule fois
+      const probe = el.cloneNode(true);
+      probe.style.width = 'auto';
+      probe.style.position = 'absolute';
+      probe.style.visibility = 'hidden';
+      el.parentNode.appendChild(probe);
+      sWidths.set(el, probe.scrollWidth);
+      probe.remove();
+    }
+    const target = show ? sWidths.get(el) + 'px' : '0px';
+    if (el.style.width === target) return;
+    el.style.width = target;
+  }
+
+  // 0 et 1 restent au singulier en français ("0 jour", "1 jour"), pluriel à partir de 2.
+  function apply(idPrefix, n) {
+    setNum(document.getElementById('n-' + idPrefix), n);
+    const sEl = document.getElementById('s-' + idPrefix);
+    if (sEl) setOptS(sEl, n >= 2);
+  }
+
+  function update() {
+    const now = new Date();
+    let diff = target - now;
+
+    if (diff <= 0) {
+      document.querySelector('.hero').textContent = '♥';
+      document.querySelector('.hero-label').textContent = '';
+      document.getElementById('lines').innerHTML = '<div class="em">Ça y est.</div>';
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const totalMinutes = Math.floor(totalSeconds / 60);
+    const totalHours = Math.floor(totalMinutes / 60);
+    const totalDays = Math.floor(totalHours / 24);
+    const remMin2 = totalMinutes - totalHours * 60;
+    const remSec2 = totalSeconds - totalMinutes * 60;
+
+    const cal = calendarDiff(now, target);
+
+    setNum(document.getElementById('heroDaysNum'), totalDays);
+    setOptS(document.getElementById('s-hero'), totalDays >= 2);
+
+    setNum(document.getElementById('n-months'), cal.months);
+    apply('days2', cal.days);
+    setNum(document.getElementById('n-hours1'), cal.hours);
+    setNum(document.getElementById('n-min1'), cal.minutes);
+    apply('sec1', cal.seconds);
+
+    apply('hours2', totalHours);
+    apply('min2', remMin2);
+    apply('sec2', remSec2);
+
+    apply('min3', totalMinutes);
+    apply('sec3', remSec2);
+
+    apply('sec4', totalSeconds);
+  }
+
+  // Champ d'étoiles : chaque étoile a sa propre taille, position et rythme de
+  // clignotement (durée + délai aléatoires), donc rien ne clignote à l'unisson.
+  // Pas de défilement directionnel — juste un très léger balancement d'ensemble (voir .starfield).
+  function buildStarfield() {
+    const field = document.getElementById('starfield');
+    const tiers = [
+      { count: 45, size: [1, 1.5], minOp: [0.05, 0.2], maxOp: [0.5, 0.8], dur: [3, 6] },
+      { count: 18, size: [1.5, 2.2], minOp: [0.1, 0.25], maxOp: [0.7, 1], dur: [2.5, 5] },
+      { count: 8,  size: [2.2, 3],   minOp: [0.15, 0.3], maxOp: [0.85, 1], dur: [2, 4] }
+    ];
+    const rand = (a, b) => a + Math.random() * (b - a);
+    const frag = document.createDocumentFragment();
+    tiers.forEach(tier => {
+      for (let i = 0; i < tier.count; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = rand(tier.size[0], tier.size[1]);
+        const dur = rand(tier.dur[0], tier.dur[1]);
+        star.style.left = rand(0, 100) + '%';
+        star.style.top = rand(0, 100) + '%';
+        star.style.width = size + 'px';
+        star.style.height = size + 'px';
+        star.style.setProperty('--min-op', rand(tier.minOp[0], tier.minOp[1]).toFixed(2));
+        star.style.setProperty('--max-op', rand(tier.maxOp[0], tier.maxOp[1]).toFixed(2));
+        star.style.animationDuration = dur.toFixed(2) + 's';
+        star.style.animationDelay = (-rand(0, dur)).toFixed(2) + 's'; // déphase le départ de chaque étoile
+        frag.appendChild(star);
+      }
+    });
+    field.appendChild(frag);
+  }
+  buildStarfield();
+
+  function start() {
+    update();
+    setInterval(update, 1000);
+  }
+
+  // On attend que les polices (Space Mono, Fraunces) soient chargées avant la
+  // toute première mesure : sinon les largeurs sont calculées avec la police
+  // de secours, puis figées — et un chiffre comme "30" se retrouve tronqué
+  // quand la vraie police, plus large, prend le relais.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(start);
+  } else {
+    start();
+  }
+</script>
+</body>
+</html>
