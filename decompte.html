@@ -238,10 +238,10 @@
 
     <div class="lines" id="lines">
       <div>
-        <span class="em"><span class="num" id="n-months">0</span> mois</span>
-        <span class="num" id="n-days2">0</span> jour<span class="opt-s" id="s-days2">s</span>
-        <span class="num" id="n-hours1">0</span> heure<span class="opt-s" id="s-sec1">s</span>
-        <span class="num" id="n-min1">0</span> minute<span class="opt-s" id="s-sec1">s</span> et
+        <span class="em"><span class="num" id="n-months">0</span> mois
+        <span class="num" id="n-days2">0</span> jour<span class="opt-s" id="s-days2">s</span></span>
+        <span class="num" id="n-hours1">0</span> heure<span class="opt-s" id="s-hours1">s</span>
+        <span class="num" id="n-min1">0</span> minute<span class="opt-s" id="s-min1">s</span> et
         <span class="num" id="n-sec1">0</span> seconde<span class="opt-s" id="s-sec1">s</span>...
       </div>
       <div>
@@ -342,8 +342,8 @@
 
     setNum(document.getElementById('n-months'), cal.months);
     apply('days2', cal.days);
-    setNum(document.getElementById('n-hours1'), cal.hours);
-    setNum(document.getElementById('n-min1'), cal.minutes);
+    apply('hours1', cal.hours);
+    apply('min1', cal.minutes);
     apply('sec1', cal.seconds);
 
     apply('hours2', totalHours);
