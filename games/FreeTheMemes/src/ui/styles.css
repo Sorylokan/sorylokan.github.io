@@ -48,6 +48,9 @@ button, input { font: inherit; }
 .piece-avatar, .pl-avatar { display: grid; place-items: center; width: 22px; height: 22px; border: 2px solid var(--ink); border-radius: 50%; background: var(--pc, var(--pink)); font-size: 11px; font-weight: 800; }
 .piece.current { background: var(--lemon); }
 .piece.dead { opacity: .45; text-decoration: line-through; }
+/* Pion cliquable = cible d'attaque valide (phase d'attaque, a nous de jouer). */
+.piece.attackable { cursor: crosshair; box-shadow: 0 0 0 3px var(--pink, #f0a); outline: 2px dashed var(--ink); outline-offset: 2px; }
+.piece.attackable:hover, .piece.attackable:focus-visible { background: var(--pink, #f0a); color: var(--paper); }
 .piece-0 { --pc: var(--pc0); } .piece-1 { --pc: var(--pc1); } .piece-2 { --pc: var(--pc2); } .piece-3 { --pc: var(--pc3); }
 .piece-4 { --pc: var(--pc4); } .piece-5 { --pc: var(--pc5); } .piece-6 { --pc: var(--pc6); } .piece-7 { --pc: var(--pc7); }
 

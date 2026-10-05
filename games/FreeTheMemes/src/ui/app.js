@@ -247,11 +247,15 @@ const pieceIndexFor = (playerId) => {
   return index < 0 ? 0 : index % 8;
 };
 
-const renderPieceToken = (player, active) => `
-  <span class="piece piece-${pieceIndexFor(player.id)} ${player.id === active.id ? "current" : ""} ${player.alive ? "" : "dead"}" data-piece="${player.id}" title="${player.alive ? player.name : `${escHtml(player.name)}, eliminated`}">
+// attackableIds: set des cibles valides en phase d'attaque -> le pion devient cliquable.
+const renderPieceToken = (player, active, attackableIds = null) => {
+  const attackable = attackableIds?.has(player.id);
+  return `
+  <span class="piece piece-${pieceIndexFor(player.id)} ${player.id === active.id ? "current" : ""} ${player.alive ? "" : "dead"} ${attackable ? "attackable" : ""}" data-piece="${player.id}" ${attackable ? `data-attack-target="${player.id}" role="button" tabindex="0"` : ""} title="${player.alive ? player.name : `${escHtml(player.name)}, eliminated`}">
     <span class="piece-avatar">${player.name.slice(0, 1).toUpperCase()}</span>
     <span class="piece-name">${escHtml(player.name)}</span>
   </span>`;
+};
 
 // const renderCharacterCard = (player, active) => {
   // const character = player.characterId ? getCharacter(player.characterId) : null;
@@ -307,6 +311,7 @@ const describeEvent = (event) => {
   if (event.type === "EQUIPMENT_ACQUIRED") return `${playerLabel(event.playerId)} acquired ${getEquipmentLabel(event.cardId)}.`;
   if (event.type === "EQUIPMENT_STOLEN") return `${playerLabel(event.toPlayerId)} stole ${event.cardId ? getEquipmentLabel(event.cardId) : "Equipment"} from ${playerLabel(event.fromPlayerId)}.`;
   if (event.type === "MOVEMENT_ROLLED") return `${playerLabel(event.playerId)} rolled ${event.d6} + ${event.d4} = ${event.total}.`;
+  if (event.type === "CARD_DRAWN") return `${playerLabel(event.playerId)} drew from the ${T(`pending.deck.${event.deckId}`)} deck.`;
   if (event.type === "AREA_ATTACK_RESOLVED") return `${playerLabel(event.attackerId)} hit ${event.targetIds.length} player(s) for ${event.damage} damage each (d6 ${event.d6 ?? "–"}, d4 ${event.d4}).`;
   if (event.type === "EQUIPMENT_TRANSFERRED") return `${playerLabel(event.toPlayerId)} received ${getEquipmentLabel(event.cardId)} from ${playerLabel(event.fromPlayerId)}.`;
   if (event.type === "TURN_STARTED") return `${playerLabel(event.playerId)}'s turn started.`;
@@ -832,6 +837,9 @@ const renderDock = ({ active, canAct, pendingReaction, isGameOver, otherPlayers 
   if (isGameOver) return `<div class="dock-row"><span class="dock-title">${escT("ui.gameOver")}</span></div>`;
   if (pendingReaction) return renderPendingReactionPanel(pendingReaction, pendingMovementDestinationsFor(pendingReaction));
   if (!canAct) return `<div class="dock-row"><span class="dock-title">${escT("ui.thinking", { name: active.name })}</span></div>`;
+  // Tant que les des tournent, on ne propose aucune action : la phase a deja
+  // avance cote moteur (ex. AREA_ACTION) mais le joueur n'est pas encore "arrive".
+  if (diceRolling()) return `<div class="dock-row"><span class="dock-title">${escT("ui.rollingDice")}</span></div>`;
  
   const P = (label, cls = "") => `<button class="action ${cls}" data-action="primary">${label}</button>`;
   const phase = {
@@ -1065,6 +1073,11 @@ const render = () => {
   const pendingReaction = state.pendingActions[0];
   const canAct = canControlCurrentPlayer();
   const isGameOver = state.gameOver || state.phase === GAME_PHASES.GAME_OVER;
+  // Cibles cliquables sur le plateau : phase d'attaque, a nous de jouer, rien en
+  // attente, des arretes. otherPlayers est deja filtre par canTargetWithAttack.
+  const attackableIds = (canAct && !isGameOver && !pendingReaction && !diceRolling() && state.phase === GAME_PHASES.ATTACK)
+    ? new Set(otherPlayers.map((p) => p.id))
+    : null;
     if (canAct && !isGameOver && !wasMyTurn && roomRole !== "local") ping();
     wasMyTurn = canAct;
   const winnerNames = state.winners.map((id) => state.players[id]?.name ?? id);
@@ -1082,6 +1095,20 @@ const render = () => {
     const revealedMoves = state.events.filter((e) => e.type === "PLAYER_MOVED" && e.playerId === p.id && !pendingDice.has(e));
     const pendingMove = state.events.some((e) => pendingDice.has(e) && ((e.type === "MOVEMENT_ROLLED" && e.playerId === p.id) || (e.type === "PLAYER_MOVED" && e.playerId === p.id)));
     return pendingMove ? (revealedMoves.at(-1)?.areaId ?? null) : p.areaId;
+  };
+  // Meme idee pour les PV : tant que les des tournent, on "rembobine" les
+  // evenements de PV encore retenus (pendingDice) pour ne pas devoiler le
+  // resultat d'un jet avant l'arret de l'odometre.
+  const shownHpOf = (p) => {
+    if (!diceRolling() || !Number.isFinite(p.hp)) return p.hp;
+    let hp = p.hp;
+    const pending = state.events.filter((e) => pendingDice.has(e) && e.playerId === p.id);
+    for (const e of pending) {
+      if (e.type === "DAMAGE_DEALT") hp += e.amount;                 // inverse de la perte
+      else if (e.type === "HEAL_APPLIED") hp -= e.amount;            // inverse du soin
+      else if (e.type === "HP_SET") hp = p.maxHp;                    // valeur absolue inconnue -> prudence
+    }
+    return Math.max(0, Math.min(hp, p.maxHp));
   };
   const occupantsOf = (areaId) => Object.values(state.players).filter((p) => shownAreaOf(p) === areaId);
 
@@ -1102,12 +1129,12 @@ const render = () => {
       <div class="board">
         <svg class="tri" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><polygon points="6,18 94,18 50,94"/></svg>
         ${boardAreas.map(([pos, areaId], i) => `
-          <article class="zone win z${i} ${areaId === active.areaId ? "here" : ""}">
+          <article class="zone win z${i} ${areaId === shownAreaOf(active) ? "here" : ""}">
             <div class="win-title"><span>${AREA_ICONS[areaId] ?? "📍"} ${getAreaLabel(areaId)}</span><span class="zone-dice">🎲 ${diceLabel(areaId)}</span></div>
             <div class="win-body">
               <p class="zone-effect">${T(AREA_BY_ID[areaId].effectKey)}</p>
               <div class="zone-tokens">${occupantsOf(areaId)
-                .map((p) => renderPieceToken(p, active)).join("") || '<span class="empty">·</span>'}</div>
+                .map((p) => renderPieceToken(p, active, attackableIds)).join("") || '<span class="empty">·</span>'}</div>
             </div>
           </article>`).join("")}
         <div class="dice-slot win"><div class="win-title">${escT("ui.diceWindow")}</div><div class="dice-body"></div></div>
@@ -1122,7 +1149,7 @@ const render = () => {
             <b>${T(myCharacter.nameKey)}</b>
             <span class="badge f-${myCharacter.faction}">${T(`factions.${myCharacter.faction}`)}</span>
             <span class="badge">${me.revealed ? T("ui.revealed") : T("ui.secret")}</span></div>
-          <div class="hp"><span>HP</span><div class="hp-bar"><div class="hp-fill" style="width:${myHasHp ? pct(me) : 100}%"></div></div><span>${myHasHp ? `${me.hp}/${me.maxHp}` : "?"}</span></div>
+          <div class="hp"><span>HP</span><div class="hp-bar"><div class="hp-fill" style="width:${myHasHp ? Math.max(0, Math.round((shownHpOf(me) / me.maxHp) * 100)) : 100}%"></div></div><span>${myHasHp ? `${shownHpOf(me)}/${me.maxHp}` : "?"}</span></div>
           <dl class="sheet">
             <dt>${T("ui.ability")}</dt><dd>${T(myCharacter.abilityKey)}</dd>
             <dt>${T("ui.winCondition")}</dt><dd>${T(myCharacter.winConditionKey)}</dd>
@@ -1203,6 +1230,11 @@ const render = () => {
   app.querySelector("[data-reward-none]")?.addEventListener("click", () => resolveReward(null));
   app.querySelectorAll("[data-target]").forEach((button) => button.addEventListener("click", () => handleAttack(button.dataset.target)));
   app.querySelector("[data-area-attack]")?.addEventListener("click", () => handleAttack(otherPlayers[0]?.id));
+  // Clic direct sur un pion du plateau pour l'attaquer (equivaut aux boutons "Attaquer X").
+  app.querySelectorAll("[data-attack-target]").forEach((piece) => {
+    piece.addEventListener("click", () => handleAttack(piece.dataset.attackTarget));
+    piece.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleAttack(piece.dataset.attackTarget); } });
+  });
   app.querySelector("[data-reaction=pay-to-win-damage]")?.addEventListener("click", () => resolveReaction({ action: "damage" }, "Pay-to-Win: deal damage"));
   app.querySelectorAll("[data-reaction=pay-to-win-steal]").forEach((button) => button.addEventListener("click", () => (
     resolveReaction({ action: "steal", cardId: button.dataset.card, confirmReveal: true }, `Pay-to-Win: steal ${button.dataset.card}`)

@@ -231,6 +231,7 @@
   "ui.diceWindow": "dés.exe",
   "ui.close": "Fermer",
   "ui.cancel": "Annuler",
+  "ui.rollingDice": "Lancer en cours…",
   "ui.waitingForResolve": "En attente de {name} pour résoudre {action}.",
   "reactions.doge.reveal": "Révéler & tenter d'esquiver (pile ou face)",
   "reactions.doge.decline": "Encaisser le coup",

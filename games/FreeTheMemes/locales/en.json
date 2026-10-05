@@ -231,6 +231,7 @@
   "ui.diceWindow": "dice.exe",
   "ui.close": "Close",
   "ui.cancel": "Cancel",
+  "ui.rollingDice": "Rolling…",
   "ui.waitingForResolve": "Waiting for {name} to resolve {action}.",
   "reactions.doge.reveal": "Reveal & try to dodge (coin flip)",
   "reactions.doge.decline": "Take the hit",
