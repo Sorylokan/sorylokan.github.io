@@ -140,7 +140,7 @@ let logOpen = false;
 const logWin = document.createElement("div");
 logWin.className = "term";
 logWin.hidden = true;
-logWin.innerHTML = `<div class="term-bar"><span>journal.ps1</span><button type="button" class="term-x" aria-label="${escT("ui.close")}">×</button></div><div class="term-body"></div>`;
+logWin.innerHTML = `<div class="term-bar"><span>journal.ps1</span><button type="button" class="term-x" aria-label="Close">×</button></div><div class="term-body"></div>`;
 document.body.append(logWin);
 logWin.querySelector(".term-x").addEventListener("click", () => { logOpen = false; logWin.hidden = true; });
 const termBar = logWin.querySelector(".term-bar");
@@ -181,11 +181,7 @@ const getEquipmentLabel = (cardId) => {
   const card = getCard(cardId);
   return card ? translate(card.nameKey) : cardId.replaceAll("-", " ");
 };
-const escHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const T = (key, vars) => translate(key, vars);
-// Localized labels may contain & or < once translated; escape them so labels render as text.
-// escHtml/T/escT defined here so they exist before their first use (log window header, below).
-const escT = (key, vars) => escHtml(T(key, vars));
 
 // Messages d'état du salon : stockés comme clé + variables, donc retraduits au changement de langue.
 let roomNotice = null;
@@ -869,11 +865,14 @@ const DEFAULT_TAGS = [
   { id: "ally", key: "ui.tag.ally", color: 3 }
 ];
 const TAG_COLORS = 6;
+const escHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+// Localized labels may contain & or < once translated; escape them so labels render as text.
+const escT = (key, vars) => escHtml(T(key, vars));
 const loadJson = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
 const saveJson = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* stockage indisponible */ } };
 
-let customTags = loadJson("ftm-custom-tags", []);   // tes pastilles perso, valables pour toutes les parties
-let marks = {};                                      // { playerId: [tagId, ...] } pour la salle courante
+let customTags = loadJson("ftm-custom-tags", []);
+let marks = {};
 let marksKeyLoaded = null;
 let selectedTag = null;
 let newTagColor = 4;
