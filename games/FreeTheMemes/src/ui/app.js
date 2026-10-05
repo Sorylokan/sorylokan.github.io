@@ -181,7 +181,11 @@ const getEquipmentLabel = (cardId) => {
   const card = getCard(cardId);
   return card ? translate(card.nameKey) : cardId.replaceAll("-", " ");
 };
+const escHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 const T = (key, vars) => translate(key, vars);
+// Localized labels may contain & or < once translated; escape them so labels render as text.
+// escHtml/T/escT defined here so they exist before their first use (log window header, below).
+const escT = (key, vars) => escHtml(T(key, vars));
 
 // Messages d'état du salon : stockés comme clé + variables, donc retraduits au changement de langue.
 let roomNotice = null;
@@ -865,9 +869,6 @@ const DEFAULT_TAGS = [
   { id: "ally", key: "ui.tag.ally", color: 3 }
 ];
 const TAG_COLORS = 6;
-const escHtml = (s) => String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-// Localized labels may contain & or < once translated; escape them so labels render as text.
-const escT = (key, vars) => escHtml(T(key, vars));
 const loadJson = (key, fallback) => { try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; } };
 const saveJson = (key, value) => { try { localStorage.setItem(key, JSON.stringify(value)); } catch { /* stockage indisponible */ } };
 
