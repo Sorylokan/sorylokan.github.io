@@ -30,14 +30,19 @@ const syncDice = () => {
   if (seenEvents === null || real.length < seenEvents) { seenEvents = real.length; return; }
   const fresh = real.slice(seenEvents);
   seenEvents = real.length;
-  const hit = fresh.findLast((e) => e.type === "ATTACK_RESOLVED" || e.type === "AREA_ATTACK_RESOLVED" || e.type === "MOVEMENT_ROLLED");
+  const hit = fresh.findLast((e) => e.type === "ATTACK_RESOLVED" || e.type === "AREA_ATTACK_RESOLVED" || e.type === "MOVEMENT_ROLLED" || e.type === "ABILITY_ROLLED");
   if (!hit) return;
   const hitIndex = real.indexOf(hit);
   // Retenir le jet ET ses consequences (deplacement, degats...) jusqu'a
   // l'arret de l'odometre, sinon le journal devoile le resultat trop tot.
   const held = real.slice(hitIndex);
   held.forEach((e) => pendingDice.add(e));
-  const rolling = hit.d6 == null ? dice.dice[1].roll(hit.d4) : dice.roll([hit.d6, hit.d4]);   // attaque forcee : d4 seul
+  let rolling;
+  if (hit.type === "ABILITY_ROLLED") {
+    rolling = dice.dice[hit.sides === 4 ? 1 : 0].roll(hit.value);   // d6 Death Note, d4 Hadouken
+  } else {
+    rolling = hit.d6 == null ? dice.dice[1].roll(hit.d4) : dice.roll([hit.d6, hit.d4]);   // attaque forcee : d4 seul
+  }
   rolling.then(() => { held.forEach((e) => pendingDice.delete(e)); fillLog(); revealMovement(held); });
 };
 
@@ -188,6 +193,32 @@ let roomNotice = null;
 const setNotice = (key, vars = {}) => { roomNotice = { key, vars }; };
 let joinCodeDraft = "";   // code tapé dans l'accueil, conservé entre deux rendus
 
+// ---- Thème ----
+// Pour ajouter un thème plus tard : une ligne ici + son fichier CSS (theme-<id>.css).
+// Le socle styles.css est neutre ; chaque thème fournit l'apparence complète.
+const THEMES = [
+  { id: "persona5", label: "Persona 5", css: "./src/ui/theme-persona5.css" },
+  { id: "synthwave", label: "Synthwave", css: "./src/ui/theme-synthwave.css" },
+  { id: "msn", label: "MSN / Web 2000", css: "./src/ui/theme-msn.css" },
+  { id: "memes", label: "Meme Culture", css: "./src/ui/theme-memes.css" },
+  { id: "desktop-2004", label: "Bureau 2004", css: "./src/ui/theme-bureau2004.css" }
+];
+let theme = localStorage.getItem("ftm-theme");
+if (!THEMES.some((t) => t.id === theme)) theme = THEMES[0].id;
+const themeLink = document.createElement("link");
+themeLink.rel = "stylesheet";
+document.head.append(themeLink);
+const applyTheme = (id) => {
+  const def = THEMES.find((t) => t.id === id) ?? THEMES[0];
+  theme = def.id;
+  localStorage.setItem("ftm-theme", theme);
+  // la classe va sur <body> (pas sur #app) : le fond et la police du body doivent voir les variables du thème
+  document.body.classList.remove(...[...document.body.classList].filter((c) => c.startsWith("theme-")));
+  document.body.classList.add(`theme-${theme}`);
+  if (def.css) themeLink.href = def.css; else themeLink.removeAttribute("href");
+};
+applyTheme(theme);
+
 // ---- Langue ----
 const SUPPORTED_LOCALES = [{ code: "en", label: "English" }, { code: "fr", label: "Français" }];
 const isSupported = (code) => SUPPORTED_LOCALES.some((l) => l.code === code);
@@ -214,9 +245,16 @@ const setLocale = async (code) => {
 const renderLocaleSelect = () => `<select class="locale-select" data-locale aria-label="${escHtml(T("ui.language"))}">${
   SUPPORTED_LOCALES.map((l) => `<option value="${l.code}" ${l.code === locale ? "selected" : ""}>${l.label}</option>`).join("")
 }</select>`;
+
+const renderThemeSelect = () => `<select class="locale-select" data-theme-select aria-label="${escHtml(T("ui.theme"))}">${
+  THEMES.map((t) => `<option value="${t.id}" ${t.id === theme ? "selected" : ""}>${t.label}</option>`).join("")
+}</select>`;
+
 app.addEventListener("change", (e) => {
   const select = e.target.closest?.("[data-locale]");
   if (select) setLocale(select.value);
+  const themeSelect = e.target.closest?.("[data-theme-select]");
+  if (themeSelect) applyTheme(themeSelect.value);   // pas besoin de render() : seul le CSS change
 });
 const esc = (s) => String(s).replaceAll('"', "&quot;");
 const AREA_BY_ID = Object.fromEntries(Object.values(AREAS).map((area) => [area.id, area]));
@@ -1016,7 +1054,7 @@ const render = () => {
         app.innerHTML = `
         <main class="room-screen">
           <header class="room-topbar"><a class="wordmark" href="./">FREE THE MEMES</a>
-            <div class="topbar-right">${renderLocaleSelect()}<span class="connection-state"><i></i>${isHost ? T("lobby.roomOpen") : peers.length > 0 ? T("lobby.hostFound") : T("lobby.searching")}</span></div></header>
+            <div class="topbar-right">${renderLocaleSelect()}${renderThemeSelect()}<span class="connection-state"><i></i>${isHost ? T("lobby.roomOpen") : peers.length > 0 ? T("lobby.hostFound") : T("lobby.searching")}</span></div></header>
           <div class="room-content">
             <section class="room-main">
               <p class="eyebrow">${T("lobby.onlineRoom")} / ${isHost ? T("lobby.host") : T("lobby.guest")}</p>
@@ -1053,7 +1091,7 @@ const render = () => {
     app.innerHTML = `
       <main class="home-screen">
         <header class="home-topbar"><span class="top-chip">${T("lobby.tagline")}</span>
-          <div class="topbar-right">${renderLocaleSelect()}</div></header>
+          <div class="topbar-right">${renderLocaleSelect()}${renderThemeSelect()}</div></header>
         <section class="home-content">
           <div class="home-copy"><p class="eyebrow">${T("lobby.homeEyebrow")}</p><h1>${T("lobby.homeTitle1")}<br><em>${T("lobby.homeTitle2")}</em></h1><p class="home-intro">${T("lobby.homeIntro")}</p><label class="name-field">${T("lobby.playerName")}<input data-player-name value="${escHtml(localPlayerName)}" maxlength="24" aria-label="${escHtml(T("lobby.playerName"))}"></label></div>
           <div class="online-actions" data-title="${T("lobby.win.join")}"><button type="button" class="action create-room-action" data-action="create-room"><span>${T("lobby.createRoom")}</span><span aria-hidden="true">↗</span></button><div class="join-room-block"><label for="room-code-input">${T("lobby.haveCode")}</label><div class="room-join"><input id="room-code-input" data-room-input placeholder="${escHtml(T("lobby.codePlaceholder"))}" value="${escHtml(joinCodeDraft || roomId || "")}" aria-label="${escHtml(T("lobby.haveCode"))}"><button type="button" class="action secondary" data-action="join-room">${T("lobby.joinRoom")} <span aria-hidden="true">→</span></button></div></div><p class="room-status">${roomStatus === "offline" && !roomNotice ? T("lobby.privateNote") : lobbyStatusLabel()}</p></div>
@@ -1116,7 +1154,7 @@ const render = () => {
   <main class="game-screen">
     <header class="bar">
       <a class="wordmark" href="./">Free the Memes</a>
-      <div class="bar-right">${renderLocaleSelect()}<span class="chip">${roomId ?? T("ui.localRoom")}</span><span class="chip">${phaseLabel()}</span>
+      <div class="bar-right">${renderLocaleSelect()}${renderThemeSelect()}<span class="chip">${roomId ?? T("ui.localRoom")}</span><span class="chip">${phaseLabel()}</span>
         <button class="action secondary" data-action="mute" aria-label="${escT("ui.sound")}">${isMuted() ? "🔇" : "🔊"}</button>
         <button class="action secondary" data-action="toggle-log">${T("ui.log")}</button>
         <button class="action secondary" data-action="reset">${T("ui.quit")}</button>

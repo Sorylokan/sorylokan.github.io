@@ -1,20 +1,20 @@
-/* FREE THE MEMES - "Bureau" : le jeu est un bureau d'ordinateur de 2004.
-   Chaque zone, joueur et panneau est une fenetre avec sa barre de titre. */
+/* FREE THE MEMES - socle neutre : structure (layout) + variables + composants
+   generiques. NE METS ICI AUCUN look de theme (couleurs, fonds, ombres, police) :
+   ceux-ci vivent dans theme-*.css. Les valeurs ci-dessous sont des REPLIS neutres,
+   ecrases par le theme actif (classe .theme-* sur <body>, lien charge apres). */
 :root {
-  --desk: #2a3fd8; --ink: #101020; --paper: #fff; --chrome: #dcdcec; --muted: #5a5a78;
-  --pink: #ff5fa2; --lemon: #ffe44d; --mint: #35e0a1; --sky: #8ad0ff;
-  --pc0: #ff5fa2; --pc1: #ffe44d; --pc2: #35e0a1; --pc3: #8ad0ff;
-  --pc4: #ff9a4d; --pc5: #b69cff; --pc6: #d6ff5f; --pc7: #ff7a7a;
+  /* Repli neutre (gris) si aucun theme n'est charge ; un theme les redefinit tous. */
+  --desk: #888; --ink: #222; --paper: #fff; --chrome: #e8e8e8; --muted: #666;
+  --pink: #ccc; --lemon: #eee; --mint: #ccc; --sky: #ccc;
+  --pc0: #ccc; --pc1: #ddd; --pc2: #ccc; --pc3: #ddd;
+  --pc4: #ccc; --pc5: #ddd; --pc6: #ccc; --pc7: #ddd;
   --shadow: 4px 4px 0 var(--ink);
-  font-family: Tahoma, Verdana, "Segoe UI", sans-serif;
 }
 * { box-sizing: border-box; }
 body {
   margin: 0; min-width: 320px; color: var(--ink);
-  background:
-    linear-gradient(rgba(255,255,255,.07) 1px, transparent 1px) 0 0 / 24px 24px,
-    linear-gradient(90deg, rgba(255,255,255,.07) 1px, transparent 1px) 0 0 / 24px 24px,
-    var(--desk);
+  background: var(--desk);   /* le fond exact (damier, degrade...) est fourni par le theme */
+  font-family: Tahoma, Verdana, "Segoe UI", sans-serif;  /* repli ; le theme peut changer */
 }
 h1, h2, h3, p { margin-top: 0; }
 button, input { font: inherit; }
@@ -91,18 +91,26 @@ input { min-height: 42px; padding: 8px 10px; color: var(--ink); background: var(
 .home-footer { display: flex; justify-content: space-between; gap: 10px; font-size: 11px; font-weight: 700; opacity: .8; }
 
 /* ---- Partie ---- */
-.game-screen { height: 100svh; min-height: 600px; display: grid; grid-template-columns: minmax(0, 1fr) 290px; grid-template-rows: auto minmax(0, 1fr); gap: 0 20px; padding: 0 20px 16px; overflow: hidden; }
+/* Colonne latérale 340px : le plateau, contraint en hauteur (ratio 5:4),
+   a de la marge en largeur sur laquelle on grappille. */
+.game-screen { height: 100svh; min-height: 600px; display: grid; grid-template-columns: minmax(0, 1fr) 380px; grid-template-rows: auto minmax(0, 1fr); gap: 0 20px; padding: 0 20px 16px; overflow: hidden; }
 .bar { grid-column: 1 / -1; }
 .bar .chip { padding: 3px 10px; background: var(--ink); color: var(--lemon); font-size: 11px; font-weight: 700; }
 .bar-right { display: flex; gap: 8px; align-items: center; }
 .bar .action { min-height: 30px; padding: 3px 10px; font-size: 12px; }
-.stage { display: flex; flex-direction: column; gap: 12px; min-height: 0; }
+/* Grille a 3 pistes : turnline / plateau / dock. Le dock ne prend que sa
+   hauteur (max-content) et grandit vers le HAUT ; la ligne plateau (1fr)
+   absorbe la difference, donc pas de scroll quand un choix/carte apparait. */
+.stage { display: grid; grid-template-rows: max-content minmax(0, 1fr) max-content; gap: 12px; min-height: 0; }
 .turnline { align-self: flex-start; padding: 5px 12px; background: var(--chrome); border: 2px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); font-size: 13px; }
 .turnline.mine { background: var(--lemon); }
-.board { position: relative; flex: 1; min-height: 0; width: min(100%, 700px, calc((100svh - 230px) * 1.25)); aspect-ratio: 5 / 4; margin: 0 auto; }
-.tri { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Le plateau fait ~85svh de haut : il deborde de sa ligne de grille sur le dock
+   en dessous. z-index:0 l'enferme dans son propre contexte d'empilement pour que
+   ses enfants (zones, des) ne se comparent plus qu'entre eux. */
+.board { position: relative; z-index: 0; min-height: 0; width: min(100%, 1200px, calc((100svh - 230px) * 1.25)); aspect-ratio: 5 / 4; margin: 0 auto; }
+.tri { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .tri polygon { fill: rgba(255,255,255,.1); stroke: var(--paper); stroke-width: 3; stroke-dasharray: 8 7; vector-effect: non-scaling-stroke; }
-.zone { position: absolute; width: 25%; min-width: 120px; transform: translate(-50%, -50%); }
+.zone { position: absolute; z-index: 1; width: 25%; min-width: 120px; transform: translate(-50%, -50%); }
 .zone.z0 { left: 24%; top: 13%; } .zone.z1 { left: 76%; top: 13%; }
 .zone.z2 { left: 81%; top: 42%; } .zone.z3 { left: 65%; top: 72%; }
 .zone.z4 { left: 35%; top: 72%; } .zone.z5 { left: 19%; top: 42%; }
@@ -115,10 +123,12 @@ input { min-height: 42px; padding: 8px 10px; color: var(--ink); background: var(
 .dice-slot { position: absolute; left: 50%; top: 41%; transform: translate(-50%, -50%); z-index: 3; }
 .dice-slot .win-title { background: var(--pink); color: var(--ink); font-size: 11px; }
 .dice-slot .win-title::after { content: "\00D7"; opacity: 1; }
-.dice-body { display: flex; justify-content: center; padding: 6px 38px 8px; background: var(--ink); }
-.dice-slot .dice-tray { --gold: 255, 228, 77; --die-bg: #101020; }
+.dice-body { display: flex; justify-content: center; padding: 6px 38px 8px; background: #012456; }
+.dice-slot .dice-tray { --gold: 255, 228, 77; --die-bg: #012456; }
 
-.dock { padding: 10px; background: var(--chrome); border: 2px solid var(--ink); box-shadow: var(--shadow); }
+/* position+z-index > 3 (dice-slot) : la barre d'action reste AU-DESSUS du plateau
+   qui deborde, dans tous les themes. */
+.dock { position: relative; z-index: 4; padding: 10px; background: var(--chrome); border: 2px solid var(--ink); box-shadow: var(--shadow); }
 .dock-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
 .dock-title { margin-right: auto; font-size: 14px; font-weight: 700; }
 .pending-choices { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
@@ -151,8 +161,10 @@ input { min-height: 42px; padding: 8px 10px; color: var(--ink); background: var(
 @media (prefers-reduced-motion: reduce) { .action, .waiting-pulse, .piece { transition: none; animation: none; } }
 
 /* Plateau : boîte au ratio fixe 5:4. Le triangle et les zones sont en % de CETTE boîte.
-   Les centres des cartes sont posés sur les arêtes du triangle (6,18) (94,18) (50,94). */
-.stage { overflow-y: auto; }
+   Les centres des cartes sont posés sur les arêtes du triangle (6,18) (94,18) (50,94).
+   Pas de scroll interne : la grille 3 pistes (cf. .stage plus haut) laisse le dock
+   pousser vers le haut plutôt que d'écraser le plateau. */
+.stage { overflow: visible; }
 .board { flex: none; width: min(100%, 780px, max(520px, calc((100svh - 230px) * 1.25))); aspect-ratio: 5 / 4; margin: 0 auto; }
 .zone { width: 32%; min-width: 170px; }
 .zone.z0 { left: 26%;   top: 18%; }
@@ -241,3 +253,30 @@ input { min-height: 42px; padding: 8px 10px; color: var(--ink); background: var(
 .seat-picker { display: flex; align-items: center; gap: 10px; margin-top: 16px; font-size: 12px; font-weight: 700; text-transform: uppercase; }
 .seat-picker b { min-width: 1.5em; text-align: center; font-size: 20px; }
 .seat-picker .action { min-height: 32px; padding: 2px 12px; }
+
+/* ---- Plateau agrandi, v2 (à coller TOUT À LA FIN de styles.css ; remplace la version précédente) ----
+   Dés recentrés + lignes de zones écartées pour que les fenêtres ne se chevauchent plus. */
+.game-screen { gap: 0 24px; }
+/* Plateau fixe a ~85% de la hauteur d'ecran : stable quand le dock grandit,
+   la marge en dessous (15%) absorbe la barre d'action. aspect-ratio 5:4. */
+.board { width: min(100%, 1500px, calc(85svh * 1.25)); }
+.zone { width: 34%; min-width: 200px; }
+.zone .win-title { font-size: clamp(12px, 1vw, 15px); padding: 5px 10px; }
+.zone .win-body { padding: 10px 12px; }
+.zone-effect { font-size: clamp(11px, .85vw, 14px); line-height: 1.35; margin-bottom: 6px; }
+.zone-tokens { gap: 6px; min-height: 30px; }
+.piece { font-size: clamp(11px, 1vw, 15px); }
+.piece-avatar { width: clamp(22px, 2vw, 32px); height: clamp(22px, 2vw, 32px); }
+
+@media (min-width: 861px) {
+  .tri { transform: scaleY(1.12); }                      /* triangle étiré : plus de hauteur pour les 3 rangées */
+  .zone.z0 { left: 27%; top: 14%; } .zone.z1 { left: 73%; top: 14%; }
+  .zone.z5 { left: 15%; top: 40%; } .zone.z2 { left: 83%; top: 50%; }
+  .zone.z4 { left: 28%; top: 71%; } .zone.z3 { left: 73%; top: 75%; }
+  /* Dés : le grossissement est dans le même `transform` que le centrage.
+     (La propriété `scale` seule décalait la fenêtre vers le haut et la gauche.) */
+  .dice-slot { top: 43%; transform: translate(-50%, -50%) scale(1.17); }
+}
+@media (max-width: 860px) {
+  .zone { width: auto; min-width: 0; }
+}

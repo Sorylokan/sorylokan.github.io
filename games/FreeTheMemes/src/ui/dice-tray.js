@@ -153,6 +153,13 @@ class Odometer {
                 void this.element.offsetWidth;
                 this.element.classList.add("settled");
 
+                // Retirer la classe apres le flash : sinon, quand l'UI regenere le
+                // plateau (render -> innerHTML) et reinsere la tray dans le DOM,
+                // l'animation CSS repart a chaque render (flash intempestif a
+                // chaque clic, meme hors lancer / tour adverse).
+                this.element.addEventListener("animationend",
+                    () => this.element.classList.remove("settled"), { once: true });
+
                 if (this.o.onSettle) this.o.onSettle(this, result);
 
                 this.finish = null;

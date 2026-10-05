@@ -27,7 +27,7 @@ export const createDeckState = (cards, random = Math.random) => ({
   discard: []
 });
 
-export const drawCard = (state, deckId) => {
+export const drawCard = (state, deckId, playerId = null) => {
   const deck = state.decks?.[deckId];
 
   if (!deck) {
@@ -53,7 +53,7 @@ export const drawCard = (state, deckId) => {
       ...state.decks,
       [deckId]: { draw: remainingDraw, discard }
     },
-    events: [...state.events, { type: "CARD_DRAWN", deckId, cardId: card.id }]
+    events: [...state.events, { type: "CARD_DRAWN", playerId, deckId, cardId: card.id }]
   };
 
   return ok(nextState, { card });

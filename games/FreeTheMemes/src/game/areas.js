@@ -19,7 +19,7 @@ export const resolveAreaAction = (state, playerId, areaId) => {
   }
 
   if (area.effect === "draw-notification-and-give") {
-    const drawn = drawCard(state, "notifications");
+    const drawn = drawCard(state, "notifications", playerId);
     if (!drawn.ok) {
       return drawn;
     }
@@ -38,7 +38,7 @@ export const resolveAreaAction = (state, playerId, areaId) => {
 
   if (area.effect === "draw-white" || area.effect === "draw-black") {
     const deckId = area.effect === "draw-white" ? "white" : "black";
-    const drawn = drawCard(state, deckId);
+    const drawn = drawCard(state, deckId, playerId);
     if (!drawn.ok) {
       return drawn;
     }
@@ -97,7 +97,7 @@ export const resolveAreaPendingAction = (state, pendingAction, choice) => {
       return failure(state, "INVALID_DECK", "Choose a valid card deck.");
     }
 
-    const drawn = drawCard({ ...state, pendingActions: state.pendingActions.filter((action) => action !== pendingAction) }, choice);
+    const drawn = drawCard({ ...state, pendingActions: state.pendingActions.filter((action) => action !== pendingAction) }, choice, pendingAction.playerId);
     if (!drawn.ok) {
       return drawn;
     }

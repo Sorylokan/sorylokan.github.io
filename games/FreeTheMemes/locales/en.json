@@ -152,6 +152,7 @@
   "ui.tagInvalid": "Empty or already existing tag.",
   "ui.tagTooLong": "Tag is too long.",
   "ui.tagTooShort": "Tag is too short.",
+  "ui.theme": "Theme",
   "ui.language": "Language",
   "lobby.win.join": "join.exe",
   "lobby.win.invite": "invite.exe",
