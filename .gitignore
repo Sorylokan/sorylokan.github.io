@@ -46,3 +46,4 @@ out/
 .env
 .env.*
 !.env.example
+/games/GridOfGreed/Dev_Files
