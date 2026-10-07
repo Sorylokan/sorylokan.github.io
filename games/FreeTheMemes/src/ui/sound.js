@@ -4,8 +4,38 @@
 //   Interface : click()  ping()  bonk()
 //   Événements: hit(amount)  heal()  death()  tada()
 //   Sourdine :  toggleMuted() / isMuted() / setMuted(v)   (mémorisé)
+//
+//   Thème sonore : setSoundTheme(id) change le "preset" actif (timbre, hauteur,
+//   enveloppes). Chaque preset adapte les paramètres des fonctions ci-dessus.
+//   Plus tard : on pourra ajouter des fichiers par thème (sounds/<id>/) en repli.
 
 const KEY = "ftm-muted";
+
+/* ---------------------------------------------------------
+   PRESETS PAR THÈME
+   Chaque preset définit des modificateurs consommés par les fonctions de son.
+   - osc     : type d'oscillateur de base ("sine", "triangle", "square", "sawtooth")
+   - pitch   : multiplicateur de hauteur global (1 = normal, <1 = grave, >1 = aigu)
+   - dur     : multiplicateur de durée des notes
+   - gain    : multiplicateur de volume global
+   - wizz    : si true, click()/ping() jouent un glissant montant façon "nudge" MSN
+   --------------------------------------------------------- */
+
+const DEFAULT_PRESET = { osc: "sine", pitch: 1, dur: 1, gain: 1, wizz: false, dice: "classic" };
+
+const SOUND_PRESETS = {
+    "desktop-2004": DEFAULT_PRESET,
+    "persona5":     { osc: "triangle", pitch: 1.05, dur: 0.9, gain: 1, wizz: false, dice: "sharp" },
+    "synthwave":    { osc: "sawtooth", pitch: 0.6,  dur: 1.4, gain: 1.1, wizz: false, dice: "deep" },
+    "msn":          { osc: "sine",     pitch: 1.2,  dur: 0.9, gain: 1, wizz: true, dice: "soft" },
+    "memes":        { osc: "square",   pitch: 1.3,  dur: 0.8, gain: 1, wizz: false, dice: "toy" }
+};
+
+let activePreset = DEFAULT_PRESET;
+
+export function setSoundTheme(id) {
+    activePreset = SOUND_PRESETS[id] ?? DEFAULT_PRESET;
+}
 
 let ctx = null;
 let master = null;
@@ -74,14 +104,16 @@ function envelope(gain, t, peak, duration) {
 function note(type, freq, t, peak, duration, freqEnd, out = master) {
     const o = ctx.createOscillator();
     const g = ctx.createGain();
-    o.type = type;
-    o.frequency.setValueAtTime(freq, t);
-    if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd, t + duration * 0.8);
-    envelope(g, t, peak, duration);
+    // Le preset actif module le type d'oscillateur, la hauteur, la duree et le gain.
+    o.type = type ?? activePreset.osc;
+    o.frequency.setValueAtTime(freq * activePreset.pitch, t);
+    const dur = duration * activePreset.dur;
+    if (freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd * activePreset.pitch, t + dur * 0.8);
+    envelope(g, t, peak * activePreset.gain, dur);
     o.connect(g);
     g.connect(out);
     o.start(t);
-    o.stop(t + duration + 0.02);
+    o.stop(t + dur + 0.02);
 }
 
 // Petite salve de bruit filtré : base des "tic" et des impacts
@@ -122,14 +154,16 @@ export function tick(die) {
     // 0 = vitesse maximale (~40 ms entre deux tics), 1 = presque arrêté (~180 ms)
     const slow = dt > 400 ? 0.6 : clamp01((dt - 40) / 140);
 
-    const base  = (die && die.sides === 4 ? 2300 : 1700) * (1 - 0.35 * slow);
+    // Variante du roll selon le thème : hauteur/timbre du tic.
+    const dicePitch = { classic: 1, sharp: 1.35, deep: 0.55, soft: 0.85, toy: 1.6 }[activePreset.dice] ?? 1;
+    const base  = (die && die.sides === 4 ? 2300 : 1700) * (1 - 0.35 * slow) * dicePitch;
     const out   = dest(die);
 
     burst(t, (base + Math.random() * 1000) * vary(0.1), 3.5 + 3 * slow,
           (0.09 + 0.10 * slow) * vary(0.3), 0.028 + 0.02 * slow, out);
 
     if (slow > 0.35) {
-        note("sine", 280 * (1 - 0.3 * slow) * vary(0.08), t, 0.05 * slow, 0.05, 150, out);
+        note(activePreset.osc, 280 * (1 - 0.3 * slow) * vary(0.08) * dicePitch, t, 0.05 * slow, 0.05, 150 * dicePitch, out);
     }
 }
 
@@ -142,11 +176,13 @@ export function thunk(die, value) {
     const sides = die ? die.sides : 6;
     const bright = value && sides > 1 ? (value - 1) / (sides - 1) : 0.5;
 
-    const start = (sides === 4 ? 190 : 150) * (0.92 + 0.16 * bright) * vary(0.06);
+    // Variante de l'arrêt selon le thème : plus grave/aigu, plus sec/ronde.
+    const dicePitch = { classic: 1, sharp: 1.3, deep: 0.5, soft: 0.8, toy: 1.5 }[activePreset.dice] ?? 1;
+    const start = (sides === 4 ? 190 : 150) * (0.92 + 0.16 * bright) * vary(0.06) * dicePitch;
     const out = dest(die);
 
-    note("sine", start, t, 0.16 * vary(0.25), 0.11, 55 * vary(0.1), out);
-    burst(t, 900 * vary(0.2), 1.2, 0.07 * vary(0.3), 0.03, out);
+    note(activePreset.osc, start, t, 0.16 * vary(0.25), 0.11 * activePreset.dur, 55 * vary(0.1) * dicePitch, out);
+    burst(t, 900 * vary(0.2) * dicePitch, 1.2, 0.07 * vary(0.3), 0.03, out);
 }
 
 
@@ -156,15 +192,27 @@ export function thunk(die, value) {
 
 export function click() {
     if (!ready()) return;
-    note("triangle", 520 * vary(0.1), ctx.currentTime, 0.07 * vary(0.3), 0.05, 260 * vary(0.1));
+    if (activePreset.wizz) {
+        // "Wizz" façon MSN nudge : glissant montant rapide
+        const t = ctx.currentTime;
+        note(activePreset.osc, 500, t, 0.09, 0.18, 1600);
+        return;
+    }
+    note(activePreset.osc, 520 * vary(0.1), ctx.currentTime, 0.07 * vary(0.3), 0.05, 260 * vary(0.1));
 }
 
 /* À toi de jouer */
 export function ping() {
     if (!ready()) return;
     const t = ctx.currentTime;
-    note("sine", 784,  t,        0.10, 0.30);
-    note("sine", 1175, t + 0.09, 0.10, 0.38);
+    if (activePreset.wizz) {
+        // Nudge MSN : deux glissants montants
+        note(activePreset.osc, 600, t,        0.10, 0.20, 1800);
+        note(activePreset.osc, 800, t + 0.12, 0.08, 0.22, 2000);
+        return;
+    }
+    note(activePreset.osc, 784,  t,        0.10, 0.30);
+    note(activePreset.osc, 1175, t + 0.09, 0.10, 0.38);
 }
 
 /* Action refusée : deux "bonk" descendants, façon boîte d'erreur */

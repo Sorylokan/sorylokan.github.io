@@ -15,7 +15,7 @@ import { createActionRequest, cleanName, MESSAGE_TYPES } from "../networking/mes
 import { resolveEquipmentReward } from "../game/rules-engine.js";
 import { isValidMovementDestination, getAdjacentAreaIds, resolveMovementAction, resolveMovementDestination, resolveMovementRollChoice } from "../movement.js";
 import { ABILITY_BY_CHARACTER } from "../game/abilities.js";
-import { tick, thunk, click, ping, isMuted, toggleMuted } from "./sound.js";
+import { tick, thunk, click, ping, bonk, hit, heal, death, tada, isMuted, toggleMuted, setSoundTheme } from "./sound.js";
 
 const diceHost = document.createElement("div");
 const dice = new DiceTray(diceHost, [6, 4], { cell: 38, onTick: tick, onSettle: thunk });
@@ -25,11 +25,35 @@ let seenEvents = null;
 const pendingDice = new Set();
 const diceRolling = () => pendingDice.size > 0;
  
+// Animation "impact" : ajoute la classe anim-shake au body, la retire apres.
+// Defaut : les zones vibrent ; theme MSN : wizz global de l'ecran (cf CSS).
+const ANIM_MS = 550;
+let animTimer = null;
+const playShake = () => {
+  document.body.classList.remove("anim-shake");
+  void document.body.offsetWidth;              // relance l'animation meme si deja active
+  document.body.classList.add("anim-shake");
+  clearTimeout(animTimer);
+  animTimer = setTimeout(() => document.body.classList.remove("anim-shake"), ANIM_MS);
+};
+
 const syncDice = () => {
   const real = state.events;
   if (seenEvents === null || real.length < seenEvents) { seenEvents = real.length; return; }
   const fresh = real.slice(seenEvents);
   seenEvents = real.length;
+
+  // Sons d'evenements (degats, soin, mort, victoire) : joues pour chaque
+  // evenement frais. try/catch : un AudioContext non pret ne doit pas casser le render.
+  for (const e of fresh) {
+    try {
+      if (e.type === "DAMAGE_DEALT") { hit(e.amount); playShake(); }
+      else if (e.type === "HEAL_APPLIED") heal();
+      else if (e.type === "PLAYER_DIED") { death(); playShake(); }
+      else if (e.type === "VICTORY_REACHED") tada();
+    } catch (err) { warnLog("sound error", err); }
+  }
+
   const hit = fresh.findLast((e) => e.type === "ATTACK_RESOLVED" || e.type === "AREA_ATTACK_RESOLVED" || e.type === "MOVEMENT_ROLLED" || e.type === "ABILITY_ROLLED");
   if (!hit) return;
   const hitIndex = real.indexOf(hit);
@@ -216,6 +240,7 @@ const applyTheme = (id) => {
   document.body.classList.remove(...[...document.body.classList].filter((c) => c.startsWith("theme-")));
   document.body.classList.add(`theme-${theme}`);
   if (def.css) themeLink.href = def.css; else themeLink.removeAttribute("href");
+  setSoundTheme(theme);   // adapte les sons synthétisés au thème actif
 };
 applyTheme(theme);
 
@@ -358,9 +383,21 @@ const describeEvent = (event) => {
   return `${event.type.replaceAll("_", " ")}${event.playerId ? ` - ${playerLabel(event.playerId)}` : ""}.`;
 };
 
+// Toast d'erreur en jeu : affiche dans le dock quand une action est refusee,
+// sinon un refus silencieux laisse croire que le bouton est casse.
+let gameNotice = null;
+let gameNoticeTimer = null;
+const setGameNotice = (text) => {
+  gameNotice = text;
+  clearTimeout(gameNoticeTimer);
+  gameNoticeTimer = setTimeout(() => { gameNotice = null; render(); }, 4000);
+};
+
 const run = (result, label = "action") => {
   if (!result.ok) {
     warnLog(`RESULT ${label}: REJECTED - ${result.error}: ${result.message ?? "Action rejected"}`);
+    setGameNotice(`${result.message ?? result.error ?? "Action refusée"}`);
+    render();
     return false;
   }
   state = result.state;
@@ -1177,7 +1214,7 @@ const render = () => {
           </article>`).join("")}
         <div class="dice-slot win"><div class="win-title">${escT("ui.diceWindow")}</div><div class="dice-body"></div></div>
       </div>
-      <div class="dock">${renderDock({ active, canAct, pendingReaction, isGameOver, otherPlayers })}</div>
+      <div class="dock">${gameNotice ? `<div class="dock-row"><span class="dock-title game-notice">${escHtml(gameNotice)}</span></div>` : ""}${renderDock({ active, canAct, pendingReaction, isGameOver, otherPlayers })}</div>
     </section>
 
     <aside class="side">

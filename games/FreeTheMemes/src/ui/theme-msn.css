@@ -32,16 +32,29 @@ body.theme-msn::before {
 }
 
 /* ---- Fenêtres : style MSN Messenger ---- */
-body.theme-msn .win { background: var(--paper); border: 2px solid var(--msn-blue); border-radius: 8px; box-shadow: var(--shadow); overflow: hidden; }
+body.theme-msn .win { background: var(--paper); border: 2px solid var(--msn-blue); border-radius: 8px 8px 4px 4px; box-shadow: 0 2px 8px rgba(10, 36, 106, .35); overflow: hidden; }
 body.theme-msn .win-title {
   margin: 0; padding: 4px 10px;
-  background: linear-gradient(180deg, #fff 0%, var(--msn-light) 45%, var(--msn-blue) 100%);
+  background: linear-gradient(180deg, #fff 0%, #d6e4f5 8%, var(--msn-light) 45%, var(--msn-blue) 100%);
   color: #fff; font: 700 12px/1.3 var(--display);
   border-bottom: 1px solid #0a246a;
   text-shadow: 0 1px 0 rgba(0,0,0,.4);
 }
-body.theme-msn .win-title::after { content: "\25A1  \00D7"; opacity: .9; letter-spacing: .15em; font-weight: 400; }
+/* Boutons fenetre MSN : reduire / agrandir / fermer, colores */
+body.theme-msn .win-title::after {
+  content: "\2013  \25A1  \00D7";
+  opacity: 1; letter-spacing: .35em; font-weight: 700; font-size: 11px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.5);
+}
 body.theme-msn .win-body { background: var(--paper); }
+
+/* Statut "En ligne" façon Messenger : point vert pulse + texte */
+body.theme-msn .connection-state {
+  background: linear-gradient(180deg, #fff, #e0ecf8); color: var(--msn-blue);
+  border: 1px solid var(--msn-blue); border-radius: 12px; padding: 3px 12px 3px 8px;
+  font: 700 11px var(--display);
+}
+body.theme-msn .connection-state i { background: var(--msn-green); border: 1px solid #2d5a1b; box-shadow: 0 0 4px rgba(107,181,61,.8); }
 
 /* ---- Typo ---- */
 body.theme-msn .wordmark { font: 700 20px var(--display); color: #fff; text-shadow: 1px 1px 0 var(--msn-blue), 2px 2px 4px rgba(0,0,0,.4); }
@@ -53,9 +66,9 @@ body.theme-msn .online-actions::before, body.theme-msn .invite-block::before, bo
 
 /* ---- Boutons : gloss 3D façon XP/MSN ---- */
 body.theme-msn .action {
-  background: linear-gradient(180deg, #fff 0%, #d4d0c8 50%, #b0aa9e 100%);
-  color: #000; border: 1px solid #7f7f7f; border-radius: 4px;
-  box-shadow: inset 0 1px 0 #fff, inset 1px 0 0 #fff, inset -1px -1px 0 #7f7f7f, 1px 1px 2px rgba(0,0,0,.2);
+  background: linear-gradient(180deg, #fff 0%, #e8f0fa 40%, #b8cfe8 100%);
+  color: var(--msn-blue); border: 1px solid var(--msn-blue); border-radius: 10px;
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgba(10,36,106,.15), 0 1px 3px rgba(0,0,0,.25);
   font: 700 12px var(--display);
   text-shadow: 0 1px 0 #fff;
   transition: none;
@@ -83,6 +96,11 @@ body.theme-msn .dice-slot .dice-tray { --gold: 255, 255, 255; --die-bg: #0a246a;
 body.theme-msn .piece { background: #fff; border: 1px solid #7f7f7f; border-radius: 99px; box-shadow: 0 1px 2px rgba(0,0,0,.2); }
 body.theme-msn .piece-avatar, body.theme-msn .pl-avatar { border: 1px solid #7f7f7f; border-radius: 50%; }
 body.theme-msn .piece.current { background: var(--msn-accent); color: #fff; }
+/* Avatars ronds façon liste de contacts Messenger, avec liseré blanc brillant */
+body.theme-msn .piece-avatar, body.theme-msn .pl-avatar {
+  border: 2px solid #fff; border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--msn-blue), 0 1px 3px rgba(0,0,0,.3), inset 0 1px 1px rgba(255,255,255,.6);
+}
 body.theme-msn .piece.attackable { box-shadow: 0 0 0 2px var(--msn-accent); outline: 1px dashed #fff; }
 body.theme-msn .piece.attackable:hover { background: var(--msn-accent); color: #fff; }
 
@@ -103,8 +121,11 @@ body.theme-msn .badge { border: 1px solid #7f7f7f; background: #f0f0f0; color: #
 body.theme-msn .f-user { background: #d4e5f7; } body.theme-msn .f-memer { background: #d8f0c8; } body.theme-msn .f-troller { background: #ffd8a8; }
 body.theme-msn .sheet dt { color: var(--msn-blue); font-family: var(--display); font-weight: 700; letter-spacing: .05em; }
 body.theme-msn .sheet dd { color: #000; }
+/* ---- Liste des joueurs : façon liste de contacts MSN ---- */
+body.theme-msn .pl { border-bottom: 1px solid #d0d8e8; padding: 6px 4px; }
+body.theme-msn .pl:hover { background: #e8f0fa; }
 body.theme-msn .pl.active b::after { content: " \25B6"; color: var(--msn-green); }
-body.theme-msn .pl.revealed { border-left: 3px solid var(--msn-accent); padding-left: 6px; }
+body.theme-msn .pl.revealed { border-left: 3px solid var(--msn-accent); padding-left: 6px; background: #fff8e8; }
 body.theme-msn .pl small { color: #555; }
 body.theme-msn .eq b { color: var(--msn-blue); }
 body.theme-msn .eq small { color: #555; }
@@ -114,10 +135,12 @@ body.theme-msn .note { border: 1px solid #7f7f7f; border-radius: 3px; font-famil
 body.theme-msn .n0 { background: #ffd8a8; } body.theme-msn .n1 { background: #d8f0c8; } body.theme-msn .n2 { background: #ffffcc; }
 body.theme-msn .n3 { background: #d4e5f7; } body.theme-msn .n4 { background: #e0e0e0; } body.theme-msn .n5 { background: #fff; }
 
-/* ---- Journal ---- */
-body.theme-msn .term { background: #fff; border: 2px solid var(--msn-blue); border-radius: 8px; box-shadow: var(--shadow); color: #000; }
-body.theme-msn .term-bar { background: linear-gradient(180deg, #fff, var(--msn-light) 45%, var(--msn-blue)); color: #fff; }
-body.theme-msn .term-body div::before { content: "C:\\> "; color: var(--msn-blue); }
+/* ---- Journal : fenêtre de conversation MSN ---- */
+body.theme-msn .term { background: #fff; border: 2px solid var(--msn-blue); border-radius: 8px 8px 4px 4px; box-shadow: 0 2px 8px rgba(10,36,106,.35); color: #000; }
+body.theme-msn .term-bar { background: linear-gradient(180deg, #fff 0%, #d6e4f5 8%, var(--msn-light) 45%, var(--msn-blue) 100%); color: #fff; border-bottom: 1px solid #0a246a; }
+body.theme-msn .term-body { font: 12px/1.5 "Lucida Console", Monaco, monospace; }
+body.theme-msn .term-body div::before { content: "[" attr(data-time) "] "; color: var(--msn-blue); font-weight: 700; }
+body.theme-msn .term-body div { border-bottom: 1px dotted #d0d8e8; padding: 2px 0; }
 
 /* ---- Mobile ---- */
 @media (max-width: 860px) {
@@ -126,3 +149,21 @@ body.theme-msn .term-body div::before { content: "C:\\> "; color: var(--msn-blue
 @media (prefers-reduced-motion: reduce) {
   body.theme-msn .action, body.theme-msn .piece { transition: none; }
 }
+
+/* ---- Wizz MSN : au lieu de faire vibrer les zones, on secoue TOUT l'ecran
+   violemment et rapidement, comme un nudge Windows Live Messenger. ---- */
+@keyframes ftm-wizz {
+  0%, 100% { transform: translate(0, 0); }
+  10% { transform: translate(-8px, 4px); }
+  20% { transform: translate(8px, -4px); }
+  30% { transform: translate(-7px, -3px); }
+  40% { transform: translate(7px, 3px); }
+  50% { transform: translate(-5px, 2px); }
+  60% { transform: translate(5px, -2px); }
+  70% { transform: translate(-3px, 1px); }
+  80% { transform: translate(3px, -1px); }
+  90% { transform: translate(-1px, 0); }
+}
+body.theme-msn.anim-shake .game-screen { animation: ftm-wizz .5s ease-in-out; }
+body.theme-msn.anim-shake .zone { animation: none; }   /* on remplace la vibration des zones par le wizz global */
+@media (prefers-reduced-motion: reduce) { body.theme-msn.anim-shake .game-screen { animation: none; } }

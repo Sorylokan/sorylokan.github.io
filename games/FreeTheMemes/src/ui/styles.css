@@ -280,3 +280,18 @@ input { min-height: 42px; padding: 8px 10px; color: var(--ink); background: var(
 @media (max-width: 860px) {
   .zone { width: auto; min-width: 0; }
 }
+
+/* ---- Animation "impact" : declenchee par JS sur les evenements (degats, a ton tour).
+   Defaut : les zones du plateau vibrent. Chaque theme peut redefinir .anim-shake. */
+@keyframes ftm-shake {
+  0%, 100% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); }
+  40% { transform: translate(3px, -2px); }
+  60% { transform: translate(-2px, -1px); }
+  80% { transform: translate(2px, 1px); }
+}
+.anim-shake .zone { animation: ftm-shake .35s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .anim-shake .zone { animation: none; } }
+
+/* Toast d'erreur en jeu : affiche dans le dock quand une action est refusee. */
+.game-notice { color: #b00020; font-weight: 700; background: #ffe0e0; border: 2px solid #b00020; padding: 4px 10px; border-radius: 3px; }
