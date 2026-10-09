@@ -6,7 +6,7 @@ Hi! This website is currently under development... Please be kind as you explore
 
 ## Quick access
 
-<div class="center">{"Streamer.bot extensions"-p}(?p=content/streamerbot/index) | {"Streaming & Overlays"-n}(?p=content/streaming/index) | {"About me"-g}(?p=about)</div>
+<div class="center">{"Streamer.bot extensions"-p}(?p=content/streamerbot/index) | {"Streaming & Overlays"-n}(?p=content/streaming/index) | {"Games"-p}(games/) | {"About me"-g}(?p=about)</div>
 
 ---
 
