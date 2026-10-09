@@ -90,10 +90,12 @@ const renderCard = ([cls, card]) => {
   if (card.preview && PREVIEWS[card.preview.type]) body.push(PREVIEWS[card.preview.type](card.preview));
   if (card.description) body.push(`<p>${card.description}</p>`);
   if (card.tags?.length) body.push(`<div class="tags">${card.tags.map((t) => `<span>${t}</span>`).join("")}</div>`);
+  if (card.warning) body.push(`<p class="warning"><span>⚠ ${card.warning}</span></p>`);
   if (card.meta) body.push(`<p class="meta">${card.meta}</p>`);
   body.push(`<span class="go">${card.button ?? "Jouer →"}</span>`);
   return (
     `<li><a class="tile ${cls}" href="${card.path}">` +
+    (card.badge ? `<span class="badge"><span>${card.badge}</span></span>` : "") +
     (card.ribbon ? `<div class="ribbon">${card.ribbon}</div>` : "") +
     `<div class="body">${body.join("")}</div></a></li>`
   );
@@ -101,12 +103,21 @@ const renderCard = ([cls, card]) => {
 
 async function main() {
   const files = await fetch("cards.json").then((r) => r.json());
-  const entries = await Promise.all(
-    files.map(async (file) => [cardClass(file), await fetch(encodeURI(file)).then((r) => r.json())])
-  );
+  const results = await Promise.all(files.map(async (file) => {
+    try {
+      const r = await fetch(encodeURI(file));
+      if (!r.ok) throw new Error(r.status);
+      return [cardClass(file), await r.json()];
+    } catch (err) {
+      console.error(`Fiche ignorée (${file}) :`, err);
+      return null;
+    }
+  }));
+  const entries = results.filter(Boolean);
   injectStyles(entries);
   catalog.innerHTML = entries.map(renderCard).join("");
   initDice();
 }
 
 main().catch((err) => console.error("Impossible de charger le catalogue des jeux :", err));
+
