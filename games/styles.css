@@ -21,6 +21,7 @@ h1 { margin: 0 0 .25rem; font: 400 clamp(3rem, 10vw, 4rem)/1 Anton, Impact, sans
 /* Grille du catalogue */
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr)); gap: 2.5rem 2rem; list-style: none; padding: 0; margin: 0; }
 .grid > li { display: flex; }
+.grid > li.wide { grid-column: 1 / -1; }
 
 /* Structure commune des cartes (le thème vient des card_*.json) */
 .tile { display: flex; flex-direction: column; width: 100%; text-decoration: none; color: inherit; }
@@ -59,11 +60,18 @@ h1 { margin: 0 0 .25rem; font: 400 clamp(3rem, 10vw, 4rem)/1 Anton, Impact, sans
 .cell-face, .cell-back { position: absolute; inset: 0; border-radius: 6px; backface-visibility: hidden; display: grid; place-items: center; }
 .cell-face { transform: rotateY(180deg); }
 
+/* Aperçu "toggle" : démo d'une grille d'interrupteurs, couleurs et emojis dans le JSON (--tg-*) */
+.preview-toggle { width: 100%; max-width: 20rem; align-self: center; margin: .5rem 0; display: flex; flex-direction: column; gap: .7rem; }
+.tg-grid { display: grid; gap: 8px; padding: 10px; background: var(--tg-board, transparent); border-radius: 18px; transition: background .4s; }
+.tg { aspect-ratio: 1; display: grid; place-items: center; line-height: 1; border-radius: 14px; background: var(--tg-off); transition: background .3s; }
+.tg.on { background: var(--tg-on); }
+.tg-label { text-align: center; }
+
 footer { margin-top: 3.5rem; color: #8a8698; font-size: .9rem; }
 
 @media (prefers-reduced-motion: reduce) {
   /* Neutralise les transformations/animations apportées par les card_*.json */
   .tile, .tile:hover { transform: none !important; }
   .badge { animation: none !important; }
-  .tile, .cell-in { transition: none !important; }
+  .tile, .cell-in, .tg { transition: none !important; }
 }

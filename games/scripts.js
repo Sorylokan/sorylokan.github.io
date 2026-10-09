@@ -33,6 +33,18 @@ const injectStyles = (entries) => {
 // card_FTM.json -> "card-ftm" : classe unique dérivée du nom de fichier.
 const cardClass = (file) => "card-" + file.replace(/^card_?|\.json$/gi, "").toLowerCase();
 
+// Polices Google Fonts propres à chaque fiche (champ "fonts", valeurs au format
+// family=... : ["Fredoka:wght@600", "Nunito:wght@400;700"]). Dédupliquées et
+// injectées en un seul <link> : un nouveau jeu n'a jamais à toucher index.html.
+const injectFonts = (entries) => {
+  const families = [...new Set(entries.flatMap(([, card]) => card.fonts ?? []))];
+  if (!families.length) return;
+  const link = document.createElement("link");
+  link.rel = "stylesheet";
+  link.href = `https://fonts.googleapis.com/css2?${families.map((f) => `family=${f}`).join("&")}&display=swap`;
+  document.head.appendChild(link);
+};
+
 // --- Aperçus (registre extensible, aucun n'est lié à un jeu précis) ------------
 
 const PREVIEWS = {
@@ -60,6 +72,14 @@ const PREVIEWS = {
       ` grid-template-rows: repeat(${Math.ceil(p.values.length / p.columns)}, 1fr)">${cells}</div>`
     );
   },
+
+  // Démo d'une grille d'interrupteurs (voir initToggle) : la configuration complète est
+  // transmise à initToggle via data-config, le HTML ne contient que les cases vides.
+  toggle: (p) =>
+    `<div class="preview-toggle" aria-hidden="true" data-config="${encodeURIComponent(JSON.stringify(p))}">` +
+    `<div class="tg-grid" style="grid-template-columns: repeat(${p.columns}, 1fr)">` +
+    Array.from({ length: p.columns * (p.rows ?? p.columns) }, () => `<span class="tg off"></span>`).join("") +
+    `</div>${p.themes?.length ? `<span class="tg-label"></span>` : ""}</div>`,
 };
 
 // Animation des aperçus "dice" : les dés se brouillent au survol/focus,
@@ -81,6 +101,65 @@ const initDice = () => {
   });
 };
 
+// Démo des aperçus "toggle" : la grille rejoue en boucle une vraie partie (un clic bascule la case
+// et ses 4 voisines), se résout, puis passe au thème suivant. Config : columns, rows, presses (les
+// clics qui résolvent la grille), themes [{ on, off, onBg, offBg, boardBg, label }].
+// Sans animation (prefers-reduced-motion), on affiche juste la grille de départ.
+const initToggle = () => {
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+  document.querySelectorAll(".preview-toggle").forEach((preview) => {
+    const cfg = JSON.parse(decodeURIComponent(preview.dataset.config));
+    const cols = cfg.columns, rows = cfg.rows ?? cols;
+    const cells = [...preview.querySelectorAll(".tg")];
+    const label = preview.querySelector(".tg-label");
+    const themes = cfg.themes ?? [{}];
+    const state = new Array(cells.length).fill(0);
+    let ti = 0;
+
+    const press = (i) => {
+      const r = Math.floor(i / cols), c = i % cols;
+      [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].forEach(([dr, dc]) => {
+        const rr = r + dr, cc = c + dc;
+        if (rr >= 0 && rr < rows && cc >= 0 && cc < cols) state[rr * cols + cc] ^= 1;
+      });
+    };
+    const paint = () => {
+      const th = themes[ti];
+      preview.style.setProperty("--tg-on", th.onBg ?? "");
+      preview.style.setProperty("--tg-off", th.offBg ?? "");
+      preview.style.setProperty("--tg-board", th.boardBg ?? "");
+      if (label) label.textContent = th.label ?? "";
+      cells.forEach((el, i) => {
+        const on = !!state[i], glyph = (on ? th.on : th.off) ?? "";
+        if (el.classList.contains("on") !== on || el.textContent !== glyph) {
+          el.classList.toggle("on", on);
+          el.classList.toggle("off", !on);
+          el.textContent = glyph;
+          if (!still) el.animate([{ transform: "scale(.8)" }, { transform: "scale(1.1)" }, { transform: "scale(1)" }], { duration: 320 });
+        }
+      });
+    };
+    const scramble = () => { state.fill(0); cfg.presses.forEach(press); };
+
+    scramble(); paint();
+    if (still) return;
+    (async () => {
+      for (;;) {
+        await wait(1300);
+        for (const i of cfg.presses) {
+          while (document.hidden) await wait(500);
+          press(i); paint();
+          await wait(700);
+        }
+        await wait(1800);                    // grille résolue : tout le monde est content
+        ti = (ti + 1) % themes.length;       // thème suivant, nouvelle grille
+        scramble(); paint();
+      }
+    })();
+  });
+};
+
 // --- Génération des cartes -----------------------------------------------------
 
 // Seuls les champs présents dans le JSON sont rendus (ribbon, tagline, tags, meta...).
@@ -94,7 +173,7 @@ const renderCard = ([cls, card]) => {
   if (card.meta) body.push(`<p class="meta">${card.meta}</p>`);
   body.push(`<span class="go">${card.button ?? "Jouer →"}</span>`);
   return (
-    `<li><a class="tile ${cls}" href="${card.path}">` +
+    `<li${card.wide ? ' class="wide"' : ""}><a class="tile ${cls}" href="${card.path}">` +
     (card.badge ? `<span class="badge"><span>${card.badge}</span></span>` : "") +
     (card.ribbon ? `<div class="ribbon">${card.ribbon}</div>` : "") +
     `<div class="body">${body.join("")}</div></a></li>`
@@ -114,9 +193,11 @@ async function main() {
     }
   }));
   const entries = results.filter(Boolean);
+  injectFonts(entries);
   injectStyles(entries);
   catalog.innerHTML = entries.map(renderCard).join("");
   initDice();
+  initToggle();
 }
 
 main().catch((err) => console.error("Impossible de charger le catalogue des jeux :", err));

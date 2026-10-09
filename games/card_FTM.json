@@ -5,6 +5,7 @@
   "description": "Un remake mémesque de Shadow Hunters : identités cachées, bagarres dans une chambre de mamie et équipements absurdes. Users, Memers ou Trollers, à toi de deviner qui est qui.",
   "tags": ["4 à 8 joueurs", "Rôles cachés", "5 thèmes"],
   "button": "Jouer →",
+  "fonts": ["Barlow+Condensed:wght@300"],
 
   "style": {
     "--red": "#e60012",

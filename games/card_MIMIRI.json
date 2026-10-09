@@ -1,0 +1,53 @@
+{
+  "title": "Mimiri",
+  "path": "Mimiri/",
+  "wide": true,
+  "tagline": "Le petit jeu de la pause : un clic, des voisins qui changent, et tout rentre dans l'ordre.",
+  "description": "Chaque grille se résout toujours, et un nouveau défi arrive chaque jour !",
+  "tags": ["Solo", "3 thèmes", "Défi du jour"],
+  "meta": "Une partie dure 2 à 5 minutes. Elle se sauvegarde toute seule.",
+  "fonts": ["Fredoka:wght@600", "Nunito:wght@400;700"],
+  "badge": "⚠ BETA ⚠",
+  "warning": "À vos risques et périls : ça peut bugger !",
+  "button": "Tester →",
+
+  "style": {
+    "--accent": "#F29F58",
+    "--line": "#50577A",
+    "background": "radial-gradient(40rem 24rem at 100% 0%, rgba(242,159,88,.18), transparent 60%), linear-gradient(135deg, #2a1650 0%, #1B1833 55%, #16283a 100%)",
+    "color": "#f1eefb",
+    "border": "2px solid var(--line)",
+    "borderRadius": "28px",
+    "padding": "clamp(1.4rem, 3vw, 2.6rem)",
+    "fontFamily": "Nunito, \"Trebuchet MS\", system-ui, sans-serif",
+    "transition": "border-color .2s, transform .15s"
+  },
+
+  "css": [
+    "&:hover { border-color: var(--accent); transform: translateY(-3px); }",
+    ".body { display: grid; grid-template-columns: minmax(0, 1fr) minmax(15rem, 21rem); column-gap: clamp(1.5rem, 5vw, 4.5rem); row-gap: 1rem; align-content: center; }",
+    ".body > * { grid-column: 1; }",
+    ".body > .preview-toggle { grid-column: 2; grid-row: 1 / span 6; align-self: center; justify-self: center; margin: 0; }",
+    "h2 { margin: 0; font: 600 clamp(3.2rem, 9vw, 6rem)/.95 Fredoka, \"Trebuchet MS\", system-ui, sans-serif; color: var(--accent); letter-spacing: .01em; }",
+    ".tagline { max-width: 30rem; font-size: 1.2rem; font-style: italic; color: #cfd2e8; }",
+    ".body > p:not(.tagline):not(.meta) { max-width: 34rem; color: #e4e1f2; }",
+    ".tags span { padding: .25rem .8rem; border-radius: 999px; background: rgba(242,159,88,.16); color: var(--accent); font-weight: 700; font-size: .9rem; }",
+    ".meta { color: #b4b8d2; font-size: .95rem; }",
+    ".go { margin-top: .5rem; align-self: start; justify-self: start; padding: .55rem 1.6rem; color: #1B1833; background: var(--accent); border-radius: 999px; font-weight: 700; font-size: 1.1rem; }",
+    "&:hover .go { background: #ffb774; }",
+    ".tg { font-size: clamp(2.2rem, 6vw, 3.4rem); }",
+    ".tg-label { color: #b4b8d2; font-size: .95rem; }",
+    "@media (max-width: 46rem) { .body { display: flex; } .body > .preview-toggle { order: -1; align-self: center; } }"
+  ],
+
+  "preview": {
+    "type": "toggle",
+    "columns": 3,
+    "presses": [1, 3, 5, 7],
+    "themes": [
+      { "on": "😴", "off": "😺", "onBg": "#1B1833", "offBg": "#50577A", "boardBg": "#404258", "label": "Chatons câlins" },
+      { "on": "😾", "off": "😸", "onBg": "#441752", "offBg": "#50577A", "boardBg": "#404258", "label": "Chats grincheux" },
+      { "on": "🌱", "off": "🌸", "onBg": "#173f36", "offBg": "#4b8c5f", "boardBg": "#1d4a3f", "label": "Jardin fleuri" }
+    ]
+  }
+}
