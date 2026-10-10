@@ -47,3 +47,11 @@ out/
 .env.*
 !.env.example
 /games/GridOfGreed/Dev_Files
+games/GridOfGreed/tests/view.test.js
+games/Mimiri/src/jardin (1).js
+games/Mimiri/src/star.svg
+games/Mimiri/src/stars.svg
+games/Mimiri/tests/engine.test.js
+games/Mimiri/tests/themes.test.js
+games/scripts1.js
+games/styles1.css
