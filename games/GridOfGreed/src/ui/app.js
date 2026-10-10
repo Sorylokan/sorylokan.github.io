@@ -7,7 +7,7 @@ import { createRoomId, createRoomLink, getRoomIdFromLocation, isValidRoomCode, n
 import { MESSAGE_TYPES, cleanName, createActionRequest } from "../networking/messages.js";
 import { renderTable, fitBoard } from "./table.js";
 import { renderSidebar, playerDot } from "./sidebar.js";
-import { LANGS, THEMES, getPref, setPref, soundEnabled } from "./prefs.js";
+import { LANGS, THEMES, getPref, setPref, soundEnabled, readTheme } from "./prefs.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -34,6 +34,8 @@ function applyTexts() {
     el.setAttribute("title", t(el.dataset.i18nTitle));
     el.setAttribute("aria-label", t(el.dataset.i18nTitle));
   });
+  // Labels d'optgroup (catégories du sélecteur de thème) : attribut label, pas textContent.
+  document.querySelectorAll("[data-i18n-label]").forEach((el) => { el.setAttribute("label", t(el.dataset.i18nLabel)); });
 }
 
 // Jeton de siège stable par salle : survit au rechargement pour la reconnexion.
@@ -321,7 +323,7 @@ $("name").value = savedName();
 $("code").value = ""; // le code n'est jamais pré-rempli : seul le pseudo est mémorisé
 
 // Démarrage : préférences sauvegardées, puis traductions (repli français).
-applyTheme(getPref("theme", THEMES[0]));
+applyTheme(readTheme());
 applySound(soundEnabled());
 const browserLang = getLocale();
 await setLanguage(getPref("lang", LANGS.includes(browserLang) ? browserLang : DEFAULT_LOCALE));

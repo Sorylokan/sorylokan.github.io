@@ -10,6 +10,12 @@
   "ui.dailyNote": "Défi du jour : même grille pour tout le monde.",
   "ui.loadError": "Impossible de charger le jeu. Recharge la page.",
   "ui.themeLabel": "Thème",
+  "ui.chaos": "Chaos",
   "ui.langLabel": "Langue",
-  "ui.boardLabel": "Grille de jeu"
+  "ui.boardLabel": "Grille de jeu",
+  "theme.kittens": "Chatons câlins",
+  "theme.puppies": "Chiots câlins",
+  "theme.grumpy": "Chats grincheux",
+  "theme.garden": "Jardin fleuri",
+  "theme.nightfall": "Nightfall"
 }

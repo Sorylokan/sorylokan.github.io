@@ -46,6 +46,10 @@ function applyI18n() {
   $("moves-label").textContent = t("ui.moves");
   $("best-label").textContent = t("ui.best");
   themeSelect.setAttribute("aria-label", t("ui.themeLabel"));
+  // Labels des thèmes dans la langue active (clés theme.<id> dans les locales).
+  themeSelect.querySelectorAll("option[value]").forEach((opt) => {
+    opt.textContent = opt.value === "chaos" ? t("ui.chaos") : t(`theme.${opt.value}`);
+  });
   langSelect.setAttribute("aria-label", t("ui.langLabel"));
   boardEl.setAttribute("aria-label", t("ui.boardLabel"));
 }
@@ -94,6 +98,9 @@ function press(i) {
     game.newRecord = saveBest(game.key, game.moves);
   }
   render(i); persist();
+  // Mode chaos : un autre thème à chaque coup. Pure déco — la grille et les
+  // records ne changent pas, seul l'habillage bascule. Figé une fois gagné.
+  if (chaosActive && !game.won) applyTheme("chaos");
 }
 
 // ---- Affichage ----
@@ -157,18 +164,28 @@ const LEGACY_THEME_IDS = { chatons: "kittens", chiots: "puppies", grincheux: "gr
 const savedTheme = LEGACY_THEME_IDS[getPref("theme")] ?? getPref("theme", THEMES[0].id);
 
 let themeSeq = 0; // évite qu'un changement de thème rapide écrase le suivant
+let chaosActive = false;   // mode « chaos » : un nouveau thème à chaque coup
+let currentThemeId = null; // thème réellement affiché (en chaos, il change tout le temps)
+
+// id === "chaos" : pseudo-thème (absent du registre THEMES) qui habille la grille
+// d'un thème tiré au hasard, différent du précédent, à chaque appel.
 async function applyTheme(id) {
-  const def = THEMES.find((t) => t.id === id) ?? THEMES[0];
+  chaosActive = id === "chaos";
+  const pool = THEMES.filter((th) => th.id !== currentThemeId);
+  const def = chaosActive
+    ? pool[Math.floor(Math.random() * pool.length)]
+    : THEMES.find((th) => th.id === id) ?? THEMES[0];
   const seq = ++themeSeq;
   const mod = await def.load();
   if (seq !== themeSeq) return;
   T = mod.default;
-  setPref("theme", def.id);
+  currentThemeId = def.id;
+  setPref("theme", chaosActive ? "chaos" : def.id); // le choix « chaos » survit au rechargement
 
   document.body.classList.remove(...[...document.body.classList].filter((c) => c.startsWith("theme-")));
   document.body.classList.add(`theme-${def.id}`);
   themeLink.href = def.css;
-  themeSelect.value = def.id;
+  themeSelect.value = chaosActive ? "chaos" : def.id;
 
   applyThemeTexts();
 
@@ -183,7 +200,8 @@ async function init() {
   await loadMessages();
   applyI18n();
 
-  themeSelect.innerHTML = THEMES.map((th) => `<option value="${th.id}">${th.label}</option>`).join("");
+  themeSelect.innerHTML = THEMES.map((th) => `<option value="${th.id}">${t(`theme.${th.id}`)}</option>`).join("");
+  themeSelect.insertAdjacentHTML("beforeend", `<option value="chaos">${t("ui.chaos")}</option>`);
   themeSelect.addEventListener("change", () => applyTheme(themeSelect.value));
 
   langSelect.innerHTML = SUPPORTED_LOCALES.map((l) => `<option value="${l}">${l.toUpperCase()}</option>`).join("");

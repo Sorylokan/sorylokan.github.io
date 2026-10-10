@@ -17,9 +17,18 @@
       <option value="en">English</option>
     </select>
     <select id="opt-theme" data-i18n-title="bar.theme">
-      <option value="night" data-i18n="theme.night"></option>
-      <option value="casino" data-i18n="theme.casino"></option>
-      <option value="ruby" data-i18n="theme.ruby"></option>
+      <optgroup label="Classique" data-i18n-label="themecat.classique">
+        <option value="night" data-i18n="theme.night"></option>
+        <option value="palace" data-i18n="theme.palace"></option>
+        <option value="ruby" data-i18n="theme.ruby"></option>
+      </optgroup>
+      <optgroup label="Casino" data-i18n-label="themecat.casino">
+        <option value="poker" data-i18n="theme.poker"></option>
+        <option value="jackpot" data-i18n="theme.jackpot"></option>
+      </optgroup>
+      <optgroup label="Mystic" data-i18n-label="themecat.mystic">
+        <option value="wizard" data-i18n="theme.wizard"></option>
+      </optgroup>
     </select>
     <button type="button" id="toggle-sound" class="icon-btn" aria-pressed="true" data-i18n-title="bar.sound">
       <svg class="i-on" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5L6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
