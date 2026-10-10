@@ -220,9 +220,11 @@ svg.rank { width: 1em; height: 1em; margin-left: 4px; vertical-align: -0.15em; }
 .grid {
   display: grid;
   grid-auto-flow: column;
-  grid-template-columns: repeat(4, var(--su));
   grid-template-rows: repeat(3, var(--su));
+  grid-auto-columns: var(--su);
   gap: calc(var(--su) * .18);
+  /* Pas de width:100% : la grille garde sa largeur naturelle et le siège
+     (flex, align-items:center) la centre — colonnes retirées = recentrage auto. */
 }
 /* Centre : pioche/défausse au milieu de la zone, consigne juste en dessous (les cartes ne bougent jamais) */
 .mid { grid-area: 2 / 2; display: grid; grid-template-rows: 1fr auto 1fr; justify-items: center; min-height: 0; --su: var(--u); }

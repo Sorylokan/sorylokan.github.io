@@ -8,6 +8,7 @@ import { MESSAGE_TYPES, cleanName, createActionRequest } from "../networking/mes
 import { renderTable, fitBoard } from "./table.js";
 import { renderSidebar, playerDot } from "./sidebar.js";
 import { LANGS, THEMES, getPref, setPref, soundEnabled, readTheme } from "./prefs.js";
+import { playEvents, setMuted, click as sndClick } from "./sound.js";
 
 const $ = (id) => document.getElementById(id);
 
@@ -151,6 +152,7 @@ function sendAction(action) {
 function showTable(view, events = []) {
   if (!view) return;
   lastView = view;
+  playEvents(events); // sons des événements moteur (noop si sourdine)
   if ($("table").hidden) {
     document.querySelector(".home").hidden = true;
     $("lobby").hidden = true;
@@ -274,6 +276,7 @@ function applyTheme(name) {
 
 function applySound(on) {
   $("toggle-sound").setAttribute("aria-pressed", String(on));
+  setMuted(!on);
   setPref("sound", on ? "on" : "off");
 }
 
@@ -281,6 +284,10 @@ $("opt-lang").addEventListener("change", (e) => setLanguage(e.target.value));
 $("opt-theme").addEventListener("change", (e) => applyTheme(e.target.value));
 $("toggle-sound").addEventListener("click", () =>
   applySound($("toggle-sound").getAttribute("aria-pressed") !== "true"));
+
+// Clic discret sur les actions principales de l'accueil et du salon.
+["create", "start", "copy-code", "copy-link"].forEach((id) =>
+  $(id)?.addEventListener("click", sndClick));
 
 $("create").addEventListener("click", createRoom);
 // Champ vide : on prend le code du lien d'invitation (#salle=...) s'il y en a un.
