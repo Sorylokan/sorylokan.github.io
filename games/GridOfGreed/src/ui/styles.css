@@ -189,7 +189,13 @@ main.table { display: grid; grid-template-columns: 65.1% 34.24%; grid-template-r
 .stbl th, .stbl td { padding: 3px 6px; text-align: center; border-bottom: 1px solid var(--line); }
 .stbl th:first-child, .stbl td:first-child { text-align: left; }
 .stbl th { color: var(--mut); font-weight: 400; font-size: 12px; }
-.dbl { color: var(--high); font-weight: 700; }
+/* Scores : leader (moins de points) en gras/or, dernier en rouge */
+.stbl tr.best td { color: var(--gold); font-weight: 700; }
+.stbl tr.worst td { color: var(--high); }
+/* Marqueurs couronne/crâne du tableau des scores (SVG inline, currentColor) */
+svg.rank { width: 1em; height: 1em; margin-left: 4px; vertical-align: -0.15em; }
+/* Historique : badge ×2 sur le finisher puni (score affiché = score de base) */
+.dbl { color: var(--high); font-weight: 700; font-size: 11px; }
 .plist { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
 .plist li { display: flex; align-items: center; gap: 8px; padding: 4px 8px; border: 1px solid transparent; border-radius: 6px; }
 .plist li.active { border-color: var(--gold); }
