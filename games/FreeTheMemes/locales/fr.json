@@ -184,6 +184,7 @@
   "lobby.inviteLink": "Lien d'invitation",
   "lobby.roomCode": "Code de la salle",
   "lobby.copy": "Copier",
+  "lobby.showCode": "Afficher ou masquer le code",
   "lobby.startMatch": "Lancer la partie",
   "lobby.waitingOne": "En attente d'un joueur",
   "lobby.waitingHostStart": "En attente du lancement de la partie par l'hôte",

@@ -74,6 +74,7 @@ input { min-height: 42px; padding: 8px 10px; color: var(--ink); background: var(
 .create-room-action { display: flex; justify-content: space-between; align-items: center; width: 100%; min-height: 58px; background: var(--pink); font-size: 16px; }
 .join-room-block > label, .invite-block > label { display: block; margin-bottom: 6px; font-size: 12px; font-weight: 700; }
 .room-join, .invite-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.invite-field.has-toggle { grid-template-columns: minmax(0, 1fr) auto auto; } /* + bouton œil */
 .room-status { margin: 0; font-size: 12px; font-weight: 700; color: var(--muted); }
 .room-main .room-status { color: var(--paper); }
 .start-room-action { display: flex; justify-content: space-between; width: min(320px, 100%); margin-top: 20px; }

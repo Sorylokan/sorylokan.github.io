@@ -216,6 +216,10 @@ const T = (key, vars) => translate(key, vars);
 let roomNotice = null;
 const setNotice = (key, vars = {}) => { roomNotice = { key, vars }; };
 let joinCodeDraft = "";   // code tapé dans l'accueil, conservé entre deux rendus
+// Code/lien masqués par défaut dans le salon (stream, capture d'écran) : le bouton œil
+// les révèle, les boutons Copier copient toujours les vraies valeurs (comme GridOfGreed).
+const ROOM_CODE_MASK = "••••-••••";
+let roomCodeShown = false;
 
 // ---- Thème ----
 // Pour ajouter un thème plus tard : une ligne ici + son fichier CSS (theme-<id>.css).
@@ -513,6 +517,7 @@ const handleCreateRoom = () => {
   isHost = true;
   roomRole = "host";
   roomId = createRoomId();
+  roomCodeShown = false;   // chaque nouveau salon repart masqué
   roomPlayers = [];
   roomStatus = "connecting"; setNotice("lobby.roomCreated", { code: roomId });
   render();
@@ -531,6 +536,7 @@ const handleJoinRoom = () => {
   }
 
   roomId = requestedRoomId;
+  roomCodeShown = false;   // chaque nouveau salon repart masqué
   roomStatus = "connecting"; setNotice("lobby.joining", { code: requestedRoomId });
   render();
   connectToRoom(requestedRoomId);
@@ -544,8 +550,10 @@ const lobbyStatusLabel = () => {
 
 const copyText = async (text, okKey, inputSelector) => {
   let copied = true;
+  // Si le presse-papier échoue, on révèle le code : le repli sélectionne le texte de
+  // l'input, qui doit donc contenir la vraie valeur et non le masque.
   try { await navigator.clipboard.writeText(text); setNotice(okKey); }
-  catch { copied = false; setNotice("lobby.copyManual"); }
+  catch { copied = false; roomCodeShown = true; setNotice("lobby.copyManual"); }
   render();
   if (!copied) {
     const el = app.querySelector(inputSelector);   // sélectionné APRÈS le rendu, sinon la sélection disparaît
@@ -1099,9 +1107,9 @@ const render = () => {
               <p class="room-intro">${isHost ? T("lobby.hostIntro") : T("lobby.guestIntro")}</p>
               <div class="invite-block" data-title="${T("lobby.win.invite")}">
                 <div><label for="room-code">${T("lobby.roomCode")}</label>
-                  <div class="invite-field"><input id="room-code" data-room-code readonly value="${escHtml(roomId)}"><button class="action" data-action="copy-code">${T("lobby.copy")}</button></div></div>
+                  <div class="invite-field has-toggle"><input id="room-code" data-room-code readonly value="${escHtml(roomCodeShown ? roomId : ROOM_CODE_MASK)}"><button class="action secondary" data-action="toggle-code" aria-pressed="${roomCodeShown}" title="${escHtml(T("lobby.showCode"))}" aria-label="${escHtml(T("lobby.showCode"))}">👁</button><button class="action" data-action="copy-code">${T("lobby.copy")}</button></div></div>
                 <div><label for="invite-link">${T("lobby.inviteLink")}</label>
-                  <div class="invite-field"><input id="invite-link" data-invite-link readonly value="${createRoomLink(roomId)}"><button class="action" data-action="copy-invite">${T("lobby.copy")}</button></div></div>
+                  <div class="invite-field"><input id="invite-link" data-invite-link readonly value="${escHtml(roomCodeShown ? createRoomLink(roomId) : createRoomLink(roomId).replace(roomId, ROOM_CODE_MASK))}"><button class="action" data-action="copy-invite">${T("lobby.copy")}</button></div></div>
               </div>
               ${isHost
                 ? `<div class="seat-picker"><span>${T("lobby.seatLimit")}</span>
@@ -1118,6 +1126,7 @@ const render = () => {
       app.querySelector("[data-action=start]")?.addEventListener("click", handleStart);
       app.querySelector("[data-action=copy-invite]")?.addEventListener("click", handleCopyInvite);
       app.querySelector("[data-action=copy-code]")?.addEventListener("click", handleCopyCode);
+      app.querySelector("[data-action=toggle-code]")?.addEventListener("click", () => { roomCodeShown = !roomCodeShown; render(); });
       app.querySelectorAll("[data-seat-delta]").forEach((b) => b.addEventListener("click", () => {
         hostSession.authority.setSeatLimit(hostSession.authority.seatLimit + Number(b.dataset.seatDelta));
         render();
